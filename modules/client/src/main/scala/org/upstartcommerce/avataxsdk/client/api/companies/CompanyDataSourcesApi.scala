@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -39,7 +39,7 @@ trait CompanyDataSourcesRootApi {
 }
 
 object CompanyDataSourcesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyDataSourcesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyDataSourcesRootApi =
     new ApiRoot(requester, security) with CompanyDataSourcesRootApi {
       def forDataSourceId(dataSourceId: Int): CompanyDataSourcesApi = CompanyDataSourcesApi(requester, security)(companyId, dataSourceId)
 
@@ -64,7 +64,7 @@ trait CompanyDataSourcesApi {
   def update(model:DataSourceModel):AvataxSimpleCall[DataSourceModel]
 }
 object CompanyDataSourcesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, dataSourceId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyDataSourcesApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, dataSourceId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyDataSourcesApi =
     new ApiRoot(requester, security) with CompanyDataSourcesApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/datasources/$dataSourceId")

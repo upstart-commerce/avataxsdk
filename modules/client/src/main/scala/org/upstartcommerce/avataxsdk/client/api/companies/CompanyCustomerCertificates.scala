@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -40,7 +40,7 @@ trait CompanyCustomerCertificatesRootApi {
 }
 
 object CompanyCustomerCertificatesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyCustomerCertificatesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesRootApi =
     new ApiRoot(requester, security) with CompanyCustomerCertificatesRootApi {
       def forCertId(certificateId: Int): CompanyCustomerCertificatesApi = CompanyCustomerCertificatesApi(requester, security)(companyId, customerCode, certificateId)
 
@@ -68,6 +68,6 @@ object CompanyCustomerCertificatesRootApi {
 /** /api/v2/companies/$companyId/customers/$customerCode/certificates/$certificateId */
 trait CompanyCustomerCertificatesApi {}
 object CompanyCustomerCertificatesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String, certificateId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyCustomerCertificatesApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String, certificateId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesApi =
     new ApiRoot(requester, security) with CompanyCustomerCertificatesApi {}
 }

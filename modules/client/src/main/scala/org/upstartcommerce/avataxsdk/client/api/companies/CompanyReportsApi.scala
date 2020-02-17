@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -38,7 +38,7 @@ trait CompanyReportsRootApi {
 }
 
 object CompanyReportsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyReportsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyReportsRootApi =
     new ApiRoot(requester, security) with CompanyReportsRootApi {
       def forId(reportId: Long): CompanyReportsApi = CompanyReportsApi(requester, security)(companyId, reportId)
 
@@ -60,7 +60,7 @@ object CompanyReportsRootApi {
 trait CompanyReportsApi {
 }
 object CompanyReportsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, reportId:Long)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyReportsApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, reportId:Long)(implicit system: ActorSystem, materializer: Materializer): CompanyReportsApi =
     new ApiRoot(requester, security) with CompanyReportsApi {
     }
 }

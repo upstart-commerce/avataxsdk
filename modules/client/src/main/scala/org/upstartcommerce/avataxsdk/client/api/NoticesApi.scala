@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -34,7 +34,7 @@ trait NoticesRootApi {
 }
 
 object NoticesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): NoticesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): NoticesRootApi =
     new ApiRoot(requester, security) with NoticesRootApi {
       def query(include:Include, options:QueryOptions):AvataxCollectionCall[NoticeModel] = {
         val uri = Uri(s"/api/v2/notices").withQuery(include.asQuery.merge(options.asQuery))

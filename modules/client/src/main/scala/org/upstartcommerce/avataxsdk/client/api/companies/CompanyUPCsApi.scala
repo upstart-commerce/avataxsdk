@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -39,7 +39,7 @@ trait CompanyUPCsRootApi {
 }
 
 object CompanyUPCsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyUPCsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsRootApi =
     new ApiRoot(requester, security) with CompanyUPCsRootApi {
       def forId(upcId: Int): CompanyUPCsApi = CompanyUPCsApi(requester, security)(companyId, upcId)
 
@@ -64,7 +64,7 @@ trait CompanyUPCsApi {
   def update(model:UPCModel):AvataxSimpleCall[UPCModel]
 }
 object CompanyUPCsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, upcId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyUPCsApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, upcId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsApi =
     new ApiRoot(requester, security) with CompanyUPCsApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs/$upcId")

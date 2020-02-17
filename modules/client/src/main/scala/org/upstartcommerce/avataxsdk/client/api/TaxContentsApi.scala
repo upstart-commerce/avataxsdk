@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
@@ -33,7 +33,7 @@ trait TaxContentsRootApi {
 }
 
 object TaxContentsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): TaxContentsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): TaxContentsRootApi =
     new ApiRoot(requester, security) with TaxContentsRootApi {
       def buildFile(model:PointOfSaleDataRequestModel):AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/pointsofsaledata/build")

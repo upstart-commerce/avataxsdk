@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api.ApiRoot
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -37,7 +37,7 @@ trait CompanyCustomerCertExpressInvitationRootApi {
 }
 
 object CompanyCustomerCertExpressInvitationRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyCustomerCertExpressInvitationRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertExpressInvitationRootApi =
     new ApiRoot(requester, security) with CompanyCustomerCertExpressInvitationRootApi {
       def forId(certExpressId:Int): CompanyCustomerCertExpressInvitationApi =
         CompanyCustomerCertExpressInvitationApi(requester, security)(companyId, customerCode, certExpressId)
@@ -57,7 +57,7 @@ trait CompanyCustomerCertExpressInvitationApi {
 }
 
 object CompanyCustomerCertExpressInvitationApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String, certExpressId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyCustomerCertExpressInvitationApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String, certExpressId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertExpressInvitationApi =
     new ApiRoot(requester, security) with CompanyCustomerCertExpressInvitationApi {
       def get(include:Include):AvataxSimpleCall[CertExpressInvitationModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/customers/$customerCode/certexpressinvites/$certExpressId")

@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -36,7 +36,7 @@ trait TaxCodesRootApi {
 }
 
 object TaxCodesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): TaxCodesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): TaxCodesRootApi =
     new ApiRoot(requester, security) with TaxCodesRootApi {
       def forId(taxCodeId: Int): TaxCodesApi = TaxCodesApi(requester, security)(taxCodeId)
 
@@ -51,6 +51,6 @@ object TaxCodesRootApi {
 
 trait TaxCodesApi {}
 object TaxCodesApi {
-  def apply(requester: Requester, security: Option[Authorization])(taxCodeId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): TaxCodesApi =
+  def apply(requester: Requester, security: Option[Authorization])(taxCodeId:Int)(implicit system: ActorSystem, materializer: Materializer): TaxCodesApi =
     new ApiRoot(requester, security) with TaxCodesApi {}
 }

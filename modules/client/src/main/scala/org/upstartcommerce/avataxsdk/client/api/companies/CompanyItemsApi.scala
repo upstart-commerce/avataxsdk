@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -39,7 +39,7 @@ trait CompanyItemsRootApi {
 }
 
 object CompanyItemsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyItemsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyItemsRootApi =
     new ApiRoot(requester, security) with CompanyItemsRootApi {
       def forItemId(itemId:Long): CompanyItemsApi = CompanyItemsApi(requester, security)(companyId, itemId)
 
@@ -74,7 +74,7 @@ trait CompanyItemsApi {
   def updateParameter(parameterId:Long, model:ItemParameterModel):AvataxSimpleCall[ItemParameterModel]
 }
 object CompanyItemsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, itemId:Long)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyItemsApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, itemId:Long)(implicit system: ActorSystem, materializer: Materializer): CompanyItemsApi =
     new ApiRoot(requester, security) with CompanyItemsApi {
       def createClassifications(model:List[ItemClassificationInputModel]):AvataxSimpleCall[List[ItemClassificationOutputModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications")

@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.enums._
@@ -38,7 +38,7 @@ trait UtilitiesRootApi {
 }
 
 object UtilitiesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): UtilitiesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): UtilitiesRootApi =
     new ApiRoot(requester, security) with UtilitiesRootApi {
       def getMySubscription(serviceTypeId:ServiceTypeId):AvataxSimpleCall[SubscriptionModel] = {
         val uri = Uri(s"/api/v2/utilities/subscriptions/$serviceTypeId")

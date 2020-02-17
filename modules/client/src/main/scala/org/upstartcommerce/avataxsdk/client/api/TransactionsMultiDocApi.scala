@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -51,7 +51,7 @@ trait TransactionsRootApi {
 }
 
 object TransactionsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): TransactionsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): TransactionsRootApi =
     new ApiRoot(requester, security) with TransactionsRootApi {
       def forTransactionId(transactionId:Long): TransactionsApi = TransactionsApi(requester, security)(transactionId)
       def forMultiDocTransId(multiDocTransId: Long): TransactionsMultiDocApi = TransactionsMultiDocApi(requester, security)(multiDocTransId)
@@ -144,7 +144,7 @@ trait TransactionsMultiDocApi {
   def get(include:Include):AvataxSimpleCall[MultiDocumentModel]
 }
 object TransactionsMultiDocApi {
-  def apply(requester: Requester, security: Option[Authorization])(multiDocTransId:Long)(implicit system: ActorSystem, materializer: ActorMaterializer): TransactionsMultiDocApi =
+  def apply(requester: Requester, security: Option[Authorization])(multiDocTransId:Long)(implicit system: ActorSystem, materializer: Materializer): TransactionsMultiDocApi =
     new ApiRoot(requester, security) with TransactionsMultiDocApi {
       def get(include:Include):AvataxSimpleCall[MultiDocumentModel] = {
         val uri = Uri(s"/api/v2/transactions/multidocument/$multiDocTransId").withQuery(include.asQuery)
@@ -159,7 +159,7 @@ trait TransactionsApi {
   def get(include:Include):AvataxSimpleCall[TransactionModel]
 }
 object TransactionsApi {
-  def apply(requester: Requester, security: Option[Authorization])(transactionId:Long)(implicit system: ActorSystem, materializer: ActorMaterializer): TransactionsApi =
+  def apply(requester: Requester, security: Option[Authorization])(transactionId:Long)(implicit system: ActorSystem, materializer: Materializer): TransactionsApi =
     new ApiRoot(requester, security) with TransactionsApi {
       def get(include:Include):AvataxSimpleCall[TransactionModel] = {
         val uri = Uri(s"/api/v2/transactions/$transactionId").withQuery(include.asQuery)

@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -39,7 +39,7 @@ trait CompanySettingsRootApi {
 }
 
 object CompanySettingsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanySettingsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanySettingsRootApi =
     new ApiRoot(requester, security) with CompanySettingsRootApi {
       def forId(settingsId: Int): CompanySettingsApi = CompanySettingsApi(requester, security)(companyId, settingsId)
 
@@ -67,7 +67,7 @@ trait CompanySettingsApi {
 }
 
 object CompanySettingsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, settingsId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanySettingsApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, settingsId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanySettingsApi =
     new ApiRoot(requester, security) with CompanySettingsApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/settings/$settingsId")

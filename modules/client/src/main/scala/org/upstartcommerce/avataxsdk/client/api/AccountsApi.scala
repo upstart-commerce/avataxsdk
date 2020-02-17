@@ -19,7 +19,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client.api.accounts.{AccountSubscriptionsRootApi, AccountUsersRootApi, AccountsJurisdictionOverridesRootApi}
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
@@ -43,7 +43,7 @@ trait AccountsRootApi {
 
 object AccountsRootApi {
   def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem,
-                                                                                 materializer: ActorMaterializer): AccountsRootApi =
+                                                                                 materializer: Materializer): AccountsRootApi =
     new ApiRoot(requester, security) with AccountsRootApi {
       def forAccount(accountId: Int): AccountsApi = AccountsApi(requester, security)(accountId)
 
@@ -93,7 +93,7 @@ trait AccountsApi {
 
 object AccountsApi {
   def apply(requester: Requester, security: Option[Authorization])(accountId: Int)(implicit system: ActorSystem,
-                                                                                 materializer: ActorMaterializer): AccountsApi =
+                                                                                 materializer: Materializer): AccountsApi =
     new ApiRoot(requester, security) with AccountsApi {
 
       val advancedRuleScripts: AccountAdvancedRuleScriptRootApi = AccountAdvancedRuleScriptRootApi(requester, security)(accountId)

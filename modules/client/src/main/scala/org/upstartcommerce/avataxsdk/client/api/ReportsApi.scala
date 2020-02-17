@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
@@ -36,7 +36,7 @@ trait ReportsRootApi {
 }
 
 object ReportsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): ReportsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): ReportsRootApi =
     new ApiRoot(requester, security) with ReportsRootApi {
       def forId(reportId: Long): ReportsApi = ReportsApi(requester, security)(reportId)
 
@@ -54,7 +54,7 @@ trait ReportsApi {
   def get:AvataxSimpleCall[ReportModel]
 }
 object ReportsApi {
-  def apply(requester: Requester, security: Option[Authorization])(reportId:Long)(implicit system: ActorSystem, materializer: ActorMaterializer): ReportsApi =
+  def apply(requester: Requester, security: Option[Authorization])(reportId:Long)(implicit system: ActorSystem, materializer: Materializer): ReportsApi =
     new ApiRoot(requester, security) with ReportsApi {
       def download:AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/reports/$reportId/attachment")

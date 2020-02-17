@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -39,7 +39,7 @@ trait CompanyDistanceThresholdRootApi {
 }
 
 object CompanyDistanceThresholdRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyDistanceThresholdRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyDistanceThresholdRootApi =
     new ApiRoot(requester, security) with CompanyDistanceThresholdRootApi {
       def forId(distThreshId: Long): CompanyDistanceThresholdApi = CompanyDistanceThresholdApi(requester, security)(companyId, distThreshId)
 
@@ -64,7 +64,7 @@ trait CompanyDistanceThresholdApi {
   def update(model:CompanyDistanceThresholdModel):AvataxSimpleCall[CompanyDistanceThresholdModel]
 }
 object CompanyDistanceThresholdApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, distThreshId:Long)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyDistanceThresholdApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, distThreshId:Long)(implicit system: ActorSystem, materializer: Materializer): CompanyDistanceThresholdApi =
     new ApiRoot(requester, security) with CompanyDistanceThresholdApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/distancethresholds/$distThreshId")

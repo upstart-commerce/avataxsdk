@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.headers
 import akka.http.scaladsl.model.headers._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.Environment
@@ -75,7 +75,7 @@ object AvataxClient {
     * @param security provides header for requests
     * @return reactive avatax client
     */
-  def apply(environment:Environment, poolQueueSize:Int = 128, security:Option[SecuritySettings] = None)(implicit system: ActorSystem, materializer: ActorMaterializer): AvataxClient = {
+  def apply(environment:Environment, poolQueueSize:Int = 128, security:Option[SecuritySettings] = None)(implicit system: ActorSystem, materializer: Materializer): AvataxClient = {
     val poolFlow    = HostPool.forUrl(environment.url)
     val requester   = Requester.pooled(poolFlow, poolQueueSize)
     val credentials = security.map(x => headers.Authorization(BasicHttpCredentials(x.username, x.password)))
@@ -83,7 +83,7 @@ object AvataxClient {
   }
 
   def apply(requester:Requester, security:Option[Authorization])(implicit system: ActorSystem,
-                                  materializer: ActorMaterializer): AvataxClient = {
+                                  materializer: Materializer): AvataxClient = {
 
     new ApiRoot(requester, security) with AvataxClient {
       val accounts: AccountsRootApi                = AccountsRootApi(requester, security)

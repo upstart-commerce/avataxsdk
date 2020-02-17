@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -41,7 +41,7 @@ trait CompanyNoticesRootApi {
 }
 
 object CompanyNoticesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyNoticesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesRootApi =
     new ApiRoot(requester, security) with CompanyNoticesRootApi {
       def forNoticeId(noticeId: Int): CompanyNoticesApi = CompanyNoticesApi(requester, security)(companyId, noticeId)
 
@@ -92,7 +92,7 @@ trait CompanyNoticesApi {
   def updateComments(commentDetailsId:Int, model:NoticeCommentModel):AvataxSimpleCall[NoticeCommentModel]
 }
 object CompanyNoticesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, noticeId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyNoticesApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, noticeId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesApi =
     new ApiRoot(requester, security) with CompanyNoticesApi {
       def createComment(model:List[NoticeCommentModel]):AvataxSimpleCall[List[NoticeCommentModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/comments")

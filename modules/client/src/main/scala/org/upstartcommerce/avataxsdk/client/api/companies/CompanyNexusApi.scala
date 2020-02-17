@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -41,7 +41,7 @@ trait CompanyNexusRootApi {
 }
 
 object CompanyNexusRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyNexusRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNexusRootApi =
     new ApiRoot(requester, security) with CompanyNexusRootApi {
       def forNexusId(nexusId: Int): CompanyNexusApi = CompanyNexusApi(requester, security)(companyId, nexusId)
 
@@ -79,7 +79,7 @@ trait CompanyNexusApi {
   def update(model:NexusModel):AvataxSimpleCall[NexusModel]
 }
 object CompanyNexusApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, nexusId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyNexusApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, nexusId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNexusApi =
     new ApiRoot(requester, security) with CompanyNexusApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/nexus/$nexusId")

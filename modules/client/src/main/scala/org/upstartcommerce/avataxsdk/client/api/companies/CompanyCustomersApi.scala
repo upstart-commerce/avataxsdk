@@ -19,7 +19,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -40,7 +40,7 @@ trait CompanyCustomersRootApi {
 }
 
 object CompanyCustomersRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyCustomersRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersRootApi =
     new ApiRoot(requester, security) with CompanyCustomersRootApi {
       def forCustomerCode(code:String): CompanyCustomersApi = CompanyCustomersApi(requester, security)(companyId, code)
 
@@ -72,7 +72,7 @@ trait CompanyCustomersApi {
 }
 
 object CompanyCustomersApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyCustomersApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersApi =
     new ApiRoot(requester, security) with CompanyCustomersApi {
       val certExpressInvites: CompanyCustomerCertExpressInvitationRootApi =
         CompanyCustomerCertExpressInvitationRootApi(requester, security)(companyId, customerCode)

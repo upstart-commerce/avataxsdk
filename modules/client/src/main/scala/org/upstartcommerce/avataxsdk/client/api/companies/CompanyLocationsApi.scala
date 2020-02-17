@@ -20,7 +20,7 @@ import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -42,7 +42,7 @@ trait CompanyLocationsRootApi {
 }
 
 object CompanyLocationsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyLocationsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsRootApi =
     new ApiRoot(requester, security) with CompanyLocationsRootApi {
       def forLocationId(locationId: Int): CompanyLocationsApi = CompanyLocationsApi(requester, security)(companyId, locationId)
 
@@ -70,7 +70,7 @@ trait CompanyLocationsApi {
   def buildTaxContentForLocation(date:Date, format:PointOfSaleFileType, partner:PointOfSalePartnerId, includeJurisCodes:Boolean):AvataxSimpleCall[String]
 }
 object CompanyLocationsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, locationId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyLocationsApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, locationId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsApi =
     new ApiRoot(requester, security) with CompanyLocationsApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId")

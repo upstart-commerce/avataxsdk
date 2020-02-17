@@ -19,7 +19,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.Authorization
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -38,7 +38,7 @@ trait AccountUsersRootApi {
 }
 
 object AccountUsersRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(accountId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): AccountUsersRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(accountId:Int)(implicit system: ActorSystem, materializer: Materializer): AccountUsersRootApi =
     new ApiRoot(requester, security) with AccountUsersRootApi {
       def forId(userId: Int): AccountUsersApi = AccountUsersApi(requester, security)(accountId, userId)
 
@@ -65,7 +65,7 @@ trait AccountUsersApi {
   def update(model:UserModel):AvataxSimpleCall[UserModel]
 }
 object AccountUsersApi {
-  def apply(requester: Requester, security: Option[Authorization])(accountId:Int, userId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): AccountUsersApi =
+  def apply(requester: Requester, security: Option[Authorization])(accountId:Int, userId:Int)(implicit system: ActorSystem, materializer: Materializer): AccountUsersApi =
     new ApiRoot(requester, security) with AccountUsersApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users/$userId")

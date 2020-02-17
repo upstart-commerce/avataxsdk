@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -34,7 +34,7 @@ trait NexusRootApi {
 }
 
 object NexusRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): NexusRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): NexusRootApi =
     new ApiRoot(requester, security) with NexusRootApi {
       def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[NexusModel] = {
         val uri = Uri(s"/api/v2/nexus").withQuery(include.asQuery.merge(options.asQuery))

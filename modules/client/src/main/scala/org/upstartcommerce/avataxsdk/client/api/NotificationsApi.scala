@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -38,7 +38,7 @@ trait NotificationsRootApi {
 }
 
 object NotificationsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): NotificationsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): NotificationsRootApi =
     new ApiRoot(requester, security) with NotificationsRootApi {
       def forId(notificationId: Long): NotificationsApi = NotificationsApi(requester, security)(notificationId)
 
@@ -64,7 +64,7 @@ trait NotificationsApi {
   def update(model:NotificationModel):AvataxSimpleCall[NotificationModel]
 }
 object NotificationsApi {
-  def apply(requester: Requester, security: Option[Authorization])(notificationId:Long)(implicit system: ActorSystem, materializer: ActorMaterializer): NotificationsApi =
+  def apply(requester: Requester, security: Option[Authorization])(notificationId:Long)(implicit system: ActorSystem, materializer: Materializer): NotificationsApi =
     new ApiRoot(requester, security) with NotificationsApi {
       def dismiss:AvataxSimpleCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications/$notificationId/dismiss")

@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -37,7 +37,7 @@ trait AvaFileFormsRootApi {
 }
 
 object AvaFileFormsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): AvaFileFormsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsRootApi =
     new ApiRoot(requester, security) with AvaFileFormsRootApi {
       def forId(id: Int): AvaFileFormsApi = AvaFileFormsApi(requester, security)(id)
 
@@ -62,7 +62,7 @@ trait AvaFileFormsApi {
   def update(model:AvaFileFormModel):AvataxSimpleCall[AvaFileFormModel]
 }
 object AvaFileFormsApi {
-  def apply(requester: Requester, security: Option[Authorization])(formId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): AvaFileFormsApi =
+  def apply(requester: Requester, security: Option[Authorization])(formId:Int)(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsApi =
     new ApiRoot(requester, security) with AvaFileFormsApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/avafileforms/$formId")

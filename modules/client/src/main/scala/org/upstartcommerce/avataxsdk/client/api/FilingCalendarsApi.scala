@@ -19,7 +19,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -38,7 +38,7 @@ trait FilingCalendarsRootApi {
 }
 
 object FilingCalendarsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): FilingCalendarsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): FilingCalendarsRootApi =
     new ApiRoot(requester, security) with FilingCalendarsRootApi {
       def loginVerificationRequest(model:LoginVerificationInputModel):AvataxSimpleCall[LoginVerificationOutputModel] = {
         val uri = Uri(s"/api/v2/filingcalendars/credentials/verify")

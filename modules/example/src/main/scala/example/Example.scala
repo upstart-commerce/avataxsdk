@@ -15,17 +15,12 @@
 
 package example
 
-import java.sql.Date
-
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client.AvataxClient
 import org.upstartcommerce.avataxsdk.client.AvataxClient.SecuritySettings
-import org.upstartcommerce.avataxsdk.core.data.OrderBy.OrderByClause
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models.{ErrorInfo, ErrorResult, ResetLicenseKeyModel, TaxRateModel}
-import org.upstartcommerce.avataxsdk.json
-import play.api.libs.json.{Format, Json}
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -34,7 +29,7 @@ import scala.concurrent.duration._
 object Example extends App {
 
   implicit val sys: ActorSystem       = ActorSystem()
-  implicit val mat: ActorMaterializer = ActorMaterializer()
+  implicit val mat: Materializer      = Materializer(sys)
 
   val (un, pw) = (System.getenv("AVATAX_USERNAME"),System.getenv("AVATAX_PASSWORD"))
   val client = AvataxClient(Environment.Sandbox, poolQueueSize = 128, security = Some(SecuritySettings(un, pw)))

@@ -19,7 +19,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -42,7 +42,7 @@ trait CompanyFilingCalendarRootApi {
 }
 
 object CompanyFilingCalendarRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyFilingCalendarRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarRootApi =
     new ApiRoot(requester, security) with CompanyFilingCalendarRootApi {
       def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi = CompanyFilingCalendarApi(requester, security)(companyId, filingCalendarId)
 
@@ -85,7 +85,7 @@ trait CompanyFilingCalendarApi {
   def update(model:FilingCalendarModel):AvataxSimpleCall[FilingCalendarModel]
 }
 object CompanyFilingCalendarApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, filingCalendarId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyFilingCalendarApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, filingCalendarId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarApi =
     new ApiRoot(requester, security) with CompanyFilingCalendarApi {
       def cancelRequests(model:List[FilingRequestModel]):AvataxSimpleCall[FilingRequestModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId/cancel/request")

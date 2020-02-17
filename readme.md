@@ -17,10 +17,10 @@ Add following to your build.sbt
 ```scala
 resolvers in Global += Resolver.url("upstartcommerce", url("https://upstartcommerce.bintray.com/generic"))(Resolver.ivyStylePatterns)
 
-libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.2" // or whatever latest version is
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.5" // or whatever latest version is
 
 // or if you want ONLY data model
-// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.2"
+// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.5"
 ```
 
 ### Usage
@@ -28,7 +28,7 @@ libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.2" // 
 Basic usage is:
 ```scala
   implicit val sys: ActorSystem       = ActorSystem()
-  implicit val mat: ActorMaterializer = ActorMaterializer()
+  implicit val mat: Materializer      = Materializer(sys)
   val client = AvataxClient(...)
 
   /** request a result  */

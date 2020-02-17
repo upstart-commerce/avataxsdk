@@ -19,7 +19,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -115,7 +115,7 @@ trait DefinitionsRootApi {
 }
 
 object DefinitionsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): DefinitionsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): DefinitionsRootApi =
     new ApiRoot(requester, security) with DefinitionsRootApi {
       def getCrossBorderCode(country: String, hsCode: String): AvataxCollectionCall[HsCodeModel] = {
         val uri = Uri(s"/api/v2/definitions/crossborder/$country/$hsCode/hierarchy")

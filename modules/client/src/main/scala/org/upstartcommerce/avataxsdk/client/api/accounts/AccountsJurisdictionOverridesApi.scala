@@ -19,7 +19,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.Authorization
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -38,7 +38,7 @@ trait AccountsJurisdictionOverridesRootApi {
 }
 
 object AccountsJurisdictionOverridesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(accountId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): AccountsJurisdictionOverridesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(accountId:Int)(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesRootApi =
     new ApiRoot(requester, security) with AccountsJurisdictionOverridesRootApi {
       def forJurisOverrideId(jurisOverrideId:Int): AccountsJurisdictionOverridesApi = AccountsJurisdictionOverridesApi(requester, security)(accountId, jurisOverrideId)
 
@@ -64,7 +64,7 @@ trait AccountsJurisdictionOverridesApi {
   def update(model:JurisdictionOverrideModel):AvataxSimpleCall[JurisdictionOverrideModel]
 }
 object AccountsJurisdictionOverridesApi {
-  def apply(requester: Requester, security: Option[Authorization])(accountId:Int, jurisOverrideId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): AccountsJurisdictionOverridesApi =
+  def apply(requester: Requester, security: Option[Authorization])(accountId:Int, jurisOverrideId:Int)(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesApi =
     new ApiRoot(requester, security) with AccountsJurisdictionOverridesApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/jurisdictionoverrides/$jurisOverrideId")

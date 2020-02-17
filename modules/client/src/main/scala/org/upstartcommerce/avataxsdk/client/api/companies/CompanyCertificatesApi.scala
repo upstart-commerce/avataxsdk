@@ -20,7 +20,7 @@ import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.Authorization
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api.{ApiRoot, _}
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -41,7 +41,7 @@ trait CompanyCertificatesRootApi {
 }
 
 object CompanyCertificatesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyCertificatesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesRootApi =
     new ApiRoot(requester, security) with CompanyCertificatesRootApi {
       def forId(certificateId:Int): CompanyCertificatesApi = CompanyCertificatesApi(requester, security)(companyId, certificateId)
 
@@ -88,7 +88,7 @@ trait CompanyCertificatesApi {
 }
 
 object CompanyCertificatesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, certificateId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyCertificatesApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, certificateId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesApi =
     new ApiRoot(requester, security) with CompanyCertificatesApi {
       def delete:AvataxSimpleCall[CertificateModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId")

@@ -20,7 +20,7 @@ import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.Authorization
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client.AvataxSimpleCall
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
@@ -36,7 +36,7 @@ trait AddressesRootApi {
 
 object AddressesRootApi {
   def apply(requester:Requester, security:Option[Authorization])(implicit system: ActorSystem,
-                                  materializer: ActorMaterializer): AddressesRootApi =
+                                  materializer: Materializer): AddressesRootApi =
     new ApiRoot(requester, security) with AddressesRootApi {
       def resolve(line1:String, line2:String, line3:String, city:String, region:String, postalCode:String, country:String, textCase:String):AvataxSimpleCall[AddressResolutionModel] = {
         val uri = Uri(s"/api/v2/addresses/resolve").withQuery(Query(

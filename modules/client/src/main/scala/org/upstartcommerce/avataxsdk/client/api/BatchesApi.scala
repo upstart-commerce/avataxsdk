@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
@@ -34,7 +34,7 @@ trait BatchesRootApi {
 }
 
 object BatchesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): BatchesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): BatchesRootApi =
     new ApiRoot(requester, security) with BatchesRootApi {
       def query(include:Include, options: FiltrableQueryOptions):AvataxCollectionCall[BatchModel] = {
         val uri = Uri(s"/api/v2/batches").withQuery(include.asQuery.merge(options.asQuery))
@@ -52,7 +52,7 @@ trait CompanyBatchesRootApi {
 }
 
 object CompanyBatchesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyBatchesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyBatchesRootApi =
     new ApiRoot(requester, security) with CompanyBatchesRootApi {
       def forBatchId(id: Int): CompanyBatchesApi = CompanyBatchesApi(requester, security)(companyId, id)
 
@@ -77,7 +77,7 @@ trait CompanyBatchesApi {
   def get:AvataxSimpleCall[BatchModel]
 }
 object CompanyBatchesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, batchId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyBatchesApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, batchId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyBatchesApi =
     new ApiRoot(requester, security) with CompanyBatchesApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/batches/$batchId")

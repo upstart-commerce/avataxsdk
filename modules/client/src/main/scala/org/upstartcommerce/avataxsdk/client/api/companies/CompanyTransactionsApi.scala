@@ -19,7 +19,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -40,7 +40,7 @@ trait CompanyTransactionsRootApi {
 }
 
 object CompanyTransactionsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyCode:String)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyTransactionsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyCode:String)(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsRootApi =
     new ApiRoot(requester, security) with CompanyTransactionsRootApi {
       def forId(transactionCode: String): CompanyTransactionsApi = CompanyTransactionsApi(requester, security)(companyCode, transactionCode)
 
@@ -72,7 +72,7 @@ trait CompanyTransactionsApi {
   def void(documentType:DocumentType, model:VoidTransactionModel):AvataxSimpleCall[TransactionModel]
 }
 object CompanyTransactionsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyCode:String, transactionCode:String)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyTransactionsApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyCode:String, transactionCode:String)(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsApi =
     new ApiRoot(requester, security) with CompanyTransactionsApi {
 
       def adjust(documentType:DocumentType, model:AdjustTransactionModel):AvataxSimpleCall[TransactionModel] = {

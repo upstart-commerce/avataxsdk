@@ -20,7 +20,7 @@ import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.json._
@@ -33,7 +33,7 @@ trait TaxRatesByZipCodeRootApi {
 }
 
 object TaxRatesByZipCodeRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): TaxRatesByZipCodeRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): TaxRatesByZipCodeRootApi =
     new ApiRoot(requester, security) with TaxRatesByZipCodeRootApi {
       def download(date:Date, region:String):AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/taxratesbyzipcode/download/$date")

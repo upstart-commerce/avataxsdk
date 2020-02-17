@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
@@ -36,7 +36,7 @@ trait PasswordsRootApi {
 }
 
 object PasswordsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: ActorMaterializer): PasswordsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): PasswordsRootApi =
     new ApiRoot(requester, security) with PasswordsRootApi {
       def forId(userId: Int): PasswordsApi = PasswordsApi(requester, security)(userId)
 
@@ -52,7 +52,7 @@ trait PasswordsApi {
   def reset(unmigrateFromAi:Boolean, model:SetPasswordModel):AvataxSimpleCall[String]
 }
 object PasswordsApi {
-  def apply(requester: Requester, security: Option[Authorization])(userId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): PasswordsApi =
+  def apply(requester: Requester, security: Option[Authorization])(userId:Int)(implicit system: ActorSystem, materializer: Materializer): PasswordsApi =
     new ApiRoot(requester, security) with PasswordsApi {
       def reset(unmigrateFromAi:Boolean, model:SetPasswordModel):AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/passwords/$userId/reset")

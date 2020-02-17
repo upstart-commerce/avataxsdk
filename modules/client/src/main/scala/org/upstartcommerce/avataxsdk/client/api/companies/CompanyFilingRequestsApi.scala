@@ -19,7 +19,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -39,7 +39,7 @@ trait CompanyFilingRequestsRootApi {
 }
 
 object CompanyFilingRequestsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyFilingRequestsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyFilingRequestsRootApi =
     new ApiRoot(requester, security) with CompanyFilingRequestsRootApi {
       def forId(filingReqId: Int): CompanyFilingRequestsApi = CompanyFilingRequestsApi(requester, security)(companyId, filingReqId)
 
@@ -60,7 +60,7 @@ trait CompanyFilingRequestsApi {
   def update(model:FilingRequestModel):AvataxSimpleCall[FilingRequestModel]
 }
 object CompanyFilingRequestsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, filingRequestId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyFilingRequestsApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, filingRequestId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyFilingRequestsApi =
     new ApiRoot(requester, security) with CompanyFilingRequestsApi {
       def approve:AvataxSimpleCall[FilingRequestModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingrequests/$filingRequestId/approve")

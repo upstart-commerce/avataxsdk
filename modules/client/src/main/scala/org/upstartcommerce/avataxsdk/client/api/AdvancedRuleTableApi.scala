@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
@@ -36,7 +36,7 @@ trait AccountAdvancedRuleTableRootApi {
 
 object AccountAdvancedRuleTableRootApi {
   def apply(requester: Requester, security: Option[Authorization])(accountId: Int)(implicit system: ActorSystem,
-                                                                                 materializer: ActorMaterializer): AccountAdvancedRuleTableRootApi =
+                                                                                 materializer: Materializer): AccountAdvancedRuleTableRootApi =
     new ApiRoot(requester, security) with AccountAdvancedRuleTableRootApi {
       def forTableName(csvTableName: String): AccountAdvancedRuleTableApi = AccountAdvancedRuleTableApi(requester, security)(accountId, csvTableName)
 
@@ -59,7 +59,7 @@ trait AccountAdvancedRuleTableApi {
 
 object AccountAdvancedRuleTableApi {
   def apply(requester: Requester, security: Option[Authorization])(accountId: Int, csvTableName: String)(
-      implicit system: ActorSystem, materializer: ActorMaterializer): AccountAdvancedRuleTableApi =
+      implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleTableApi =
     new ApiRoot(requester, security) with AccountAdvancedRuleTableApi {
 
       def create(file: String): AvataxSimpleCall[String] = {

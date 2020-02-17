@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model._
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
@@ -39,7 +39,7 @@ trait CompanyTaxCodesRootApi {
 }
 
 object CompanyTaxCodesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyTaxCodesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyTaxCodesRootApi =
     new ApiRoot(requester, security) with CompanyTaxCodesRootApi {
       def forId(taxCodeId: Int): CompanyTaxCodesApi = CompanyTaxCodesApi(requester, security)(companyId, taxCodeId)
 
@@ -65,7 +65,7 @@ trait CompanyTaxCodesApi {
   def update(model:TaxCodeModel):AvataxSimpleCall[TaxCodeModel]
 }
 object CompanyTaxCodesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, taxCodeId:Int)(implicit system: ActorSystem, materializer: ActorMaterializer): CompanyTaxCodesApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, taxCodeId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyTaxCodesApi =
     new ApiRoot(requester, security) with CompanyTaxCodesApi {
       def delete:AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/taxcodes/$taxCodeId")
