@@ -105,7 +105,7 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization])(im
       def batch(): Future[FetchResult[R]] = marshal(body).flatMap { ent =>
         batchFetch[R](req.withEntity(ent))
       }
-      def stream: Source[R, NotUsed]      = Source.fromFuture(marshal(body)).flatMapConcat { ent =>
+      def stream: Source[R, NotUsed]      = Source.future(marshal(body)).flatMapConcat { ent =>
         continuousStream[R](req.withEntity(ent))
       }
     }
