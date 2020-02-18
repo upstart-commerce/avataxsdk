@@ -24,11 +24,11 @@ lazy val scala12V         = "2.12.10"
 lazy val scalatestV       = "3.0.5"
 
 lazy val akkaHttpV        = "10.1.11"
-lazy val akkaStreamV      = "2.6.3"
+lazy val akkaStreamV      = "2.6.1"
 lazy val playJsonV        = "2.8.1"
 // for case classes > 22 fields
 lazy val playJsonExtV     = "0.40.2"
-lazy val akkaHttpJsonV    = "1.31.0"
+lazy val akkaHttpJsonV    = "1.30.0"
 lazy val shapelessV       = "2.3.3"
 
 scalaVersion := scala12V
