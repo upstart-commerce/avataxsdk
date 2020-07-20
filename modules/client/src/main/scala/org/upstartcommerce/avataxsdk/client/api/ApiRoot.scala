@@ -48,7 +48,7 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization])(im
     * Fetches data based on request
     */
   def fetch[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, A]): Future[A] = {
-    val req2 = req.withHeaders(req.headers ++ security.toSeq: _*)
+    val req2 = req.withHeaders(req.headers ++ security)
     val resp = requester.request(req2)
     import scala.concurrent.duration._
     resp.flatMap {
