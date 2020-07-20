@@ -25,8 +25,6 @@ import scala.concurrent.Promise
 import scala.util.Try
 
 package object client {
-  type HostPool = Flow[(HttpRequest, Promise[HttpResponse]),
-                       (Try[HttpResponse], Promise[HttpResponse]),
-                       HostConnectionPool]
+  type HostPool = Flow[(HttpRequest, Promise[HttpResponse]), (Try[HttpResponse], Promise[HttpResponse]), HostConnectionPool]
 
 }

@@ -47,4 +47,3 @@ trait AvataxCollectionCall[A] extends AvataxCall[A] {
   final def apply(): Future[FetchResult[A]] = batch()
   def stream: Source[A, NotUsed]
 }
-

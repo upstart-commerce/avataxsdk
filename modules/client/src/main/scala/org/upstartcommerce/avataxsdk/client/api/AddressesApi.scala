@@ -30,30 +30,53 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import akka.http.scaladsl.model.headers.Authorization
 
 trait AddressesRootApi {
-  def resolve(line1:String, line2:String, line3:String, city:String, region:String, postalCode:String, country:String, textCase:String):AvataxSimpleCall[AddressResolutionModel]
-  def resolvePost(model:AddressValidationInfo):AvataxSimpleCall[AddressResolutionModel]
+  def resolve(
+      line1: String,
+      line2: String,
+      line3: String,
+      city: String,
+      region: String,
+      postalCode: String,
+      country: String,
+      textCase: String
+  ): AvataxSimpleCall[AddressResolutionModel]
+  def resolvePost(model: AddressValidationInfo): AvataxSimpleCall[AddressResolutionModel]
 }
 
 object AddressesRootApi {
-  def apply(requester:Requester, security:Option[Authorization])(implicit system: ActorSystem,
-                                  materializer: Materializer): AddressesRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): AddressesRootApi =
     new ApiRoot(requester, security) with AddressesRootApi {
-      def resolve(line1:String, line2:String, line3:String, city:String, region:String, postalCode:String, country:String, textCase:String):AvataxSimpleCall[AddressResolutionModel] = {
-        val uri = Uri(s"/api/v2/addresses/resolve").withQuery(Query(
-          "line1" -> line1,
-          "line2" -> line2,
-          "line3" -> line3,
-          "city" -> city,
-          "region" -> region,
-          "postalCode" -> postalCode,
-          "country" -> country,
-          "textCase" -> textCase))
+      def resolve(
+          line1: String,
+          line2: String,
+          line3: String,
+          city: String,
+          region: String,
+          postalCode: String,
+          country: String,
+          textCase: String
+      ): AvataxSimpleCall[AddressResolutionModel] = {
+        val uri = Uri(s"/api/v2/addresses/resolve").withQuery(
+          Query(
+            "line1" -> line1,
+            "line2" -> line2,
+            "line3" -> line3,
+            "city" -> city,
+            "region" -> region,
+            "postalCode" -> postalCode,
+            "country" -> country,
+            "textCase" -> textCase
+          )
+        )
 
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[AddressResolutionModel](req)
       }
 
-      def resolvePost(model:AddressValidationInfo):AvataxSimpleCall[AddressResolutionModel] = {
+      def resolvePost(model: AddressValidationInfo): AvataxSimpleCall[AddressResolutionModel] = {
         val uri = Uri(s"/api/v2/addresses/resolve")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[AddressValidationInfo, AddressResolutionModel](req, model)

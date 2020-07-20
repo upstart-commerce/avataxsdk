@@ -30,17 +30,20 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/reports */
 trait ReportsRootApi {
-  def forId(reportId:Long): ReportsApi
-  def list:AvataxCollectionCall[ReportModel]
+  def forId(reportId: Long): ReportsApi
+  def list: AvataxCollectionCall[ReportModel]
 
 }
 
 object ReportsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): ReportsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): ReportsRootApi =
     new ApiRoot(requester, security) with ReportsRootApi {
       def forId(reportId: Long): ReportsApi = ReportsApi(requester, security)(reportId)
 
-      def list:AvataxCollectionCall[ReportModel] = {
+      def list: AvataxCollectionCall[ReportModel] = {
         val uri =
           Uri(s"/api/v2/reports")
         val req = HttpRequest(uri = uri).withMethod(GET)
@@ -50,19 +53,21 @@ object ReportsRootApi {
 }
 
 trait ReportsApi {
-  def download:AvataxSimpleCall[String]
-  def get:AvataxSimpleCall[ReportModel]
+  def download: AvataxSimpleCall[String]
+  def get: AvataxSimpleCall[ReportModel]
 }
 object ReportsApi {
-  def apply(requester: Requester, security: Option[Authorization])(reportId:Long)(implicit system: ActorSystem, materializer: Materializer): ReportsApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      reportId: Long
+  )(implicit system: ActorSystem, materializer: Materializer): ReportsApi =
     new ApiRoot(requester, security) with ReportsApi {
-      def download:AvataxSimpleCall[String] = {
+      def download: AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/reports/$reportId/attachment")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[String](req)
       }
 
-      def get:AvataxSimpleCall[ReportModel] = {
+      def get: AvataxSimpleCall[ReportModel] = {
         val uri = Uri(s"/api/v2/reports/$reportId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[ReportModel](req)

@@ -29,7 +29,7 @@ trait Requester {
 }
 
 object Requester {
-  def pooled(pool:HostPool, queueSize:Int)(implicit sys:ActorSystem, mat:Materializer): Requester = {
+  def pooled(pool: HostPool, queueSize: Int)(implicit sys: ActorSystem, mat: Materializer): Requester = {
     import sys.dispatcher
     val s = Source
       .queue[(HttpRequest, Promise[HttpResponse])](queueSize, OverflowStrategy.dropNew)
@@ -50,9 +50,7 @@ object Requester {
             Future.failed(new RuntimeException("Queue overflowed. Try again later."))
           case QueueOfferResult.Failure(ex) => Future.failed(ex)
           case QueueOfferResult.QueueClosed =>
-            Future.failed(
-              new RuntimeException(
-                "Queue was closed (pool shut down) while running the request. Try again later."))
+            Future.failed(new RuntimeException("Queue was closed (pool shut down) while running the request. Try again later."))
         }
       }
     }

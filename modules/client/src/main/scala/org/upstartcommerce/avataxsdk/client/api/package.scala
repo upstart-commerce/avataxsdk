@@ -27,8 +27,7 @@ package object api {
         case BasicQueryOptions(_, _) => List.empty
         case FiltrableQueryOptions(filter, _, _, orderBy) =>
           filter.map(x => "$filter" -> FilterAst.serialize(x)).toList ++
-            orderBy.map(x => "$orderBy"    -> OrderBy.serialize(x))
-            .toList
+            orderBy.map(x => "$orderBy" -> OrderBy.serialize(x)).toList
       }
 
       val params = required ++ further
@@ -38,10 +37,10 @@ package object api {
 
   implicit class QueryExt(private val q: Query) extends AnyVal {
     def and(key: String, value: String): Query = q.+:((key, value))
-    def merge(other:Query):Query = Query(q ++ other :_*)
+    def merge(other: Query): Query = Query(q ++ other: _*)
   }
 
-  implicit class IncludeExt(private val q:Include) extends AnyVal {
+  implicit class IncludeExt(private val q: Include) extends AnyVal {
     def asQuery: Query = {
       val includeStr = q.toInclude.mkString(",")
       if (q.toInclude.isEmpty) Query()

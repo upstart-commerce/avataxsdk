@@ -31,24 +31,27 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/notifications */
 trait NotificationsRootApi {
-  def forId(notificationId:Long): NotificationsApi
+  def forId(notificationId: Long): NotificationsApi
 
-  def list(options:FiltrableQueryOptions):AvataxCollectionCall[NotificationModel]
-  def create(model:List[NotificationModel]):AvataxSimpleCall[List[NotificationModel]]
+  def list(options: FiltrableQueryOptions): AvataxCollectionCall[NotificationModel]
+  def create(model: List[NotificationModel]): AvataxSimpleCall[List[NotificationModel]]
 }
 
 object NotificationsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): NotificationsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): NotificationsRootApi =
     new ApiRoot(requester, security) with NotificationsRootApi {
       def forId(notificationId: Long): NotificationsApi = NotificationsApi(requester, security)(notificationId)
 
-      def list(options:FiltrableQueryOptions):AvataxCollectionCall[NotificationModel] = {
+      def list(options: FiltrableQueryOptions): AvataxCollectionCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications").withQuery(options.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NotificationModel](req)
       }
 
-      def create(model:List[NotificationModel]):AvataxSimpleCall[List[NotificationModel]] = {
+      def create(model: List[NotificationModel]): AvataxSimpleCall[List[NotificationModel]] = {
         val uri = Uri(s"/api/v2/notifications")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[NotificationModel], List[NotificationModel]](req, model)
@@ -58,33 +61,35 @@ object NotificationsRootApi {
 
 /** /api/v2/notifications/$id/ */
 trait NotificationsApi {
-  def dismiss:AvataxSimpleCall[NotificationModel]
-  def get:AvataxSimpleCall[NotificationModel]
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def update(model:NotificationModel):AvataxSimpleCall[NotificationModel]
+  def dismiss: AvataxSimpleCall[NotificationModel]
+  def get: AvataxSimpleCall[NotificationModel]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def update(model: NotificationModel): AvataxSimpleCall[NotificationModel]
 }
 object NotificationsApi {
-  def apply(requester: Requester, security: Option[Authorization])(notificationId:Long)(implicit system: ActorSystem, materializer: Materializer): NotificationsApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      notificationId: Long
+  )(implicit system: ActorSystem, materializer: Materializer): NotificationsApi =
     new ApiRoot(requester, security) with NotificationsApi {
-      def dismiss:AvataxSimpleCall[NotificationModel] = {
+      def dismiss: AvataxSimpleCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications/$notificationId/dismiss")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxSimpleCall[NotificationModel](req)
       }
 
-      def get:AvataxSimpleCall[NotificationModel] = {
+      def get: AvataxSimpleCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications/$notificationId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[NotificationModel](req)
       }
 
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/notifications/$notificationId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def update(model:NotificationModel):AvataxSimpleCall[NotificationModel] = {
+      def update(model: NotificationModel): AvataxSimpleCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications/$notificationId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxSimpleCall[NotificationModel](req)

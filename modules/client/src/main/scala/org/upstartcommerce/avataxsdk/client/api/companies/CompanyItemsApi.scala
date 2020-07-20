@@ -32,24 +32,26 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId/items */
 trait CompanyItemsRootApi {
-  def forItemId(itemId:Long): CompanyItemsApi
+  def forItemId(itemId: Long): CompanyItemsApi
 
-  def createItems(model:List[ItemModel]):AvataxSimpleCall[List[ItemModel]]
-  def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[ItemModel]
+  def createItems(model: List[ItemModel]): AvataxSimpleCall[List[ItemModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ItemModel]
 }
 
 object CompanyItemsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyItemsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyItemsRootApi =
     new ApiRoot(requester, security) with CompanyItemsRootApi {
-      def forItemId(itemId:Long): CompanyItemsApi = CompanyItemsApi(requester, security)(companyId, itemId)
+      def forItemId(itemId: Long): CompanyItemsApi = CompanyItemsApi(requester, security)(companyId, itemId)
 
-      def createItems(model:List[ItemModel]):AvataxSimpleCall[List[ItemModel]] = {
+      def createItems(model: List[ItemModel]): AvataxSimpleCall[List[ItemModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[ItemModel], List[ItemModel]](req, model)
       }
 
-      def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[ItemModel] = {
+      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ItemModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ItemModel](req)
@@ -59,96 +61,102 @@ object CompanyItemsRootApi {
 
 /** /api/v2/companies/$companyId/items/$itemId */
 trait CompanyItemsApi {
-  def createClassifications(model:List[ItemClassificationInputModel]):AvataxSimpleCall[List[ItemClassificationOutputModel]]
-  def createParameters(model:List[ItemParameterModel]):AvataxSimpleCall[List[ItemParameterModel]]
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def deleteClassification(classificationId:Long):AvataxSimpleCall[List[ErrorDetail]]
-  def deleteParameter(parameterId:Long):AvataxSimpleCall[List[ErrorDetail]]
-  def get(include:Include):AvataxSimpleCall[ItemModel]
-  def getClassification(classificationId:Long):AvataxSimpleCall[ItemClassificationOutputModel]
-  def getParameter(parameterId:Long):AvataxSimpleCall[ItemParameterModel]
-  def listClassifications(options:FiltrableQueryOptions):AvataxCollectionCall[ItemClassificationOutputModel]
-  def listParameters(options:FiltrableQueryOptions):AvataxCollectionCall[ItemParameterModel]
-  def update(model:ItemModel):AvataxSimpleCall[ItemModel]
-  def updateClassification(classificationsId:Long, model:ItemClassificationInputModel):AvataxSimpleCall[ItemClassificationOutputModel]
-  def updateParameter(parameterId:Long, model:ItemParameterModel):AvataxSimpleCall[ItemParameterModel]
+  def createClassifications(model: List[ItemClassificationInputModel]): AvataxSimpleCall[List[ItemClassificationOutputModel]]
+  def createParameters(model: List[ItemParameterModel]): AvataxSimpleCall[List[ItemParameterModel]]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def deleteClassification(classificationId: Long): AvataxSimpleCall[List[ErrorDetail]]
+  def deleteParameter(parameterId: Long): AvataxSimpleCall[List[ErrorDetail]]
+  def get(include: Include): AvataxSimpleCall[ItemModel]
+  def getClassification(classificationId: Long): AvataxSimpleCall[ItemClassificationOutputModel]
+  def getParameter(parameterId: Long): AvataxSimpleCall[ItemParameterModel]
+  def listClassifications(options: FiltrableQueryOptions): AvataxCollectionCall[ItemClassificationOutputModel]
+  def listParameters(options: FiltrableQueryOptions): AvataxCollectionCall[ItemParameterModel]
+  def update(model: ItemModel): AvataxSimpleCall[ItemModel]
+  def updateClassification(classificationsId: Long, model: ItemClassificationInputModel): AvataxSimpleCall[ItemClassificationOutputModel]
+  def updateParameter(parameterId: Long, model: ItemParameterModel): AvataxSimpleCall[ItemParameterModel]
 }
 object CompanyItemsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, itemId:Long)(implicit system: ActorSystem, materializer: Materializer): CompanyItemsApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, itemId: Long)(implicit system: ActorSystem, materializer: Materializer): CompanyItemsApi =
     new ApiRoot(requester, security) with CompanyItemsApi {
-      def createClassifications(model:List[ItemClassificationInputModel]):AvataxSimpleCall[List[ItemClassificationOutputModel]] = {
+      def createClassifications(model: List[ItemClassificationInputModel]): AvataxSimpleCall[List[ItemClassificationOutputModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[ItemClassificationInputModel], List[ItemClassificationOutputModel]](req, model)
       }
 
-      def createParameters(model:List[ItemParameterModel]):AvataxSimpleCall[List[ItemParameterModel]] = {
+      def createParameters(model: List[ItemParameterModel]): AvataxSimpleCall[List[ItemParameterModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/parameters")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[ItemParameterModel], List[ItemParameterModel]](req, model)
       }
 
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def deleteClassification(classificationId:Long):AvataxSimpleCall[List[ErrorDetail]] = {
+      def deleteClassification(classificationId: Long): AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications/$classificationId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def deleteParameter(parameterId:Long):AvataxSimpleCall[List[ErrorDetail]] = {
+      def deleteParameter(parameterId: Long): AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications/$parameterId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get(include:Include):AvataxSimpleCall[ItemModel] = {
+      def get(include: Include): AvataxSimpleCall[ItemModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId").withQuery(include.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[ItemModel](req)
       }
 
-      def getClassification(classificationId:Long):AvataxSimpleCall[ItemClassificationOutputModel] = {
+      def getClassification(classificationId: Long): AvataxSimpleCall[ItemClassificationOutputModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications/$classificationId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[ItemClassificationOutputModel](req)
       }
 
-      def getParameter(parameterId:Long):AvataxSimpleCall[ItemParameterModel] = {
+      def getParameter(parameterId: Long): AvataxSimpleCall[ItemParameterModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/parameters/$parameterId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[ItemParameterModel](req)
       }
 
-      def listClassifications(options:FiltrableQueryOptions):AvataxCollectionCall[ItemClassificationOutputModel] = {
+      def listClassifications(options: FiltrableQueryOptions): AvataxCollectionCall[ItemClassificationOutputModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ItemClassificationOutputModel](req)
       }
 
-      def listParameters(options:FiltrableQueryOptions):AvataxCollectionCall[ItemParameterModel] = {
+      def listParameters(options: FiltrableQueryOptions): AvataxCollectionCall[ItemParameterModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/parameters")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ItemParameterModel](req)
       }
 
-      def update(model:ItemModel):AvataxSimpleCall[ItemModel] = {
+      def update(model: ItemModel): AvataxSimpleCall[ItemModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[ItemModel, ItemModel](req, model)
       }
 
-      def updateClassification(classificationsId:Long, model:ItemClassificationInputModel):AvataxSimpleCall[ItemClassificationOutputModel] = {
+      def updateClassification(
+          classificationsId: Long,
+          model: ItemClassificationInputModel
+      ): AvataxSimpleCall[ItemClassificationOutputModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications/$classificationsId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[ItemClassificationInputModel, ItemClassificationOutputModel](req, model)
       }
 
-      def updateParameter(parameterId:Long, model:ItemParameterModel):AvataxSimpleCall[ItemParameterModel] = {
+      def updateParameter(parameterId: Long, model: ItemParameterModel): AvataxSimpleCall[ItemParameterModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/parameters/$parameterId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[ItemParameterModel, ItemParameterModel](req, model)

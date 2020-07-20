@@ -30,13 +30,13 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/nexus */
 trait NexusRootApi {
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[NexusModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
 }
 
 object NexusRootApi {
   def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): NexusRootApi =
     new ApiRoot(requester, security) with NexusRootApi {
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[NexusModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel] = {
         val uri = Uri(s"/api/v2/nexus").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NexusModel](req)

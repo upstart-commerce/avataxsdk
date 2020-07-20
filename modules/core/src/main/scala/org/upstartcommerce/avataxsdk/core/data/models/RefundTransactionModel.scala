@@ -19,7 +19,14 @@ import java.time.Instant
 
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class RefundTransactionModel(refundTransactionCode: Option[String] = None, refundDate: Instant, refundType: Option[RefundType] = None, refundPercentage: Option[BigDecimal] = None, refundLines: Option[List[String]] = None, referenceCode: Option[String] = None) {
+final case class RefundTransactionModel(
+    refundTransactionCode: Option[String] = None,
+    refundDate: Instant,
+    refundType: Option[RefundType] = None,
+    refundPercentage: Option[BigDecimal] = None,
+    refundLines: Option[List[String]] = None,
+    referenceCode: Option[String] = None
+) {
   lazy val refundLinesRaw: List[String] = refundLines.getOrElse(List.empty)
 
   def withRefundTransactionCode(value: String): RefundTransactionModel = copy(refundTransactionCode = Some(value))
@@ -34,4 +41,3 @@ final case class RefundTransactionModel(refundTransactionCode: Option[String] = 
 
   def withReferenceCode(value: String): RefundTransactionModel = copy(referenceCode = Some(value))
 }
-  

@@ -33,39 +33,51 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId/filingcalendars/ */
 trait CompanyFilingCalendarRootApi {
-  def forFilingCalendarId(filingCalendarId:Int): CompanyFilingCalendarApi
+  def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi
 
-  def create(model:List[FilingCalendarModel]):AvataxSimpleCall[FilingCalendarModel]
-  def createRequest(model:List[FilingRequestModel]):AvataxSimpleCall[FilingRequestModel]
-  def cycleSafeAdd(formCode:String):AvataxSimpleCall[List[CycleAddOptionModel]]
-  def list(returnCountry:String, returnRegion:String, include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[FilingCalendarModel]
+  def create(model: List[FilingCalendarModel]): AvataxSimpleCall[FilingCalendarModel]
+  def createRequest(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel]
+  def cycleSafeAdd(formCode: String): AvataxSimpleCall[List[CycleAddOptionModel]]
+  def list(
+      returnCountry: String,
+      returnRegion: String,
+      include: Include,
+      options: FiltrableQueryOptions
+  ): AvataxCollectionCall[FilingCalendarModel]
 }
 
 object CompanyFilingCalendarRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarRootApi =
     new ApiRoot(requester, security) with CompanyFilingCalendarRootApi {
-      def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi = CompanyFilingCalendarApi(requester, security)(companyId, filingCalendarId)
+      def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi =
+        CompanyFilingCalendarApi(requester, security)(companyId, filingCalendarId)
 
-      def create(model:List[FilingCalendarModel]):AvataxSimpleCall[FilingCalendarModel] = {
+      def create(model: List[FilingCalendarModel]): AvataxSimpleCall[FilingCalendarModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[FilingCalendarModel], FilingCalendarModel](req, model)
       }
 
-      def createRequest(model:List[FilingRequestModel]):AvataxSimpleCall[FilingRequestModel] = {
+      def createRequest(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/add/request")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[FilingRequestModel], FilingRequestModel](req, model)
       }
 
-      def cycleSafeAdd(formCode:String):AvataxSimpleCall[List[CycleAddOptionModel]] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/add/options")
-          .withQuery(Query("formCode" -> formCode))
+      def cycleSafeAdd(formCode: String): AvataxSimpleCall[List[CycleAddOptionModel]] = {
+        val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/add/options").withQuery(Query("formCode" -> formCode))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[List[CycleAddOptionModel]](req)
       }
 
-      def list(returnCountry:String, returnRegion:String, include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[FilingCalendarModel] = {
+      def list(
+          returnCountry: String,
+          returnRegion: String,
+          include: Include,
+          options: FiltrableQueryOptions
+      ): AvataxCollectionCall[FilingCalendarModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars")
           .withQuery(include.asQuery.merge(options.asQuery).merge(Query("returnCountry" -> returnCountry, "returnRegion" -> returnRegion)))
         val req = HttpRequest(uri = uri).withMethod(GET)
@@ -76,54 +88,57 @@ object CompanyFilingCalendarRootApi {
 
 /** /api/v2/companies/$companyId/filingcalendars/$filingCalendarId */
 trait CompanyFilingCalendarApi {
-  def cancelRequests(model:List[FilingRequestModel]):AvataxSimpleCall[FilingRequestModel]
-  def cycleSafeEdit(model:List[FilingCalendarEditModel]):AvataxSimpleCall[CycleEditOptionModel]
-  def cycleSafeExpiration:AvataxSimpleCall[CycleExpireModel]
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def get:AvataxSimpleCall[FilingCalendarModel]
-  def requestUpdate(model:List[FilingRequestModel]):AvataxSimpleCall[FilingRequestModel]
-  def update(model:FilingCalendarModel):AvataxSimpleCall[FilingCalendarModel]
+  def cancelRequests(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel]
+  def cycleSafeEdit(model: List[FilingCalendarEditModel]): AvataxSimpleCall[CycleEditOptionModel]
+  def cycleSafeExpiration: AvataxSimpleCall[CycleExpireModel]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def get: AvataxSimpleCall[FilingCalendarModel]
+  def requestUpdate(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel]
+  def update(model: FilingCalendarModel): AvataxSimpleCall[FilingCalendarModel]
 }
 object CompanyFilingCalendarApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, filingCalendarId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, filingCalendarId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarApi =
     new ApiRoot(requester, security) with CompanyFilingCalendarApi {
-      def cancelRequests(model:List[FilingRequestModel]):AvataxSimpleCall[FilingRequestModel] = {
+      def cancelRequests(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId/cancel/request")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[FilingRequestModel], FilingRequestModel](req, model)
       }
 
-      def cycleSafeEdit(model:List[FilingCalendarEditModel]):AvataxSimpleCall[CycleEditOptionModel] = {
+      def cycleSafeEdit(model: List[FilingCalendarEditModel]): AvataxSimpleCall[CycleEditOptionModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId/edit/options")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[FilingCalendarEditModel], CycleEditOptionModel](req, model)
       }
 
-      def cycleSafeExpiration:AvataxSimpleCall[CycleExpireModel] = {
+      def cycleSafeExpiration: AvataxSimpleCall[CycleExpireModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId/cancel/options")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[CycleExpireModel](req)
       }
 
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get:AvataxSimpleCall[FilingCalendarModel] = {
+      def get: AvataxSimpleCall[FilingCalendarModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[FilingCalendarModel](req)
       }
 
-      def requestUpdate(model:List[FilingRequestModel]):AvataxSimpleCall[FilingRequestModel] = {
+      def requestUpdate(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId/edit/request")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[FilingRequestModel], FilingRequestModel](req, model)
       }
 
-      def update(model:FilingCalendarModel):AvataxSimpleCall[FilingCalendarModel] = {
+      def update(model: FilingCalendarModel): AvataxSimpleCall[FilingCalendarModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[FilingCalendarModel, FilingCalendarModel](req, model)

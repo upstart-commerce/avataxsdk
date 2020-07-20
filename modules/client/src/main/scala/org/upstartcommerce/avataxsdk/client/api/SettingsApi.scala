@@ -30,13 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait SettingsRootApi {
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[SettingModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[SettingModel]
 }
 
 object SettingsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): SettingsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): SettingsRootApi =
     new ApiRoot(requester, security) with SettingsRootApi {
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[SettingModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[SettingModel] = {
         val uri = Uri(s"/api/v2/settings").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[SettingModel](req)

@@ -17,10 +17,13 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class FundingInitiateModel(requestEmail:Option[Boolean] = None, fundingEmailRecipient:String, requestWidget:Option[Boolean] = None) {
+final case class FundingInitiateModel(
+    requestEmail: Option[Boolean] = None,
+    fundingEmailRecipient: String,
+    requestWidget: Option[Boolean] = None
+) {
 
-  def withRequestEmail(value:Boolean):FundingInitiateModel = copy(requestEmail = Some(value))
-  def withFundingEmailRecipient(value:String):FundingInitiateModel = copy(fundingEmailRecipient = value)
-  def withRequestWidget(value:Boolean):FundingInitiateModel = copy(requestWidget = Some(value))
+  def withRequestEmail(value: Boolean): FundingInitiateModel = copy(requestEmail = Some(value))
+  def withFundingEmailRecipient(value: String): FundingInitiateModel = copy(fundingEmailRecipient = value)
+  def withRequestWidget(value: Boolean): FundingInitiateModel = copy(requestWidget = Some(value))
 }
-  

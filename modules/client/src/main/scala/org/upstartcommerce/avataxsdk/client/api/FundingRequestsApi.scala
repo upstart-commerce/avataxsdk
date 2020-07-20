@@ -29,14 +29,17 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait FundingRequestsRootApi {
-  def forId(fundingReqId:Long): FundingRequestsApi
+  def forId(fundingReqId: Long): FundingRequestsApi
 
 }
 
 object FundingRequestsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): FundingRequestsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): FundingRequestsRootApi =
     new ApiRoot(requester, security) with FundingRequestsRootApi {
-      def forId(fundingReqId:Long): FundingRequestsApi = FundingRequestsApi(requester, security)(fundingReqId)
+      def forId(fundingReqId: Long): FundingRequestsApi = FundingRequestsApi(requester, security)(fundingReqId)
     }
 }
 
@@ -45,7 +48,9 @@ trait FundingRequestsApi {
   def status: AvataxSimpleCall[FundingStatusModel]
 }
 object FundingRequestsApi {
-  def apply(requester: Requester, security: Option[Authorization])(fundingReqId:Long)(implicit system: ActorSystem, materializer: Materializer): FundingRequestsApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      fundingReqId: Long
+  )(implicit system: ActorSystem, materializer: Materializer): FundingRequestsApi =
     new ApiRoot(requester, security) with FundingRequestsApi {
       def activate: AvataxSimpleCall[FundingStatusModel] = {
         val uri = Uri(s"/api/v2/fundingrequests/$fundingReqId/widget")

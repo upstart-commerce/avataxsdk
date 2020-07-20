@@ -17,9 +17,11 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class LocationValidationModel(settingsValidated:Option[Boolean] = None, requiredSettings:Option[List[LocationQuestionModel]] = None) {
-  lazy val requiredSettingsRaw:List[LocationQuestionModel] = requiredSettings.getOrElse(List.empty)
-  def withSettingsValidated(value:Boolean):LocationValidationModel = copy(settingsValidated = Some(value))
-  def withRequiredSettings(value:List[LocationQuestionModel]):LocationValidationModel = copy(requiredSettings = Some(value))
+final case class LocationValidationModel(
+    settingsValidated: Option[Boolean] = None,
+    requiredSettings: Option[List[LocationQuestionModel]] = None
+) {
+  lazy val requiredSettingsRaw: List[LocationQuestionModel] = requiredSettings.getOrElse(List.empty)
+  def withSettingsValidated(value: Boolean): LocationValidationModel = copy(settingsValidated = Some(value))
+  def withRequiredSettings(value: List[LocationQuestionModel]): LocationValidationModel = copy(requiredSettings = Some(value))
 }
-  

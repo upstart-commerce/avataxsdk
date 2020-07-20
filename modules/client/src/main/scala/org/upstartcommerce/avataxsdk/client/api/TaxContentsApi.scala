@@ -29,13 +29,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait TaxContentsRootApi {
-  def buildFile(model:PointOfSaleDataRequestModel):AvataxSimpleCall[String]
+  def buildFile(model: PointOfSaleDataRequestModel): AvataxSimpleCall[String]
 }
 
 object TaxContentsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): TaxContentsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): TaxContentsRootApi =
     new ApiRoot(requester, security) with TaxContentsRootApi {
-      def buildFile(model:PointOfSaleDataRequestModel):AvataxSimpleCall[String] = {
+      def buildFile(model: PointOfSaleDataRequestModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/pointsofsaledata/build")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[PointOfSaleDataRequestModel, String](req, model)

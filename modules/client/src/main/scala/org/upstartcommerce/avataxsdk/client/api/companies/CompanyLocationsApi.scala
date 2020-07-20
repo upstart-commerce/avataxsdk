@@ -35,24 +35,26 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId/locations */
 trait CompanyLocationsRootApi {
-  def forLocationId(locationId:Int): CompanyLocationsApi
+  def forLocationId(locationId: Int): CompanyLocationsApi
 
-  def create(model:List[LocationModel]):AvataxSimpleCall[List[LocationModel]]
-  def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[LocationModel]
+  def create(model: List[LocationModel]): AvataxSimpleCall[List[LocationModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[LocationModel]
 }
 
 object CompanyLocationsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsRootApi =
     new ApiRoot(requester, security) with CompanyLocationsRootApi {
       def forLocationId(locationId: Int): CompanyLocationsApi = CompanyLocationsApi(requester, security)(companyId, locationId)
 
-      def create(model:List[LocationModel]):AvataxSimpleCall[List[LocationModel]] = {
+      def create(model: List[LocationModel]): AvataxSimpleCall[List[LocationModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[LocationModel], List[LocationModel]](req, model)
       }
 
-      def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[LocationModel] = {
+      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[LocationModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[LocationModel](req)
@@ -63,45 +65,61 @@ object CompanyLocationsRootApi {
 
 /** /api/v2/companies/$companyId/locations/$locationId */
 trait CompanyLocationsApi {
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def get(include:Include):AvataxSimpleCall[LocationModel]
-  def update(model:LocationModel):AvataxSimpleCall[LocationModel]
-  def validate:AvataxSimpleCall[LocationValidationModel]
-  def buildTaxContentForLocation(date:Date, format:PointOfSaleFileType, partner:PointOfSalePartnerId, includeJurisCodes:Boolean):AvataxSimpleCall[String]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def get(include: Include): AvataxSimpleCall[LocationModel]
+  def update(model: LocationModel): AvataxSimpleCall[LocationModel]
+  def validate: AvataxSimpleCall[LocationValidationModel]
+  def buildTaxContentForLocation(
+      date: Date,
+      format: PointOfSaleFileType,
+      partner: PointOfSalePartnerId,
+      includeJurisCodes: Boolean
+  ): AvataxSimpleCall[String]
 }
 object CompanyLocationsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, locationId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, locationId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsApi =
     new ApiRoot(requester, security) with CompanyLocationsApi {
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get(include:Include):AvataxSimpleCall[LocationModel] = {
+      def get(include: Include): AvataxSimpleCall[LocationModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[LocationModel](req)
       }
 
-      def update(model:LocationModel):AvataxSimpleCall[LocationModel] = {
+      def update(model: LocationModel): AvataxSimpleCall[LocationModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[LocationModel, LocationModel](req, model)
       }
 
-      def validate:AvataxSimpleCall[LocationValidationModel] = {
+      def validate: AvataxSimpleCall[LocationValidationModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId/validate")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[LocationValidationModel](req)
       }
 
-      def buildTaxContentForLocation(date:Date, format:PointOfSaleFileType, partner:PointOfSalePartnerId, includeJurisCodes:Boolean):AvataxSimpleCall[String] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId/pointofsaledata")
-          .withQuery(Query("date" -> dateFmt.format(date),
+      def buildTaxContentForLocation(
+          date: Date,
+          format: PointOfSaleFileType,
+          partner: PointOfSalePartnerId,
+          includeJurisCodes: Boolean
+      ): AvataxSimpleCall[String] = {
+        val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId/pointofsaledata").withQuery(
+          Query(
+            "date" -> dateFmt.format(date),
             "format" -> format.toString,
             "partnerId" -> partner.toString,
-            "includeJurisCodes" -> includeJurisCodes.toString))
+            "includeJurisCodes" -> includeJurisCodes.toString
+          )
+        )
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[String](req)
       }

@@ -30,13 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait NoticesRootApi {
-  def query(include:Include, options:QueryOptions):AvataxCollectionCall[NoticeModel]
+  def query(include: Include, options: QueryOptions): AvataxCollectionCall[NoticeModel]
 }
 
 object NoticesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): NoticesRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): NoticesRootApi =
     new ApiRoot(requester, security) with NoticesRootApi {
-      def query(include:Include, options:QueryOptions):AvataxCollectionCall[NoticeModel] = {
+      def query(include: Include, options: QueryOptions): AvataxCollectionCall[NoticeModel] = {
         val uri = Uri(s"/api/v2/notices").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NoticeModel](req)

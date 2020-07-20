@@ -59,15 +59,15 @@ trait AvataxClient {
   def taxCodes: TaxCodesRootApi
   def subscriptions: SubscriptionsRootApi
   def taxContents: TaxContentsRootApi
-  def upcs:UPCRootApi
-  def users:UsersRootApi
-  def utilities:UtilitiesRootApi
-  def taxRatesByZipCode:TaxRatesByZipCodeRootApi
+  def upcs: UPCRootApi
+  def users: UsersRootApi
+  def utilities: UtilitiesRootApi
+  def taxRatesByZipCode: TaxRatesByZipCodeRootApi
 }
 
 object AvataxClient {
 
-  final case class SecuritySettings(username:String, password:String)
+  final case class SecuritySettings(username: String, password: String)
 
   /**
     * @param environment to be used during requests
@@ -75,22 +75,27 @@ object AvataxClient {
     * @param security provides header for requests
     * @return reactive avatax client
     */
-  def apply(environment:Environment, poolQueueSize:Int = 128, security:Option[SecuritySettings] = None)(implicit system: ActorSystem, materializer: Materializer): AvataxClient = {
-    val poolFlow    = HostPool.forUrl(environment.url)
-    val requester   = Requester.pooled(poolFlow, poolQueueSize)
+  def apply(environment: Environment, poolQueueSize: Int = 128, security: Option[SecuritySettings] = None)(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): AvataxClient = {
+    val poolFlow = HostPool.forUrl(environment.url)
+    val requester = Requester.pooled(poolFlow, poolQueueSize)
     val credentials = security.map(x => headers.Authorization(BasicHttpCredentials(x.username, x.password)))
     apply(requester, credentials)
   }
 
-  def apply(requester:Requester, security:Option[Authorization])(implicit system: ActorSystem,
-                                  materializer: Materializer): AvataxClient = {
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): AvataxClient = {
 
     new ApiRoot(requester, security) with AvataxClient {
-      val accounts: AccountsRootApi                = AccountsRootApi(requester, security)
-      val addresses: AddressesRootApi              = AddressesRootApi(requester, security)
-      val batches: BatchesRootApi                  = BatchesRootApi(requester, security)
-      val companies: CompaniesRootApi                = CompaniesRootApi(requester, security)
-      val definitions: DefinitionsRootApi          = DefinitionsRootApi(requester, security)
+      val accounts: AccountsRootApi = AccountsRootApi(requester, security)
+      val addresses: AddressesRootApi = AddressesRootApi(requester, security)
+      val batches: BatchesRootApi = BatchesRootApi(requester, security)
+      val companies: CompaniesRootApi = CompaniesRootApi(requester, security)
+      val definitions: DefinitionsRootApi = DefinitionsRootApi(requester, security)
       val contacts: ContactsRootApi = ContactsRootApi(requester, security)
       val dataSources: DataSourcesRootApi = DataSourcesRootApi(requester, security)
       val distanceThresholds: DistanceThresholdsRootApi = DistanceThresholdsRootApi(requester, security)
@@ -111,10 +116,10 @@ object AvataxClient {
       val taxCodes: TaxCodesRootApi = TaxCodesRootApi(requester, security)
       val subscriptions: SubscriptionsRootApi = SubscriptionsRootApi(requester, security)
       val taxContents: TaxContentsRootApi = TaxContentsRootApi(requester, security)
-      val upcs:UPCRootApi = UPCRootApi(requester, security)
-      val users:UsersRootApi = UsersRootApi(requester, security)
-      val utilities:UtilitiesRootApi = UtilitiesRootApi(requester, security)
-      val taxRatesByZipCode:TaxRatesByZipCodeRootApi = TaxRatesByZipCodeRootApi(requester, security)
+      val upcs: UPCRootApi = UPCRootApi(requester, security)
+      val users: UsersRootApi = UsersRootApi(requester, security)
+      val utilities: UtilitiesRootApi = UtilitiesRootApi(requester, security)
+      val taxRatesByZipCode: TaxRatesByZipCodeRootApi = TaxRatesByZipCodeRootApi(requester, security)
     }
   }
 }

@@ -17,10 +17,13 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class AdjustMultiDocumentModel(adjustmentReason:AdjustmentReason, adjustDescription:Option[String] = None, newTransaction:CreateMultiDocumentModel) {
+final case class AdjustMultiDocumentModel(
+    adjustmentReason: AdjustmentReason,
+    adjustDescription: Option[String] = None,
+    newTransaction: CreateMultiDocumentModel
+) {
 
-  def withAdjustmentReason(value:AdjustmentReason):AdjustMultiDocumentModel = copy(adjustmentReason = value)
-  def withAdjustDescription(value:String):AdjustMultiDocumentModel = copy(adjustDescription = Some(value))
-  def withNewTransaction(value:CreateMultiDocumentModel):AdjustMultiDocumentModel = copy(newTransaction = value)
+  def withAdjustmentReason(value: AdjustmentReason): AdjustMultiDocumentModel = copy(adjustmentReason = value)
+  def withAdjustDescription(value: String): AdjustMultiDocumentModel = copy(adjustDescription = Some(value))
+  def withNewTransaction(value: CreateMultiDocumentModel): AdjustMultiDocumentModel = copy(newTransaction = value)
 }
-  

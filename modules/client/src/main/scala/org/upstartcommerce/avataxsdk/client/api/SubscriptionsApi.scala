@@ -30,15 +30,17 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait SubscriptionsRootApi {
-  def query(options:FiltrableQueryOptions):AvataxCollectionCall[SubscriptionModel]
+  def query(options: FiltrableQueryOptions): AvataxCollectionCall[SubscriptionModel]
 }
 
 object SubscriptionsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): SubscriptionsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): SubscriptionsRootApi =
     new ApiRoot(requester, security) with SubscriptionsRootApi {
-      def query(options:FiltrableQueryOptions):AvataxCollectionCall[SubscriptionModel] = {
-        val uri = Uri(s"/api/v2/subscriptions")
-          .withQuery(options.asQuery)
+      def query(options: FiltrableQueryOptions): AvataxCollectionCall[SubscriptionModel] = {
+        val uri = Uri(s"/api/v2/subscriptions").withQuery(options.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[SubscriptionModel](req)
       }

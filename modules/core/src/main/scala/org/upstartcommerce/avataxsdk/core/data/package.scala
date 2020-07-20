@@ -15,5 +15,4 @@
 
 package org.upstartcommerce.avataxsdk.core
 
-package object data {
-}
+package object data {}

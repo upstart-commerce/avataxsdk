@@ -32,27 +32,28 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId/contacts */
 trait CompanyContactsRootApi {
-  def forContactId(id:Int): CompanyContactsApi
+  def forContactId(id: Int): CompanyContactsApi
 
-  def create(model:List[ContactModel]):AvataxSimpleCall[List[ContactModel]]
+  def create(model: List[ContactModel]): AvataxSimpleCall[List[ContactModel]]
 
-  def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[ContactModel]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel]
 }
 
 object CompanyContactsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyContactsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyContactsRootApi =
     new ApiRoot(requester, security) with CompanyContactsRootApi {
       def forContactId(id: Int): CompanyContactsApi = CompanyContactsApi(requester, security)(companyId, id)
 
-      def create(model:List[ContactModel]):AvataxSimpleCall[List[ContactModel]] = {
+      def create(model: List[ContactModel]): AvataxSimpleCall[List[ContactModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/contacts")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[ContactModel], List[ContactModel]](req, model)
       }
 
-      def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[ContactModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/contacts")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel] = {
+        val uri = Uri(s"/api/v2/companies/$companyId/contacts").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ContactModel](req)
       }
@@ -61,25 +62,28 @@ object CompanyContactsRootApi {
 
 /** /api/v2/companies/$companyId/contacts/$contactId */
 trait CompanyContactsApi {
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def get:AvataxSimpleCall[ContactModel]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def get: AvataxSimpleCall[ContactModel]
 }
 object CompanyContactsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, contactId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyContactsApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, contactId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyContactsApi =
     new ApiRoot(requester, security) with CompanyContactsApi {
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/contacts/$contactId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get:AvataxSimpleCall[ContactModel] = {
+      def get: AvataxSimpleCall[ContactModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/contacts/$contactId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[ContactModel](req)
       }
 
-      def update(model:ContactModel):AvataxSimpleCall[ContactModel] = {
+      def update(model: ContactModel): AvataxSimpleCall[ContactModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/contacts/$contactId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[ContactModel, ContactModel](req, model)

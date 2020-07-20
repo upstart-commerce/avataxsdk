@@ -32,27 +32,30 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/filingcalendars */
 trait FilingCalendarsRootApi {
-  def loginVerificationRequest(model:LoginVerificationInputModel):AvataxSimpleCall[LoginVerificationOutputModel]
-  def loginVerificationStatus(jobId:Int):AvataxSimpleCall[LoginVerificationOutputModel]
-  def query(returnCountry:String, returnRegion:String, options:FiltrableQueryOptions):AvataxCollectionCall[FilingCalendarModel]
+  def loginVerificationRequest(model: LoginVerificationInputModel): AvataxSimpleCall[LoginVerificationOutputModel]
+  def loginVerificationStatus(jobId: Int): AvataxSimpleCall[LoginVerificationOutputModel]
+  def query(returnCountry: String, returnRegion: String, options: FiltrableQueryOptions): AvataxCollectionCall[FilingCalendarModel]
 }
 
 object FilingCalendarsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): FilingCalendarsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): FilingCalendarsRootApi =
     new ApiRoot(requester, security) with FilingCalendarsRootApi {
-      def loginVerificationRequest(model:LoginVerificationInputModel):AvataxSimpleCall[LoginVerificationOutputModel] = {
+      def loginVerificationRequest(model: LoginVerificationInputModel): AvataxSimpleCall[LoginVerificationOutputModel] = {
         val uri = Uri(s"/api/v2/filingcalendars/credentials/verify")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[LoginVerificationInputModel, LoginVerificationOutputModel](req, model)
       }
 
-      def loginVerificationStatus(jobId:Int):AvataxSimpleCall[LoginVerificationOutputModel] = {
+      def loginVerificationStatus(jobId: Int): AvataxSimpleCall[LoginVerificationOutputModel] = {
         val uri = Uri(s"/api/v2/filingcalendars/credentials/$jobId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[LoginVerificationOutputModel](req)
       }
 
-      def query(returnCountry:String, returnRegion:String, options:FiltrableQueryOptions):AvataxCollectionCall[FilingCalendarModel] = {
+      def query(returnCountry: String, returnRegion: String, options: FiltrableQueryOptions): AvataxCollectionCall[FilingCalendarModel] = {
         val uri = Uri(s"/api/v2/filingcalendars")
           .withQuery(options.asQuery.merge(Query("returnCountry" -> returnCountry, "returnRegion" -> returnRegion)))
         val req = HttpRequest(uri = uri).withMethod(GET)

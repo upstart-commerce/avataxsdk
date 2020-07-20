@@ -26,13 +26,13 @@ val scala_2_13V = "2.13.3"
 
 lazy val scalatest = "org.scalatest" %% "scalatest" % "3.2.0"
 
-lazy val akkaHttp   = "com.typesafe.akka" %% "akka-http-core" % "10.1.11"
-lazy val akkaStream = "com.typesafe.akka" %% "akka-stream"    % "2.6.3"
-lazy val playJson   = "com.typesafe.play" %% "play-json"      % "2.8.1"
+lazy val akkaHttp = "com.typesafe.akka" %% "akka-http-core" % "10.1.11"
+lazy val akkaStream = "com.typesafe.akka" %% "akka-stream" % "2.6.3"
+lazy val playJson = "com.typesafe.play" %% "play-json" % "2.8.1"
 // for case classes > 22 fields
-lazy val playJsonExt       = "ai.x"                   %% "play-json-extensions"    % "0.40.2"
-lazy val akkaHttpJson      = "de.heikoseeberger"      %% "akka-http-play-json"     % "1.31.0"
-lazy val shapeless         = "com.chuusai"            %% "shapeless"               % "2.3.3"
+lazy val playJsonExt = "ai.x" %% "play-json-extensions" % "0.40.2"
+lazy val akkaHttpJson = "de.heikoseeberger" %% "akka-http-play-json" % "1.31.0"
+lazy val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
 lazy val compatLibForScala = "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.6"
 
 lazy val scalacSettings = Seq(

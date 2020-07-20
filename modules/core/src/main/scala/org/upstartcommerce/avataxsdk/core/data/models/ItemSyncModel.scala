@@ -17,11 +17,10 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class ItemSyncModel(itemCode:String, description:String, itemGroup:Option[String] = None, taxCode:Option[String] = None) {
+final case class ItemSyncModel(itemCode: String, description: String, itemGroup: Option[String] = None, taxCode: Option[String] = None) {
 
-  def withItemCode(value:String):ItemSyncModel = copy(itemCode = value)
-  def withDescription(value:String):ItemSyncModel = copy(description = value)
-  def withItemGroup(value:String):ItemSyncModel = copy(itemGroup = Some(value))
-  def withTaxCode(value:String):ItemSyncModel = copy(taxCode = Some(value))
+  def withItemCode(value: String): ItemSyncModel = copy(itemCode = value)
+  def withDescription(value: String): ItemSyncModel = copy(description = value)
+  def withItemGroup(value: String): ItemSyncModel = copy(itemGroup = Some(value))
+  def withTaxCode(value: String): ItemSyncModel = copy(taxCode = Some(value))
 }
-  

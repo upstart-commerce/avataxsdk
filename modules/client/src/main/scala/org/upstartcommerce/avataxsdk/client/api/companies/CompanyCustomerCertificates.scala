@@ -32,32 +32,36 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId/customers/$customerCode/certificates */
 trait CompanyCustomerCertificatesRootApi {
-  def forCertId(certificateId:Int): CompanyCustomerCertificatesApi
+  def forCertId(certificateId: Int): CompanyCustomerCertificatesApi
 
-  def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[CertificateModel]
-  def listValid(country:String, region:String):AvataxSimpleCall[ExemptionStatusModel]
-  def unlink(model:LinkCertificatesModel):AvataxCollectionCall[CertificateModel]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertificateModel]
+  def listValid(country: String, region: String): AvataxSimpleCall[ExemptionStatusModel]
+  def unlink(model: LinkCertificatesModel): AvataxCollectionCall[CertificateModel]
 }
 
 object CompanyCustomerCertificatesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, customerCode: String)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesRootApi =
     new ApiRoot(requester, security) with CompanyCustomerCertificatesRootApi {
-      def forCertId(certificateId: Int): CompanyCustomerCertificatesApi = CompanyCustomerCertificatesApi(requester, security)(companyId, customerCode, certificateId)
+      def forCertId(certificateId: Int): CompanyCustomerCertificatesApi =
+        CompanyCustomerCertificatesApi(requester, security)(companyId, customerCode, certificateId)
 
-      def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[CertificateModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/customers/$customerCode/certificates")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertificateModel] = {
+        val uri =
+          Uri(s"/api/v2/companies/$companyId/customers/$customerCode/certificates").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[CertificateModel](req)
       }
 
-      def listValid(country:String, region:String):AvataxSimpleCall[ExemptionStatusModel] = {
+      def listValid(country: String, region: String): AvataxSimpleCall[ExemptionStatusModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/customers/$customerCode/certificates/$country/$region")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[ExemptionStatusModel](req)
       }
 
-      def unlink(model:LinkCertificatesModel):AvataxCollectionCall[CertificateModel] = {
+      def unlink(model: LinkCertificatesModel): AvataxCollectionCall[CertificateModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/customers/$customerCode/certificates/unlink")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxCollectionBodyCall[LinkCertificatesModel, CertificateModel](req, model)
@@ -68,6 +72,9 @@ object CompanyCustomerCertificatesRootApi {
 /** /api/v2/companies/$companyId/customers/$customerCode/certificates/$certificateId */
 trait CompanyCustomerCertificatesApi {}
 object CompanyCustomerCertificatesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, customerCode:String, certificateId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesApi =
+  def apply(requester: Requester, security: Option[Authorization])(companyId: Int, customerCode: String, certificateId: Int)(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): CompanyCustomerCertificatesApi =
     new ApiRoot(requester, security) with CompanyCustomerCertificatesApi {}
 }

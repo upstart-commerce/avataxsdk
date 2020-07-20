@@ -25,7 +25,7 @@ import scala.concurrent.Promise
 
 object HostPool {
 
-  def forUrl(url:String)(implicit sys:ActorSystem):HostPool = {
+  def forUrl(url: String)(implicit sys: ActorSystem): HostPool = {
     Http().cachedHostConnectionPoolHttps[Promise[HttpResponse]](url)
   }
 }

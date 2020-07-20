@@ -17,9 +17,8 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class FilingFrequencyModel(id:Int, description:String) {
+final case class FilingFrequencyModel(id: Int, description: String) {
 
-  def withId(value:Int):FilingFrequencyModel = copy(id = value)
-  def withDescription(value:String):FilingFrequencyModel = copy(description = value)
+  def withId(value: Int): FilingFrequencyModel = copy(id = value)
+  def withDescription(value: String): FilingFrequencyModel = copy(description = value)
 }
-  

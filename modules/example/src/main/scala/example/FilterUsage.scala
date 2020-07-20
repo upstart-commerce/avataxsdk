@@ -26,10 +26,9 @@ object FilterUsage extends App {
   val s2 = field("taxDate").between(literal("2016-01-01"), literal("2016-02-01")) && field("status") === literal("committed")
   println(serialize(s2))
 
-  val s3 = ((field("country") === literal("US")) and (field("region") === literal("CA")))
-    .bracket or (field("contry") === literal("CA")).bracket
+  val s3 = ((field("country") === literal("US")) and (field("region") === literal("CA"))).bracket or (field("contry") === literal("CA")).bracket
   println(serialize(s3))
 
-  val s4 = field("code").startsWith(literal("franchise")).bracket and(field("name") contains literal("Bob's")).bracket
+  val s4 = field("code").startsWith(literal("franchise")).bracket and (field("name") contains literal("Bob's")).bracket
   println(serialize(s4))
 }

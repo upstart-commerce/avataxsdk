@@ -17,11 +17,15 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class AdvancedRuleTableModel(id:Long, accountId:Option[Int] = None, csvTableName:Option[String] = None, csvTable:Option[String] = None) {
+final case class AdvancedRuleTableModel(
+    id: Long,
+    accountId: Option[Int] = None,
+    csvTableName: Option[String] = None,
+    csvTable: Option[String] = None
+) {
 
-  def withId(value:Long):AdvancedRuleTableModel = copy(id = value)
-  def withAccountId(value:Int):AdvancedRuleTableModel = copy(accountId = Some(value))
-  def withCsvTableName(value:String):AdvancedRuleTableModel = copy(csvTableName = Some(value))
-  def withCsvTable(value:String):AdvancedRuleTableModel = copy(csvTable = Some(value))
+  def withId(value: Long): AdvancedRuleTableModel = copy(id = value)
+  def withAccountId(value: Int): AdvancedRuleTableModel = copy(accountId = Some(value))
+  def withCsvTableName(value: String): AdvancedRuleTableModel = copy(csvTableName = Some(value))
+  def withCsvTable(value: String): AdvancedRuleTableModel = copy(csvTable = Some(value))
 }
-  

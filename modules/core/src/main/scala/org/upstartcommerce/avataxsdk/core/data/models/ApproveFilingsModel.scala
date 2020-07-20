@@ -17,8 +17,7 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class ApproveFilingsModel(approve:Boolean) {
+final case class ApproveFilingsModel(approve: Boolean) {
 
-  def withApprove(value:Boolean):ApproveFilingsModel = copy(approve = value)
+  def withApprove(value: Boolean): ApproveFilingsModel = copy(approve = value)
 }
-  

@@ -30,14 +30,17 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait TaxRulesRootApi {
-  def query(include:Include, options: FiltrableQueryOptions):AvataxCollectionCall[TaxRuleModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxRuleModel]
 }
 
 object TaxRulesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): TaxRulesRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): TaxRulesRootApi =
     new ApiRoot(requester, security) with TaxRulesRootApi {
 
-      def query(include:Include, options: FiltrableQueryOptions):AvataxCollectionCall[TaxRuleModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxRuleModel] = {
         val uri = Uri(s"/api/v2/taxrules").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[TaxRuleModel](req)
@@ -64,11 +67,11 @@ object TaxRulesRootApi {
       val req = HttpRequest(uri = uri).withMethod(GET)
       avataxCollectionCall[AuditModel](req)
     }
-    
+
      def list(include:Include, options: FiltrableQueryOptions):AvataxCollectionCall[BatchModel] = {
         val uri =
           Uri(s"/api/v2/").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[BatchModel](req)
       }
-*/
+ */

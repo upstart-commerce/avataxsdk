@@ -29,15 +29,17 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import akka.http.scaladsl.model.headers.Authorization
 
 trait TaxRatesByZipCodeRootApi {
-  def download(date:Date, region:String):AvataxSimpleCall[String]
+  def download(date: Date, region: String): AvataxSimpleCall[String]
 }
 
 object TaxRatesByZipCodeRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): TaxRatesByZipCodeRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): TaxRatesByZipCodeRootApi =
     new ApiRoot(requester, security) with TaxRatesByZipCodeRootApi {
-      def download(date:Date, region:String):AvataxSimpleCall[String] = {
-        val uri = Uri(s"/api/v2/taxratesbyzipcode/download/$date")
-          .withQuery(Query("region" -> region))
+      def download(date: Date, region: String): AvataxSimpleCall[String] = {
+        val uri = Uri(s"/api/v2/taxratesbyzipcode/download/$date").withQuery(Query("region" -> region))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[String](req)
       }

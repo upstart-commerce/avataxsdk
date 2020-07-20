@@ -32,26 +32,27 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId/upcs */
 trait CompanyUPCsRootApi {
-  def forId(upcId:Int): CompanyUPCsApi
+  def forId(upcId: Int): CompanyUPCsApi
 
-  def create(model:List[UPCModel]):AvataxSimpleCall[List[UPCModel]]
-  def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[UPCModel]
+  def create(model: List[UPCModel]): AvataxSimpleCall[List[UPCModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UPCModel]
 }
 
 object CompanyUPCsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsRootApi =
     new ApiRoot(requester, security) with CompanyUPCsRootApi {
       def forId(upcId: Int): CompanyUPCsApi = CompanyUPCsApi(requester, security)(companyId, upcId)
 
-      def create(model:List[UPCModel]):AvataxSimpleCall[List[UPCModel]] = {
+      def create(model: List[UPCModel]): AvataxSimpleCall[List[UPCModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[UPCModel], List[UPCModel]](req, model)
       }
 
-      def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[UPCModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/upcs")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UPCModel] = {
+        val uri = Uri(s"/api/v2/companies/$companyId/upcs").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[UPCModel](req)
       }
@@ -59,26 +60,29 @@ object CompanyUPCsRootApi {
 }
 
 trait CompanyUPCsApi {
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def get:AvataxSimpleCall[UPCModel]
-  def update(model:UPCModel):AvataxSimpleCall[UPCModel]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def get: AvataxSimpleCall[UPCModel]
+  def update(model: UPCModel): AvataxSimpleCall[UPCModel]
 }
 object CompanyUPCsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, upcId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, upcId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsApi =
     new ApiRoot(requester, security) with CompanyUPCsApi {
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs/$upcId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get:AvataxSimpleCall[UPCModel] = {
+      def get: AvataxSimpleCall[UPCModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs/$upcId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[UPCModel](req)
       }
 
-      def update(model:UPCModel):AvataxSimpleCall[UPCModel] = {
+      def update(model: UPCModel): AvataxSimpleCall[UPCModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs/$upcId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[UPCModel, UPCModel](req, model)

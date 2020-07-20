@@ -32,38 +32,40 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId */
 trait CompanyNoticesRootApi {
-  def forNoticeId(noticeId:Int): CompanyNoticesApi
+  def forNoticeId(noticeId: Int): CompanyNoticesApi
 
-  def create(model:List[NoticeModel]):AvataxSimpleCall[List[NoticeModel]]
-  def downloadNoticeAttachment(resourceFileId:Long):AvataxSimpleCall[String]
-  def list(include:Include, options:QueryOptions):AvataxCollectionCall[NoticeModel]
-  def uploadAttachment(model:ResourceFileUploadRequestModel):AvataxSimpleCall[String]
+  def create(model: List[NoticeModel]): AvataxSimpleCall[List[NoticeModel]]
+  def downloadNoticeAttachment(resourceFileId: Long): AvataxSimpleCall[String]
+  def list(include: Include, options: QueryOptions): AvataxCollectionCall[NoticeModel]
+  def uploadAttachment(model: ResourceFileUploadRequestModel): AvataxSimpleCall[String]
 }
 
 object CompanyNoticesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesRootApi =
     new ApiRoot(requester, security) with CompanyNoticesRootApi {
       def forNoticeId(noticeId: Int): CompanyNoticesApi = CompanyNoticesApi(requester, security)(companyId, noticeId)
 
-      def create(model:List[NoticeModel]):AvataxSimpleCall[List[NoticeModel]] = {
+      def create(model: List[NoticeModel]): AvataxSimpleCall[List[NoticeModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[NoticeModel], List[NoticeModel]](req, model)
       }
 
-      def downloadNoticeAttachment(resourceFileId:Long):AvataxSimpleCall[String] = {
+      def downloadNoticeAttachment(resourceFileId: Long): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/files/$resourceFileId/attachment")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[String](req)
       }
 
-      def list(include:Include, options:QueryOptions):AvataxCollectionCall[NoticeModel] = {
+      def list(include: Include, options: QueryOptions): AvataxCollectionCall[NoticeModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NoticeModel](req)
       }
 
-      def uploadAttachment(model:ResourceFileUploadRequestModel):AvataxSimpleCall[String] = {
+      def uploadAttachment(model: ResourceFileUploadRequestModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/files/attachment")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[ResourceFileUploadRequestModel, String](req, model)
@@ -73,124 +75,127 @@ object CompanyNoticesRootApi {
 
 /** /api/v2/companies/$companyId/notices/$noticeId */
 trait CompanyNoticesApi {
-  def createComment(model:List[NoticeCommentModel]):AvataxSimpleCall[List[NoticeCommentModel]]
-  def createFinanceDetails(model:List[NoticeFinanceModel]):AvataxSimpleCall[List[NoticeFinanceModel]]
-  def createResponsibilities(model:List[NoticeResponsibilityDetailModel]):AvataxSimpleCall[List[NoticeResponsibilityDetailModel]]
-  def createRootCauses(model:List[NoticeRootCauseDetailModel]):AvataxSimpleCall[List[NoticeRootCauseDetailModel]]
-  def deleteCommentDetails(commentDetailsId:Int):AvataxSimpleCall[List[ErrorDetail]]
-  def deleteFinanceDetails(financeDetailsId:Int):AvataxSimpleCall[List[ErrorDetail]]
-  def deleteNotice():AvataxSimpleCall[List[ErrorDetail]]
-  def deleteResponsibilities(responsibilityId:Int):AvataxSimpleCall[List[ErrorDetail]]
-  def deleteRootCauses(rootCauseId:Int):AvataxSimpleCall[List[ErrorDetail]]
-  def get:AvataxSimpleCall[NoticeModel]
-  def getComments:AvataxSimpleCall[NoticeCommentModel]
-  def getFinanceDetails:AvataxCollectionCall[NoticeFinanceModel]
-  def getResponsibilities:AvataxCollectionCall[NoticeResponsibilityDetailModel]
-  def getRootCauses:AvataxCollectionCall[NoticeRootCauseDetailModel]
-  def updateFinanceDetails(financeDetailsId:Int, model:NoticeFinanceModel):AvataxSimpleCall[NoticeFinanceModel]
-  def update(model:NoticeModel):AvataxSimpleCall[NoticeModel]
-  def updateComments(commentDetailsId:Int, model:NoticeCommentModel):AvataxSimpleCall[NoticeCommentModel]
+  def createComment(model: List[NoticeCommentModel]): AvataxSimpleCall[List[NoticeCommentModel]]
+  def createFinanceDetails(model: List[NoticeFinanceModel]): AvataxSimpleCall[List[NoticeFinanceModel]]
+  def createResponsibilities(model: List[NoticeResponsibilityDetailModel]): AvataxSimpleCall[List[NoticeResponsibilityDetailModel]]
+  def createRootCauses(model: List[NoticeRootCauseDetailModel]): AvataxSimpleCall[List[NoticeRootCauseDetailModel]]
+  def deleteCommentDetails(commentDetailsId: Int): AvataxSimpleCall[List[ErrorDetail]]
+  def deleteFinanceDetails(financeDetailsId: Int): AvataxSimpleCall[List[ErrorDetail]]
+  def deleteNotice(): AvataxSimpleCall[List[ErrorDetail]]
+  def deleteResponsibilities(responsibilityId: Int): AvataxSimpleCall[List[ErrorDetail]]
+  def deleteRootCauses(rootCauseId: Int): AvataxSimpleCall[List[ErrorDetail]]
+  def get: AvataxSimpleCall[NoticeModel]
+  def getComments: AvataxSimpleCall[NoticeCommentModel]
+  def getFinanceDetails: AvataxCollectionCall[NoticeFinanceModel]
+  def getResponsibilities: AvataxCollectionCall[NoticeResponsibilityDetailModel]
+  def getRootCauses: AvataxCollectionCall[NoticeRootCauseDetailModel]
+  def updateFinanceDetails(financeDetailsId: Int, model: NoticeFinanceModel): AvataxSimpleCall[NoticeFinanceModel]
+  def update(model: NoticeModel): AvataxSimpleCall[NoticeModel]
+  def updateComments(commentDetailsId: Int, model: NoticeCommentModel): AvataxSimpleCall[NoticeCommentModel]
 }
 object CompanyNoticesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, noticeId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, noticeId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesApi =
     new ApiRoot(requester, security) with CompanyNoticesApi {
-      def createComment(model:List[NoticeCommentModel]):AvataxSimpleCall[List[NoticeCommentModel]] = {
+      def createComment(model: List[NoticeCommentModel]): AvataxSimpleCall[List[NoticeCommentModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/comments")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[NoticeCommentModel], List[NoticeCommentModel]](req, model)
       }
 
-      def createFinanceDetails(model:List[NoticeFinanceModel]):AvataxSimpleCall[List[NoticeFinanceModel]] = {
+      def createFinanceDetails(model: List[NoticeFinanceModel]): AvataxSimpleCall[List[NoticeFinanceModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/financedetails")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[NoticeFinanceModel], List[NoticeFinanceModel]](req, model)
       }
 
-      def createResponsibilities(model:List[NoticeResponsibilityDetailModel]):AvataxSimpleCall[List[NoticeResponsibilityDetailModel]] = {
+      def createResponsibilities(model: List[NoticeResponsibilityDetailModel]): AvataxSimpleCall[List[NoticeResponsibilityDetailModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/responsibilities")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[NoticeResponsibilityDetailModel], List[NoticeResponsibilityDetailModel]](req, model)
       }
 
-      def createRootCauses(model:List[NoticeRootCauseDetailModel]):AvataxSimpleCall[List[NoticeRootCauseDetailModel]] = {
+      def createRootCauses(model: List[NoticeRootCauseDetailModel]): AvataxSimpleCall[List[NoticeRootCauseDetailModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/rootcauses")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[NoticeRootCauseDetailModel], List[NoticeRootCauseDetailModel]](req, model)
       }
 
-      def deleteCommentDetails(commentDetailsId:Int):AvataxSimpleCall[List[ErrorDetail]] = {
+      def deleteCommentDetails(commentDetailsId: Int): AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/commentdetails/$commentDetailsId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def deleteFinanceDetails(financeDetailsId:Int):AvataxSimpleCall[List[ErrorDetail]] = {
+      def deleteFinanceDetails(financeDetailsId: Int): AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/financedetails/$financeDetailsId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def deleteNotice():AvataxSimpleCall[List[ErrorDetail]] = {
+      def deleteNotice(): AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def deleteResponsibilities(responsibilityId:Int):AvataxSimpleCall[List[ErrorDetail]] = {
+      def deleteResponsibilities(responsibilityId: Int): AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/responsibilities/$responsibilityId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def deleteRootCauses(rootCauseId:Int):AvataxSimpleCall[List[ErrorDetail]] = {
+      def deleteRootCauses(rootCauseId: Int): AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/rootcauses/$rootCauseId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get:AvataxSimpleCall[NoticeModel] = {
+      def get: AvataxSimpleCall[NoticeModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[NoticeModel](req)
       }
 
-      def getComments:AvataxSimpleCall[NoticeCommentModel] = {
+      def getComments: AvataxSimpleCall[NoticeCommentModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/comments")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[NoticeCommentModel](req)
       }
 
-      def getFinanceDetails:AvataxCollectionCall[NoticeFinanceModel] = {
+      def getFinanceDetails: AvataxCollectionCall[NoticeFinanceModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/financedetails")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NoticeFinanceModel](req)
       }
 
-      def getResponsibilities:AvataxCollectionCall[NoticeResponsibilityDetailModel] = {
+      def getResponsibilities: AvataxCollectionCall[NoticeResponsibilityDetailModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/responsibilities")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NoticeResponsibilityDetailModel](req)
       }
 
-      def getRootCauses:AvataxCollectionCall[NoticeRootCauseDetailModel] = {
+      def getRootCauses: AvataxCollectionCall[NoticeRootCauseDetailModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/rootcauses")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NoticeRootCauseDetailModel](req)
       }
 
-      def updateFinanceDetails(financeDetailsId:Int, model:NoticeFinanceModel):AvataxSimpleCall[NoticeFinanceModel] = {
+      def updateFinanceDetails(financeDetailsId: Int, model: NoticeFinanceModel): AvataxSimpleCall[NoticeFinanceModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/financedetails/$financeDetailsId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[NoticeFinanceModel, NoticeFinanceModel](req, model)
       }
 
-      def update(model:NoticeModel):AvataxSimpleCall[NoticeModel] = {
+      def update(model: NoticeModel): AvataxSimpleCall[NoticeModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[NoticeModel, NoticeModel](req, model)
       }
 
-      def updateComments(commentDetailsId:Int, model:NoticeCommentModel):AvataxSimpleCall[NoticeCommentModel] = {
+      def updateComments(commentDetailsId: Int, model: NoticeCommentModel): AvataxSimpleCall[NoticeCommentModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/commentdetails/$commentDetailsId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[NoticeCommentModel, NoticeCommentModel](req, model)

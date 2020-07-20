@@ -30,13 +30,13 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait ItemsRootApi {
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[ItemModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ItemModel]
 }
 
 object ItemsRootApi {
   def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): ItemsRootApi =
     new ApiRoot(requester, security) with ItemsRootApi {
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[ItemModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ItemModel] = {
         val uri = Uri(s"/api/v2/items").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ItemModel](req)

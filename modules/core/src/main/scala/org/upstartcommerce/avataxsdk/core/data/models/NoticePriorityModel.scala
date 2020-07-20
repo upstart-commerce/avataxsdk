@@ -17,11 +17,10 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class NoticePriorityModel(id:Int, description:String, activeFlag:Option[Boolean] = None, sortOrder:Option[Int] = None) {
+final case class NoticePriorityModel(id: Int, description: String, activeFlag: Option[Boolean] = None, sortOrder: Option[Int] = None) {
 
-  def withId(value:Int):NoticePriorityModel = copy(id = value)
-  def withDescription(value:String):NoticePriorityModel = copy(description = value)
-  def withActiveFlag(value:Boolean):NoticePriorityModel = copy(activeFlag = Some(value))
-  def withSortOrder(value:Int):NoticePriorityModel = copy(sortOrder = Some(value))
+  def withId(value: Int): NoticePriorityModel = copy(id = value)
+  def withDescription(value: String): NoticePriorityModel = copy(description = value)
+  def withActiveFlag(value: Boolean): NoticePriorityModel = copy(activeFlag = Some(value))
+  def withSortOrder(value: Int): NoticePriorityModel = copy(sortOrder = Some(value))
 }
-  

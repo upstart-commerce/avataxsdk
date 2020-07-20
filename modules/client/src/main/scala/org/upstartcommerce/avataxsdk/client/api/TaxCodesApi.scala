@@ -30,19 +30,21 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait TaxCodesRootApi {
-  def forId(taxCodeId:Int): TaxCodesApi
+  def forId(taxCodeId: Int): TaxCodesApi
 
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[TaxCodeModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeModel]
 }
 
 object TaxCodesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): TaxCodesRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): TaxCodesRootApi =
     new ApiRoot(requester, security) with TaxCodesRootApi {
       def forId(taxCodeId: Int): TaxCodesApi = TaxCodesApi(requester, security)(taxCodeId)
 
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[TaxCodeModel] = {
-        val uri = Uri(s"/api/v2/taxcodes")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeModel] = {
+        val uri = Uri(s"/api/v2/taxcodes").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[TaxCodeModel](req)
       }
@@ -51,6 +53,8 @@ object TaxCodesRootApi {
 
 trait TaxCodesApi {}
 object TaxCodesApi {
-  def apply(requester: Requester, security: Option[Authorization])(taxCodeId:Int)(implicit system: ActorSystem, materializer: Materializer): TaxCodesApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      taxCodeId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): TaxCodesApi =
     new ApiRoot(requester, security) with TaxCodesApi {}
 }

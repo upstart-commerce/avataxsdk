@@ -17,9 +17,8 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class TaxAuthorityFormModel(taxAuthorityId:Int, formName:String) {
+final case class TaxAuthorityFormModel(taxAuthorityId: Int, formName: String) {
 
-  def withTaxAuthorityId(value:Int):TaxAuthorityFormModel = copy(taxAuthorityId = value)
-  def withFormName(value:String):TaxAuthorityFormModel = copy(formName = value)
+  def withTaxAuthorityId(value: Int): TaxAuthorityFormModel = copy(taxAuthorityId = value)
+  def withFormName(value: String): TaxAuthorityFormModel = copy(formName = value)
 }
-  

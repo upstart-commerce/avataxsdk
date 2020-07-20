@@ -17,8 +17,7 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class RebuildFilingsModel(rebuild:Boolean) {
+final case class RebuildFilingsModel(rebuild: Boolean) {
 
-  def withRebuild(value:Boolean):RebuildFilingsModel = copy(rebuild = value)
+  def withRebuild(value: Boolean): RebuildFilingsModel = copy(rebuild = value)
 }
-  

@@ -17,8 +17,7 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class CreateOrAdjustTransactionModel(createTransactionModel:CreateTransactionModel) {
+final case class CreateOrAdjustTransactionModel(createTransactionModel: CreateTransactionModel) {
 
-  def withCreateTransactionModel(value:CreateTransactionModel):CreateOrAdjustTransactionModel = copy(createTransactionModel = value)
+  def withCreateTransactionModel(value: CreateTransactionModel): CreateOrAdjustTransactionModel = copy(createTransactionModel = value)
 }
-  

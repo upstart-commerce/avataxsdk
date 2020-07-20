@@ -31,13 +31,16 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/contacts/ */
 trait ContactsRootApi {
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[ContactModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel]
 }
 
 object ContactsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): ContactsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): ContactsRootApi =
     new ApiRoot(requester, security) with ContactsRootApi {
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[ContactModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel] = {
         val uri = Uri(s"/api/v2/contacts").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ContactModel](req)

@@ -17,13 +17,10 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class TaxSubTypeModel(id: Int,
-                                 taxSubType: String,
-                                 description: String,
-                                 taxTypeGroup: String) {
+final case class TaxSubTypeModel(id: Int, taxSubType: String, description: String, taxTypeGroup: String) {
 
-  def withId(value: Int): TaxSubTypeModel              = copy(id = value)
-  def withTaxSubType(value: String): TaxSubTypeModel   = copy(taxSubType = value)
-  def withDescription(value: String): TaxSubTypeModel  = copy(description = value)
+  def withId(value: Int): TaxSubTypeModel = copy(id = value)
+  def withTaxSubType(value: String): TaxSubTypeModel = copy(taxSubType = value)
+  def withDescription(value: String): TaxSubTypeModel = copy(description = value)
   def withTaxTypeGroup(value: String): TaxSubTypeModel = copy(taxTypeGroup = value)
 }

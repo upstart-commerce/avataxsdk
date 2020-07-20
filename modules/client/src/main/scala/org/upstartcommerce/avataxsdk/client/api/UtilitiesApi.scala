@@ -31,28 +31,31 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/utilities/ */
 trait UtilitiesRootApi {
-  def getMySubscription(serviceTypeId:ServiceTypeId):AvataxSimpleCall[SubscriptionModel]
-  def listMySubscriptions():AvataxCollectionCall[SubscriptionModel]
-  def ping:AvataxSimpleCall[PingResultModel]
+  def getMySubscription(serviceTypeId: ServiceTypeId): AvataxSimpleCall[SubscriptionModel]
+  def listMySubscriptions(): AvataxCollectionCall[SubscriptionModel]
+  def ping: AvataxSimpleCall[PingResultModel]
 
 }
 
 object UtilitiesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): UtilitiesRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): UtilitiesRootApi =
     new ApiRoot(requester, security) with UtilitiesRootApi {
-      def getMySubscription(serviceTypeId:ServiceTypeId):AvataxSimpleCall[SubscriptionModel] = {
+      def getMySubscription(serviceTypeId: ServiceTypeId): AvataxSimpleCall[SubscriptionModel] = {
         val uri = Uri(s"/api/v2/utilities/subscriptions/$serviceTypeId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[SubscriptionModel](req)
       }
 
-      def listMySubscriptions():AvataxCollectionCall[SubscriptionModel] = {
+      def listMySubscriptions(): AvataxCollectionCall[SubscriptionModel] = {
         val uri = Uri(s"/api/v2/utilities/subscriptions")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[SubscriptionModel](req)
       }
 
-      def ping:AvataxSimpleCall[PingResultModel] = {
+      def ping: AvataxSimpleCall[PingResultModel] = {
         val uri = Uri(s"/api/v2/utilities/ping")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[PingResultModel](req)

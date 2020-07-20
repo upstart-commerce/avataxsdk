@@ -33,38 +33,40 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** api/v2/companies/$companyId/certificates */
 trait CompanyCertificatesRootApi {
-  def forId(certificateId:Int): CompanyCertificatesApi
-  def create(preValidatedExemptionReason:Boolean, model:List[CertificateModel]):AvataxSimpleCall[List[CertificateModel]]
-  def getSetup:AvataxSimpleCall[ProvisionStatusModel]
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[CertificateModel]
-  def requestSetup:AvataxSimpleCall[ProvisionStatusModel]
+  def forId(certificateId: Int): CompanyCertificatesApi
+  def create(preValidatedExemptionReason: Boolean, model: List[CertificateModel]): AvataxSimpleCall[List[CertificateModel]]
+  def getSetup: AvataxSimpleCall[ProvisionStatusModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertificateModel]
+  def requestSetup: AvataxSimpleCall[ProvisionStatusModel]
 }
 
 object CompanyCertificatesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesRootApi =
     new ApiRoot(requester, security) with CompanyCertificatesRootApi {
-      def forId(certificateId:Int): CompanyCertificatesApi = CompanyCertificatesApi(requester, security)(companyId, certificateId)
+      def forId(certificateId: Int): CompanyCertificatesApi = CompanyCertificatesApi(requester, security)(companyId, certificateId)
 
-      def create(preValidatedExemptionReason:Boolean, model:List[CertificateModel]):AvataxSimpleCall[List[CertificateModel]] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/certificates").withQuery(Query("$preValidatedExemptionReason" -> preValidatedExemptionReason.toString))
+      def create(preValidatedExemptionReason: Boolean, model: List[CertificateModel]): AvataxSimpleCall[List[CertificateModel]] = {
+        val uri = Uri(s"/api/v2/companies/$companyId/certificates")
+          .withQuery(Query("$preValidatedExemptionReason" -> preValidatedExemptionReason.toString))
         val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[List[CertificateModel],List[CertificateModel]](req, model)
+        avataxBodyCall[List[CertificateModel], List[CertificateModel]](req, model)
       }
 
-      def getSetup:AvataxSimpleCall[ProvisionStatusModel] = {
+      def getSetup: AvataxSimpleCall[ProvisionStatusModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/setup")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[ProvisionStatusModel](req)
       }
 
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[CertificateModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/certificates")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertificateModel] = {
+        val uri = Uri(s"/api/v2/companies/$companyId/certificates").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[CertificateModel](req)
       }
 
-      def requestSetup:AvataxSimpleCall[ProvisionStatusModel] = {
+      def requestSetup: AvataxSimpleCall[ProvisionStatusModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/setup")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxSimpleCall[ProvisionStatusModel](req)
@@ -74,85 +76,87 @@ object CompanyCertificatesRootApi {
 
 /** api/v2/companies/$companyId/certificates/$certificateId */
 trait CompanyCertificatesApi {
-  def delete:AvataxSimpleCall[CertificateModel]
-  def downloadImage(page:Int, `type`:CertificatePreviewType):AvataxSimpleCall[String]
-  def get(include:Include):AvataxSimpleCall[CertificateModel]
-  def linkAttributes(model:List[CertificateAttributeModel]):AvataxCollectionCall[CertificateAttributeModel]
-  def linkCustomers(model:LinkCustomersModel):AvataxCollectionCall[CustomerModel]
-  def listAttributes:AvataxCollectionCall[CertificateAttributeModel]
-  def listCustomers(include:Include):AvataxCollectionCall[CustomerModel]
-  def unlinkAttributes(model:List[CertificateAttributeModel]):AvataxCollectionCall[CertificateAttributeModel]
-  def unlinkCustomers(model:LinkCustomersModel):AvataxCollectionCall[CustomerModel]
-  def update(model:CertificateModel):AvataxSimpleCall[CertificateModel]
-  def uploadImage(file:String):AvataxSimpleCall[String]
+  def delete: AvataxSimpleCall[CertificateModel]
+  def downloadImage(page: Int, `type`: CertificatePreviewType): AvataxSimpleCall[String]
+  def get(include: Include): AvataxSimpleCall[CertificateModel]
+  def linkAttributes(model: List[CertificateAttributeModel]): AvataxCollectionCall[CertificateAttributeModel]
+  def linkCustomers(model: LinkCustomersModel): AvataxCollectionCall[CustomerModel]
+  def listAttributes: AvataxCollectionCall[CertificateAttributeModel]
+  def listCustomers(include: Include): AvataxCollectionCall[CustomerModel]
+  def unlinkAttributes(model: List[CertificateAttributeModel]): AvataxCollectionCall[CertificateAttributeModel]
+  def unlinkCustomers(model: LinkCustomersModel): AvataxCollectionCall[CustomerModel]
+  def update(model: CertificateModel): AvataxSimpleCall[CertificateModel]
+  def uploadImage(file: String): AvataxSimpleCall[String]
 }
 
 object CompanyCertificatesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, certificateId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, certificateId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesApi =
     new ApiRoot(requester, security) with CompanyCertificatesApi {
-      def delete:AvataxSimpleCall[CertificateModel] = {
+      def delete: AvataxSimpleCall[CertificateModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[CertificateModel](req)
       }
 
-      def downloadImage(page:Int, `type`:CertificatePreviewType):AvataxSimpleCall[String] = {
+      def downloadImage(page: Int, `type`: CertificatePreviewType): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/attachment")
           .withQuery(Query("$page" -> page.toString, "$type" -> `type`.toString))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[String](req)
       }
 
-      def get(include:Include):AvataxSimpleCall[CertificateModel] = {
+      def get(include: Include): AvataxSimpleCall[CertificateModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId").withQuery(include.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[CertificateModel](req)
       }
 
-      def linkAttributes(model:List[CertificateAttributeModel]):AvataxCollectionCall[CertificateAttributeModel] = {
+      def linkAttributes(model: List[CertificateAttributeModel]): AvataxCollectionCall[CertificateAttributeModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/attributes/link")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxCollectionBodyCall[List[CertificateAttributeModel], CertificateAttributeModel](req, model)
       }
 
-      def linkCustomers(model:LinkCustomersModel):AvataxCollectionCall[CustomerModel] = {
+      def linkCustomers(model: LinkCustomersModel): AvataxCollectionCall[CustomerModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/customers/link")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxCollectionBodyCall[LinkCustomersModel, CustomerModel](req, model)
       }
 
-      def listAttributes:AvataxCollectionCall[CertificateAttributeModel] = {
+      def listAttributes: AvataxCollectionCall[CertificateAttributeModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/attributes")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[CertificateAttributeModel](req)
       }
 
-      def listCustomers(include:Include):AvataxCollectionCall[CustomerModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/customers")
-          .withQuery(include.asQuery)
+      def listCustomers(include: Include): AvataxCollectionCall[CustomerModel] = {
+        val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/customers").withQuery(include.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[CustomerModel](req)
       }
 
-      def unlinkAttributes(model:List[CertificateAttributeModel]):AvataxCollectionCall[CertificateAttributeModel] = {
+      def unlinkAttributes(model: List[CertificateAttributeModel]): AvataxCollectionCall[CertificateAttributeModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/attributes/unlink")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxCollectionBodyCall[List[CertificateAttributeModel], CertificateAttributeModel](req, model)
       }
 
-      def unlinkCustomers(model:LinkCustomersModel):AvataxCollectionCall[CustomerModel] = {
+      def unlinkCustomers(model: LinkCustomersModel): AvataxCollectionCall[CustomerModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/customers/unlink")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxCollectionBodyCall[LinkCustomersModel, CustomerModel](req, model)
       }
 
-      def update(model:CertificateModel):AvataxSimpleCall[CertificateModel] = {
+      def update(model: CertificateModel): AvataxSimpleCall[CertificateModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[CertificateModel, CertificateModel](req, model)
       }
 
-      def uploadImage(file:String):AvataxSimpleCall[String] = {
+      def uploadImage(file: String): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId/attachment")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[String, String](req, file)

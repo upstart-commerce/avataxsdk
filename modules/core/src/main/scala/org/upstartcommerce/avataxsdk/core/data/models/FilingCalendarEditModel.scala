@@ -17,10 +17,9 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class FilingCalendarEditModel(fieldName:String, questionId:Int, oldValue:Map[String, String], newValue:Map[String, String]) {
-  def withFieldName(value:String):FilingCalendarEditModel = copy(fieldName = value)
-  def withQuestionId(value:Int):FilingCalendarEditModel = copy(questionId = value)
-  def withOldValue(value:Map[String, String]):FilingCalendarEditModel = copy(oldValue = value)
-  def withNewValue(value:Map[String, String]):FilingCalendarEditModel = copy(newValue = value)
+final case class FilingCalendarEditModel(fieldName: String, questionId: Int, oldValue: Map[String, String], newValue: Map[String, String]) {
+  def withFieldName(value: String): FilingCalendarEditModel = copy(fieldName = value)
+  def withQuestionId(value: Int): FilingCalendarEditModel = copy(questionId = value)
+  def withOldValue(value: Map[String, String]): FilingCalendarEditModel = copy(oldValue = value)
+  def withNewValue(value: Map[String, String]): FilingCalendarEditModel = copy(newValue = value)
 }
-  

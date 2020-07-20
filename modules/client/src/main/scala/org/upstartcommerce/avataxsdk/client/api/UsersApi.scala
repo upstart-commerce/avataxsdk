@@ -30,15 +30,14 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait UsersRootApi {
-  def queryUsers(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[UserModel]
+  def queryUsers(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UserModel]
 }
 
 object UsersRootApi {
   def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): UsersRootApi =
     new ApiRoot(requester, security) with UsersRootApi {
-      def queryUsers(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[UserModel] = {
-        val uri = Uri(s"/api/v2/users")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def queryUsers(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UserModel] = {
+        val uri = Uri(s"/api/v2/users").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[UserModel](req)
       }

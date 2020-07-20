@@ -48,34 +48,40 @@ trait DefinitionsRootApi {
   def listEntityUseCodes(options: FiltrableQueryOptions): AvataxCollectionCall[EntityUseCodeModel]
   def listFilingFrequencies(options: FiltrableQueryOptions): AvataxCollectionCall[FilingFrequencyModel]
   def listJurisdictions(options: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionModel]
-  def listJurisdictionsByAddress(line1: String,
-                                 line2: String,
-                                 line3: String,
-                                 city: String,
-                                 region: String,
-                                 postalCode: String,
-                                 country: String,
-                                 options: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionOverrideModel]
-  def listLocationQuestionsByAddress(line1: String,
-                                     line2: String,
-                                     line3: String,
-                                     city: String,
-                                     region: String,
-                                     postalCode: String,
-                                     country: String,
-                                     latitude: BigDecimal,
-                                     longitude: BigDecimal,
-                                     options: FiltrableQueryOptions): AvataxCollectionCall[LocationQuestionModel]
+  def listJurisdictionsByAddress(
+      line1: String,
+      line2: String,
+      line3: String,
+      city: String,
+      region: String,
+      postalCode: String,
+      country: String,
+      options: FiltrableQueryOptions
+  ): AvataxCollectionCall[JurisdictionOverrideModel]
+  def listLocationQuestionsByAddress(
+      line1: String,
+      line2: String,
+      line3: String,
+      city: String,
+      region: String,
+      postalCode: String,
+      country: String,
+      latitude: BigDecimal,
+      longitude: BigDecimal,
+      options: FiltrableQueryOptions
+  ): AvataxCollectionCall[LocationQuestionModel]
   def listLoginVerifiers(options: FiltrableQueryOptions): AvataxCollectionCall[SkyscraperStatusModel]
   def listNexus(options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
-  def listNexusByAddress(line1: String,
-                         line2: String,
-                         line3: String,
-                         city: String,
-                         region: String,
-                         postalCode: String,
-                         country: String,
-                         options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
+  def listNexusByAddress(
+      line1: String,
+      line2: String,
+      line3: String,
+      city: String,
+      region: String,
+      postalCode: String,
+      country: String,
+      options: FiltrableQueryOptions
+  ): AvataxCollectionCall[NexusModel]
   def listNexusByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
   def listNexusByCountryAndRegion(country: String, region: String, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
   def listNexusByFormCode(formCode: String, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
@@ -95,8 +101,10 @@ trait DefinitionsRootApi {
   def listPostalCodes(options: FiltrableQueryOptions): AvataxCollectionCall[PostalCodeModel]
   def listPreferredPrograms(options: FiltrableQueryOptions): AvataxCollectionCall[PreferredProgramModel]
   def listProductClassificationSystems(options: FiltrableQueryOptions): AvataxCollectionCall[ProductClassificationSystemModel]
-  def listProductClassificationSystemsByCompany(companyCode: String,
-                                                options: FiltrableQueryOptions): AvataxCollectionCall[ProductClassificationSystemModel]
+  def listProductClassificationSystemsByCompany(
+      companyCode: String,
+      options: FiltrableQueryOptions
+  ): AvataxCollectionCall[ProductClassificationSystemModel]
   def listRateTypesByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[RateTypeModel]
   def listRegions(options: FiltrableQueryOptions): AvataxCollectionCall[IsoRegionModel]
   def listRegionsByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[IsoRegionModel]
@@ -115,7 +123,10 @@ trait DefinitionsRootApi {
 }
 
 object DefinitionsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): DefinitionsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): DefinitionsRootApi =
     new ApiRoot(requester, security) with DefinitionsRootApi {
       def getCrossBorderCode(country: String, hsCode: String): AvataxCollectionCall[HsCodeModel] = {
         val uri = Uri(s"/api/v2/definitions/crossborder/$country/$hsCode/hierarchy")
@@ -216,32 +227,55 @@ object DefinitionsRootApi {
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[JurisdictionModel](req)
       }
-      def listJurisdictionsByAddress(line1: String,
-                                     line2: String,
-                                     line3: String,
-                                     city: String,
-                                     region: String,
-                                     postalCode: String,
-                                     country: String,
-                                     options: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionOverrideModel] = {
-        val uri = Uri(s"/api/v2/definitions/jurisdictionsnearaddress")
-          .withQuery(Query("line1" -> line1, "line2" -> line2, "line3" -> line3, "city" -> city, "region" -> region, "postalCode" -> postalCode, country -> "country"))
+      def listJurisdictionsByAddress(
+          line1: String,
+          line2: String,
+          line3: String,
+          city: String,
+          region: String,
+          postalCode: String,
+          country: String,
+          options: FiltrableQueryOptions
+      ): AvataxCollectionCall[JurisdictionOverrideModel] = {
+        val uri = Uri(s"/api/v2/definitions/jurisdictionsnearaddress").withQuery(
+          Query(
+            "line1" -> line1,
+            "line2" -> line2,
+            "line3" -> line3,
+            "city" -> city,
+            "region" -> region,
+            "postalCode" -> postalCode,
+            country -> "country"
+          )
+        )
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[JurisdictionOverrideModel](req)
       }
-      def listLocationQuestionsByAddress(line1: String,
-                                         line2: String,
-                                         line3: String,
-                                         city: String,
-                                         region: String,
-                                         postalCode: String,
-                                         country: String,
-                                         latitude: BigDecimal,
-                                         longitude: BigDecimal,
-                                         options: FiltrableQueryOptions): AvataxCollectionCall[LocationQuestionModel] = {
-        val uri = Uri(s"/api/v2/definitions/locationquestions")
-          .withQuery(Query("line1" -> line1, "line2" -> line2, "line3" -> line3, "city" -> city, "region" -> region,
-            "postalCode" -> postalCode, country -> "country", "latitude" -> latitude.toString, "longitude" -> longitude.toString))
+      def listLocationQuestionsByAddress(
+          line1: String,
+          line2: String,
+          line3: String,
+          city: String,
+          region: String,
+          postalCode: String,
+          country: String,
+          latitude: BigDecimal,
+          longitude: BigDecimal,
+          options: FiltrableQueryOptions
+      ): AvataxCollectionCall[LocationQuestionModel] = {
+        val uri = Uri(s"/api/v2/definitions/locationquestions").withQuery(
+          Query(
+            "line1" -> line1,
+            "line2" -> line2,
+            "line3" -> line3,
+            "city" -> city,
+            "region" -> region,
+            "postalCode" -> postalCode,
+            country -> "country",
+            "latitude" -> latitude.toString,
+            "longitude" -> longitude.toString
+          )
+        )
 
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[LocationQuestionModel](req)
@@ -256,16 +290,27 @@ object DefinitionsRootApi {
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NexusModel](req)
       }
-      def listNexusByAddress(line1: String,
-                             line2: String,
-                             line3: String,
-                             city: String,
-                             region: String,
-                             postalCode: String,
-                             country: String,
-                             options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel] = {
-        val uri = Uri(s"/api/v2/definitions/nexus/byaddress")
-          .withQuery(Query("line1" -> line1, "line2" -> line2, "line3" -> line3, "city" -> city, "region" -> region, "postalCode" -> postalCode, country -> "country"))
+      def listNexusByAddress(
+          line1: String,
+          line2: String,
+          line3: String,
+          city: String,
+          region: String,
+          postalCode: String,
+          country: String,
+          options: FiltrableQueryOptions
+      ): AvataxCollectionCall[NexusModel] = {
+        val uri = Uri(s"/api/v2/definitions/nexus/byaddress").withQuery(
+          Query(
+            "line1" -> line1,
+            "line2" -> line2,
+            "line3" -> line3,
+            "city" -> city,
+            "region" -> region,
+            "postalCode" -> postalCode,
+            country -> "country"
+          )
+        )
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[NexusModel](req)
       }
@@ -339,7 +384,11 @@ object DefinitionsRootApi {
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ParameterModel](req)
       }
-      def listParametersByItem(companyCode: String, itemCode: String, options: FiltrableQueryOptions): AvataxCollectionCall[ParameterModel] = {
+      def listParametersByItem(
+          companyCode: String,
+          itemCode: String,
+          options: FiltrableQueryOptions
+      ): AvataxCollectionCall[ParameterModel] = {
         val uri = Uri(s"/api/v2/definitions/parameters/byitem/$companyCode/$itemCode")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ParameterModel](req)
@@ -364,8 +413,10 @@ object DefinitionsRootApi {
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ProductClassificationSystemModel](req)
       }
-      def listProductClassificationSystemsByCompany(companyCode: String,
-                                                    options: FiltrableQueryOptions): AvataxCollectionCall[ProductClassificationSystemModel] = {
+      def listProductClassificationSystemsByCompany(
+          companyCode: String,
+          options: FiltrableQueryOptions
+      ): AvataxCollectionCall[ProductClassificationSystemModel] = {
         val uri = Uri(s"/api/v2/definitions/productclassificationsystems/bycompany/$companyCode")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[ProductClassificationSystemModel](req)

@@ -30,13 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait JurisdictionOverridesRootApi {
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[JurisdictionOverrideModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionOverrideModel]
 }
 
 object JurisdictionOverridesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): JurisdictionOverridesRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): JurisdictionOverridesRootApi =
     new ApiRoot(requester, security) with JurisdictionOverridesRootApi {
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[JurisdictionOverrideModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionOverrideModel] = {
         val uri = Uri(s"/api/v2/jurisdictionoverrides").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[JurisdictionOverrideModel](req)

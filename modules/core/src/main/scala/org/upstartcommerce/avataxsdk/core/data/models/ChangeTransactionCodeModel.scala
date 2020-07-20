@@ -17,8 +17,7 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
-final case class ChangeTransactionCodeModel(newCode:String) {
+final case class ChangeTransactionCodeModel(newCode: String) {
 
-  def withNewCode(value:String):ChangeTransactionCodeModel = copy(newCode = value)
+  def withNewCode(value: String): ChangeTransactionCodeModel = copy(newCode = value)
 }
-  

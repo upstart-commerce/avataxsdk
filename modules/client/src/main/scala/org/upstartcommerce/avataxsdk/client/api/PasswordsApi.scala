@@ -30,17 +30,20 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/passwords */
 trait PasswordsRootApi {
-  def forId(userId:Int): PasswordsApi
+  def forId(userId: Int): PasswordsApi
 
-  def change(model:PasswordChangeModel):AvataxSimpleCall[String]
+  def change(model: PasswordChangeModel): AvataxSimpleCall[String]
 }
 
 object PasswordsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): PasswordsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): PasswordsRootApi =
     new ApiRoot(requester, security) with PasswordsRootApi {
       def forId(userId: Int): PasswordsApi = PasswordsApi(requester, security)(userId)
 
-      def change(model:PasswordChangeModel):AvataxSimpleCall[String] = {
+      def change(model: PasswordChangeModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/passwords")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[PasswordChangeModel, String](req, model)
@@ -49,12 +52,14 @@ object PasswordsRootApi {
 }
 
 trait PasswordsApi {
-  def reset(unmigrateFromAi:Boolean, model:SetPasswordModel):AvataxSimpleCall[String]
+  def reset(unmigrateFromAi: Boolean, model: SetPasswordModel): AvataxSimpleCall[String]
 }
 object PasswordsApi {
-  def apply(requester: Requester, security: Option[Authorization])(userId:Int)(implicit system: ActorSystem, materializer: Materializer): PasswordsApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      userId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): PasswordsApi =
     new ApiRoot(requester, security) with PasswordsApi {
-      def reset(unmigrateFromAi:Boolean, model:SetPasswordModel):AvataxSimpleCall[String] = {
+      def reset(unmigrateFromAi: Boolean, model: SetPasswordModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/passwords/$userId/reset")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[SetPasswordModel, String](req, model)

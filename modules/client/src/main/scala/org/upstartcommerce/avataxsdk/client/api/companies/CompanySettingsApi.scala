@@ -32,26 +32,27 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId/settings */
 trait CompanySettingsRootApi {
-  def forId(settingsId:Int): CompanySettingsApi
+  def forId(settingsId: Int): CompanySettingsApi
 
-  def create(model:List[SettingModel]):AvataxSimpleCall[List[SettingModel]]
-  def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[SettingModel]
+  def create(model: List[SettingModel]): AvataxSimpleCall[List[SettingModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[SettingModel]
 }
 
 object CompanySettingsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanySettingsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanySettingsRootApi =
     new ApiRoot(requester, security) with CompanySettingsRootApi {
       def forId(settingsId: Int): CompanySettingsApi = CompanySettingsApi(requester, security)(companyId, settingsId)
 
-      def create(model:List[SettingModel]):AvataxSimpleCall[List[SettingModel]] = {
+      def create(model: List[SettingModel]): AvataxSimpleCall[List[SettingModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/settings")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[SettingModel], List[SettingModel]](req, model)
       }
 
-      def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[SettingModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/settings")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[SettingModel] = {
+        val uri = Uri(s"/api/v2/companies/$companyId/settings").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[SettingModel](req)
       }
@@ -61,27 +62,30 @@ object CompanySettingsRootApi {
 
 /** /api/v2/companies/$companyId/settings/$settingsId */
 trait CompanySettingsApi {
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def get:AvataxSimpleCall[SettingModel]
-  def update(model:SettingModel):AvataxSimpleCall[SettingModel]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def get: AvataxSimpleCall[SettingModel]
+  def update(model: SettingModel): AvataxSimpleCall[SettingModel]
 }
 
 object CompanySettingsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, settingsId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanySettingsApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, settingsId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanySettingsApi =
     new ApiRoot(requester, security) with CompanySettingsApi {
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/settings/$settingsId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get:AvataxSimpleCall[SettingModel] = {
+      def get: AvataxSimpleCall[SettingModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/settings/$settingsId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[SettingModel](req)
       }
 
-      def update(model:SettingModel):AvataxSimpleCall[SettingModel] = {
+      def update(model: SettingModel): AvataxSimpleCall[SettingModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/settings/$settingsId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[SettingModel, SettingModel](req, model)

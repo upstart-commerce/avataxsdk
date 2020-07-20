@@ -23,18 +23,13 @@ private[json] trait Formats {
   implicit def recordSetOFormat[A](implicit f: Format[List[A]]): OFormat[FetchResult[A]] = new FetchResultFormat[A]
 }
 
-
-private sealed class FetchResultFormat[A](implicit f: Format[List[A]]) extends OFormat[FetchResult[A]] {
+sealed private class FetchResultFormat[A](implicit f: Format[List[A]]) extends OFormat[FetchResult[A]] {
   private val rsS = "@recordsetCount"
   private val valueS = "value"
   private val nextLinkS = "@nextLink"
 
   override def writes(o: FetchResult[A]): JsObject =
-    JsObject(
-      Seq(
-        rsS -> JsNumber(o.recordSetCount),
-        valueS -> f.writes(o.value)
-      ))
+    JsObject(Seq(rsS -> JsNumber(o.recordSetCount), valueS -> f.writes(o.value)))
 
   override def reads(json: JsValue): JsResult[FetchResult[A]] = {
     val value = (json \ valueS).validate[List[A]]
@@ -45,4 +40,3 @@ private sealed class FetchResultFormat[A](implicit f: Format[List[A]]) extends O
     }
   }
 }
-

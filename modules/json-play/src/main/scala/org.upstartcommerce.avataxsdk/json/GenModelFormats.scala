@@ -27,14 +27,14 @@ private[json] trait GenModelFormats {
     Json.format[ItemClassificationOutputModel]
   implicit def validatedAddressInfoOFormat: OFormat[ValidatedAddressInfo] =
     Json.format[ValidatedAddressInfo]
-  implicit def certExpressInvitationStatusModelOFormat
-  : OFormat[CertExpressInvitationStatusModel] = Json.format[CertExpressInvitationStatusModel]
+  implicit def certExpressInvitationStatusModelOFormat: OFormat[CertExpressInvitationStatusModel] =
+    Json.format[CertExpressInvitationStatusModel]
   implicit def certificateAttributeModelOFormat: OFormat[CertificateAttributeModel] =
     Json.format[CertificateAttributeModel]
   implicit def jurisdictionOverrideModelOFormat: OFormat[JurisdictionOverrideModel] =
     Json.format[JurisdictionOverrideModel]
-  implicit def filingModelOFormat: OFormat[FilingModel]                           = Json.format[FilingModel]
-  implicit def offerModelOFormat: OFormat[OfferModel]                             = Json.format[OfferModel]
+  implicit def filingModelOFormat: OFormat[FilingModel] = Json.format[FilingModel]
+  implicit def offerModelOFormat: OFormat[OfferModel] = Json.format[OfferModel]
   implicit def createOrAdjustTransactionModelOFormat: OFormat[CreateOrAdjustTransactionModel] =
     Json.format[CreateOrAdjustTransactionModel]
   implicit def certificateModelOFormat: OFormat[CertificateModel] = Json.format[CertificateModel]
@@ -91,8 +91,8 @@ private[json] trait GenModelFormats {
   implicit def provisionStatusModelOFormat: OFormat[ProvisionStatusModel] =
     Json.format[ProvisionStatusModel]
   implicit def contactModelOFormat: OFormat[ContactModel] = Json.format[ContactModel]
-  implicit def transactionLineLocationTypeModelOFormat
-  : OFormat[TransactionLineLocationTypeModel] = Json.format[TransactionLineLocationTypeModel]
+  implicit def transactionLineLocationTypeModelOFormat: OFormat[TransactionLineLocationTypeModel] =
+    Json.format[TransactionLineLocationTypeModel]
   implicit def locationQuestionModelOFormat: OFormat[LocationQuestionModel] =
     Json.format[LocationQuestionModel]
   implicit def noticeCommentModelOFormat: OFormat[NoticeCommentModel] =
@@ -108,8 +108,7 @@ private[json] trait GenModelFormats {
     Json.format[NewAccountRequestModel]
   implicit def advancedRuleTableModelOFormat: OFormat[AdvancedRuleTableModel] =
     Json.format[AdvancedRuleTableModel]
-  implicit def requiredFilingCalendarDataFieldModelOFormat
-  : OFormat[RequiredFilingCalendarDataFieldModel] =
+  implicit def requiredFilingCalendarDataFieldModelOFormat: OFormat[RequiredFilingCalendarDataFieldModel] =
     Json.format[RequiredFilingCalendarDataFieldModel]
   implicit def reportModelOFormat: OFormat[ReportModel] = Json.format[ReportModel]
   implicit def noticeResponsibilityDetailModelOFormat: OFormat[NoticeResponsibilityDetailModel] =
@@ -117,22 +116,20 @@ private[json] trait GenModelFormats {
   implicit def verifyTransactionModelOFormat: OFormat[VerifyTransactionModel] =
     Json.format[VerifyTransactionModel]
   implicit def auditEventOFormat: OFormat[AuditEvent] = Json.format[AuditEvent]
-  implicit def taxAuthorityInfoOFormat: OFormat[TaxAuthorityInfo]   = Json.format[TaxAuthorityInfo]
-  implicit def customFieldModelOFormat: OFormat[CustomFieldModel]   = Json.format[CustomFieldModel]
+  implicit def taxAuthorityInfoOFormat: OFormat[TaxAuthorityInfo] = Json.format[TaxAuthorityInfo]
+  implicit def customFieldModelOFormat: OFormat[CustomFieldModel] = Json.format[CustomFieldModel]
   implicit def taxAuthorityModelOFormat: OFormat[TaxAuthorityModel] =
     Json.format[TaxAuthorityModel]
   implicit def taxDetailsByTaxTypeOFormat: OFormat[TaxDetailsByTaxType] =
     Json.format[TaxDetailsByTaxType]
-  implicit def communicationsTransactionTypeModelOFormat
-  : OFormat[CommunicationsTransactionTypeModel] =
+  implicit def communicationsTransactionTypeModelOFormat: OFormat[CommunicationsTransactionTypeModel] =
     Json.format[CommunicationsTransactionTypeModel]
   implicit def setPasswordModelOFormat: OFormat[SetPasswordModel] = Json.format[SetPasswordModel]
   implicit def addressValidationInfoOFormat: OFormat[AddressValidationInfo] =
     Json.format[AddressValidationInfo]
-  implicit def productClassificationSystemModelOFormat
-  : OFormat[ProductClassificationSystemModel] = Json.format[ProductClassificationSystemModel]
-  implicit def reconstructedApiRequestResponseModelOFormat
-  : OFormat[ReconstructedApiRequestResponseModel] =
+  implicit def productClassificationSystemModelOFormat: OFormat[ProductClassificationSystemModel] =
+    Json.format[ProductClassificationSystemModel]
+  implicit def reconstructedApiRequestResponseModelOFormat: OFormat[ReconstructedApiRequestResponseModel] =
     Json.format[ReconstructedApiRequestResponseModel]
   implicit def pointOfSaleDataRequestModelOFormat: OFormat[PointOfSaleDataRequestModel] =
     Json.format[PointOfSaleDataRequestModel]
@@ -156,7 +153,7 @@ private[json] trait GenModelFormats {
     Json.format[CommitTransactionModel]
   implicit def commitMultiDocumentModelOFormat: OFormat[CommitMultiDocumentModel] =
     Json.format[CommitMultiDocumentModel]
-    implicit def bulkLockTransactionResultOFormat: OFormat[BulkLockTransactionResult] =
+  implicit def bulkLockTransactionResultOFormat: OFormat[BulkLockTransactionResult] =
     Json.format[BulkLockTransactionResult]
   implicit def auditTransactionModelOFormat: OFormat[AuditTransactionModel] =
     Json.format[AuditTransactionModel]
@@ -173,20 +170,20 @@ private[json] trait GenModelFormats {
     Json.format[SubscriptionModel]
   implicit def refundTransactionModelOFormat: OFormat[RefundTransactionModel] =
     Json.format[RefundTransactionModel]
-  implicit def noticeCustomerFundingOptionModelOFormat
-  : OFormat[NoticeCustomerFundingOptionModel]                   = Json.format[NoticeCustomerFundingOptionModel]
-  implicit def addressesModelOFormat: OFormat[AddressesModel]     = Json.format[AddressesModel]
-  implicit def hsCodeModelOFormat: OFormat[HsCodeModel]           = Json.format[HsCodeModel]
-  implicit def errorDetailOFormat: OFormat[ErrorDetail]           = Json.format[ErrorDetail]
-  implicit def usernameModelOFormat: OFormat[UsernameModel]       = Json.format[UsernameModel]
-  implicit def coordinateInfoOFormat: OFormat[CoordinateInfo]     = Json.format[CoordinateInfo]
+  implicit def noticeCustomerFundingOptionModelOFormat: OFormat[NoticeCustomerFundingOptionModel] =
+    Json.format[NoticeCustomerFundingOptionModel]
+  implicit def addressesModelOFormat: OFormat[AddressesModel] = Json.format[AddressesModel]
+  implicit def hsCodeModelOFormat: OFormat[HsCodeModel] = Json.format[HsCodeModel]
+  implicit def errorDetailOFormat: OFormat[ErrorDetail] = Json.format[ErrorDetail]
+  implicit def usernameModelOFormat: OFormat[UsernameModel] = Json.format[UsernameModel]
+  implicit def coordinateInfoOFormat: OFormat[CoordinateInfo] = Json.format[CoordinateInfo]
   implicit def cycleExpireModelOFormat: OFormat[CycleExpireModel] = Json.format[CycleExpireModel]
   implicit def exemptionStatusModelOFormat: OFormat[ExemptionStatusModel] =
     Json.format[ExemptionStatusModel]
   implicit def fileContentResultOFormat: OFormat[FileContentResult] =
     Json.format[FileContentResult]
   implicit def licenseKeyModelOFormat: OFormat[LicenseKeyModel] = Json.format[LicenseKeyModel]
-  implicit def taxRegionModelOFormat: OFormat[TaxRegionModel]   = Json.format[TaxRegionModel]
+  implicit def taxRegionModelOFormat: OFormat[TaxRegionModel] = Json.format[TaxRegionModel]
   implicit def locationValidationModelOFormat: OFormat[LocationValidationModel] =
     Json.format[LocationValidationModel]
   implicit def fundingInitiateModelOFormat: OFormat[FundingInitiateModel] =
@@ -225,8 +222,8 @@ private[json] trait GenModelFormats {
     Json.format[NotificationModel]
   implicit def freeTrialRequestModelOFormat: OFormat[FreeTrialRequestModel] =
     Json.format[FreeTrialRequestModel]
-  implicit def createCertExpressInvitationModelOFormat
-  : OFormat[CreateCertExpressInvitationModel]                 = Json.format[CreateCertExpressInvitationModel]
+  implicit def createCertExpressInvitationModelOFormat: OFormat[CreateCertExpressInvitationModel] =
+    Json.format[CreateCertExpressInvitationModel]
   implicit def mrsCompanyModelOFormat: OFormat[MrsCompanyModel] = Json.format[MrsCompanyModel]
   implicit def linkCustomersModelOFormat: OFormat[LinkCustomersModel] =
     Json.format[LinkCustomersModel]
@@ -239,7 +236,7 @@ private[json] trait GenModelFormats {
   implicit def communicationsTSPairModelOFormat: OFormat[CommunicationsTSPairModel] =
     Json.format[CommunicationsTSPairModel]
   implicit def isoLocalizedNameOFormat: OFormat[IsoLocalizedName] = Json.format[IsoLocalizedName]
-  implicit def dataSourceModelOFormat: OFormat[DataSourceModel]   = Json.format[DataSourceModel]
+  implicit def dataSourceModelOFormat: OFormat[DataSourceModel] = Json.format[DataSourceModel]
   implicit def subscriptionTypeModelOFormat: OFormat[SubscriptionTypeModel] =
     Json.format[SubscriptionTypeModel]
   implicit def reconstructedMultiDocumentModelOFormat: OFormat[ReconstructedMultiDocumentModel] =
@@ -253,7 +250,7 @@ private[json] trait GenModelFormats {
   implicit def noticeFinanceModelOFormat: OFormat[NoticeFinanceModel] =
     Json.format[NoticeFinanceModel]
   implicit def avaTaxMessageOFormat: OFormat[AvaTaxMessage] = Json.format[AvaTaxMessage]
-  implicit def uPCModelOFormat: OFormat[UPCModel]           = Json.format[UPCModel]
+  implicit def uPCModelOFormat: OFormat[UPCModel] = Json.format[UPCModel]
   implicit def addressLocationInfoOFormat: OFormat[AddressLocationInfo] =
     Json.format[AddressLocationInfo]
   implicit def filingRequestDataModelOFormat: OFormat[FilingRequestDataModel] =
@@ -263,7 +260,7 @@ private[json] trait GenModelFormats {
     Json.format[JurisdictionModel]
   implicit def filingsCheckupModelOFormat: OFormat[FilingsCheckupModel] =
     Json.format[FilingsCheckupModel]
-  implicit def filingAnswerOFormat: OFormat[FilingAnswer]   = Json.format[FilingAnswer]
+  implicit def filingAnswerOFormat: OFormat[FilingAnswer] = Json.format[FilingAnswer]
   implicit def poNumberModelOFormat: OFormat[PoNumberModel] = Json.format[PoNumberModel]
   implicit def preferredProgramModelOFormat: OFormat[PreferredProgramModel] =
     Json.format[PreferredProgramModel]
@@ -278,8 +275,8 @@ private[json] trait GenModelFormats {
     Json.format[CompanyInitializationModel]
   implicit def certificateTaxCodeModelOFormat: OFormat[CertificateTaxCodeModel] =
     Json.format[CertificateTaxCodeModel]
-  implicit def complianceAggregatedTaxRateModelOFormat
-  : OFormat[ComplianceAggregatedTaxRateModel] = Json.format[ComplianceAggregatedTaxRateModel]
+  implicit def complianceAggregatedTaxRateModelOFormat: OFormat[ComplianceAggregatedTaxRateModel] =
+    Json.format[ComplianceAggregatedTaxRateModel]
   implicit def declareNexusByAddressModelOFormat: OFormat[DeclareNexusByAddressModel] =
     Json.format[DeclareNexusByAddressModel]
   implicit def approveFilingsModelOFormat: OFormat[ApproveFilingsModel] =
@@ -288,85 +285,84 @@ private[json] trait GenModelFormats {
     Json.format[MultiDocumentModel]
   implicit def filingAnswerModelOFormat: OFormat[FilingAnswerModel] =
     Json.format[FilingAnswerModel]
-     implicit def noticeTypeModelOFormat: OFormat[NoticeTypeModel] = Json.format[NoticeTypeModel]
+  implicit def noticeTypeModelOFormat: OFormat[NoticeTypeModel] = Json.format[NoticeTypeModel]
   implicit def complianceJurisdictionRateModelOFormat: OFormat[ComplianceJurisdictionRateModel] =
-      Json.format[ComplianceJurisdictionRateModel]
+    Json.format[ComplianceJurisdictionRateModel]
   implicit def lineDetailSERCodeModelOFormat: OFormat[LineDetailSERCodeModel] =
-      Json.format[LineDetailSERCodeModel]
+    Json.format[LineDetailSERCodeModel]
   implicit def removeTransactionLineModelOFormat: OFormat[RemoveTransactionLineModel] =
-      Json.format[RemoveTransactionLineModel]
+    Json.format[RemoveTransactionLineModel]
   implicit def taxAuthorityFormModelOFormat: OFormat[TaxAuthorityFormModel] =
-      Json.format[TaxAuthorityFormModel]
+    Json.format[TaxAuthorityFormModel]
   implicit def noticeStatusModelOFormat: OFormat[NoticeStatusModel] =
-      Json.format[NoticeStatusModel]
+    Json.format[NoticeStatusModel]
   implicit def itemSyncModelOFormat: OFormat[ItemSyncModel] = Json.format[ItemSyncModel]
   implicit def verifyMultiDocumentModelOFormat: OFormat[VerifyMultiDocumentModel] =
-      Json.format[VerifyMultiDocumentModel]
+    Json.format[VerifyMultiDocumentModel]
   implicit def lineItemModelOFormat: OFormat[LineItemModel] = Json.format[LineItemModel]
-  implicit def settingModelOFormat: OFormat[SettingModel]   = Json.format[SettingModel]
+  implicit def settingModelOFormat: OFormat[SettingModel] = Json.format[SettingModel]
   implicit def resourceFileTypeModelOFormat: OFormat[ResourceFileTypeModel] =
-      Json.format[ResourceFileTypeModel]
-  implicit def filingsCheckupSuggestedFormModelOFormat
-      : OFormat[FilingsCheckupSuggestedFormModel] = Json.format[FilingsCheckupSuggestedFormModel]
+    Json.format[ResourceFileTypeModel]
+  implicit def filingsCheckupSuggestedFormModelOFormat: OFormat[FilingsCheckupSuggestedFormModel] =
+    Json.format[FilingsCheckupSuggestedFormModel]
   implicit def filingsCheckupAuthorityModelOFormat: OFormat[FilingsCheckupAuthorityModel] =
-      Json.format[FilingsCheckupAuthorityModel]
+    Json.format[FilingsCheckupAuthorityModel]
   implicit def userEntitlementModelOFormat: OFormat[UserEntitlementModel] =
-      Json.format[UserEntitlementModel]
-  implicit def uomModelOFormat: OFormat[UomModel]         = Json.format[UomModel]
+    Json.format[UserEntitlementModel]
+  implicit def uomModelOFormat: OFormat[UomModel] = Json.format[UomModel]
   implicit def loginVerificationOutputModelOFormat: OFormat[LoginVerificationOutputModel] =
-      Json.format[LoginVerificationOutputModel]
+    Json.format[LoginVerificationOutputModel]
   implicit def complianceJurisdictionModelOFormat: OFormat[ComplianceJurisdictionModel] =
-      Json.format[ComplianceJurisdictionModel]
+    Json.format[ComplianceJurisdictionModel]
   implicit def currencyModelOFormat: OFormat[CurrencyModel] = Json.format[CurrencyModel]
   implicit def resourceFileUploadRequestModelOFormat: OFormat[ResourceFileUploadRequestModel] =
-      Json.format[ResourceFileUploadRequestModel]
+    Json.format[ResourceFileUploadRequestModel]
   implicit def originalApiRequestResponseModelOFormat: OFormat[OriginalApiRequestResponseModel] =
-      Json.format[OriginalApiRequestResponseModel]
+    Json.format[OriginalApiRequestResponseModel]
   implicit def multiDocumentLineItemModelOFormat: OFormat[MultiDocumentLineItemModel] =
-      Json.format[MultiDocumentLineItemModel]
+    Json.format[MultiDocumentLineItemModel]
   implicit def cycleAddOptionModelOFormat: OFormat[CycleAddOptionModel] =
-      Json.format[CycleAddOptionModel]
+    Json.format[CycleAddOptionModel]
   implicit def syncItemsRequestModelOFormat: OFormat[SyncItemsRequestModel] =
-      Json.format[SyncItemsRequestModel]
+    Json.format[SyncItemsRequestModel]
   implicit def errorInfoOFormat: OFormat[ErrorInfo] = Json.format[ErrorInfo]
   implicit def noticeFilingTypeModelOFormat: OFormat[NoticeFilingTypeModel] =
-      Json.format[NoticeFilingTypeModel]
+    Json.format[NoticeFilingTypeModel]
   implicit def filingAdjustmentModelOFormat: OFormat[FilingAdjustmentModel] =
-      Json.format[FilingAdjustmentModel]
+    Json.format[FilingAdjustmentModel]
   implicit def fundingConfigurationModelOFormat: OFormat[FundingConfigurationModel] =
-      Json.format[FundingConfigurationModel]
+    Json.format[FundingConfigurationModel]
   implicit def companyAddressOFormat: OFormat[CompanyAddress] = Json.format[CompanyAddress]
   implicit def accountConfigurationModelOFormat: OFormat[AccountConfigurationModel] =
-      Json.format[AccountConfigurationModel]
+    Json.format[AccountConfigurationModel]
   implicit def locationSettingModelOFormat: OFormat[LocationSettingModel] =
-      Json.format[LocationSettingModel]
+    Json.format[LocationSettingModel]
   implicit def nexusByTaxFormModelOFormat: OFormat[NexusByTaxFormModel] =
-      Json.format[NexusByTaxFormModel]
+    Json.format[NexusByTaxFormModel]
   implicit def companyDistanceThresholdModelOFormat: OFormat[CompanyDistanceThresholdModel] =
-      Json.format[CompanyDistanceThresholdModel]
+    Json.format[CompanyDistanceThresholdModel]
   implicit def settleTransactionModelOFormat: OFormat[SettleTransactionModel] =
-      Json.format[SettleTransactionModel]
+    Json.format[SettleTransactionModel]
   implicit def filingCalendarEditModelOFormat: OFormat[FilingCalendarEditModel] =
-      Json.format[FilingCalendarEditModel]
+    Json.format[FilingCalendarEditModel]
   implicit def skyscraperStatusModelOFormat: OFormat[SkyscraperStatusModel] =
-      Json.format[SkyscraperStatusModel]
+    Json.format[SkyscraperStatusModel]
   implicit def auditMultiDocumentModelOFormat: OFormat[AuditMultiDocumentModel] =
-      Json.format[AuditMultiDocumentModel]
+    Json.format[AuditMultiDocumentModel]
   implicit def transactionReferenceFieldModelOFormat: OFormat[TransactionReferenceFieldModel] =
-      Json.format[TransactionReferenceFieldModel]
+    Json.format[TransactionReferenceFieldModel]
   implicit def nexusTaxTypeGroupModelOFormat: OFormat[NexusTaxTypeGroupModel] =
-      Json.format[NexusTaxTypeGroupModel]
+    Json.format[NexusTaxTypeGroupModel]
   implicit def postalCodeModelOFormat: OFormat[PostalCodeModel] = Json.format[PostalCodeModel]
-  implicit def errorResultOFormat: OFormat[ErrorResult]   = Json.format[ErrorResult]
+  implicit def errorResultOFormat: OFormat[ErrorResult] = Json.format[ErrorResult]
   implicit def noticeResponsibilityModelOFormat: OFormat[NoticeResponsibilityModel] =
-      Json.format[NoticeResponsibilityModel]
+    Json.format[NoticeResponsibilityModel]
   implicit def addressInfoOFormat: OFormat[AddressInfo] = Json.format[AddressInfo]
-  implicit def messageOFormat: OFormat[Message]         = Json.format[Message]
+  implicit def messageOFormat: OFormat[Message] = Json.format[Message]
   implicit def filingReturnCreditModelOFormat: OFormat[FilingReturnCreditModel] =
-      Json.format[FilingReturnCreditModel]
+    Json.format[FilingReturnCreditModel]
   implicit def rateModelOFormat: OFormat[RateModel] = Json.format[RateModel]
   implicit def securityRoleModelOFormat: OFormat[SecurityRoleModel] =
-      Json.format[SecurityRoleModel]
+    Json.format[SecurityRoleModel]
   implicit def avaFileFormModelOFormat: OFormat[AvaFileFormModel] = Json.format[AvaFileFormModel]
 }
-

@@ -26,9 +26,10 @@ import ai.x.play.json.Jsonx
   * use external derivation for now */
 private[json] trait ModelFormats extends GenModelFormats {
   implicit val createMultiDocumentModelOFormat: OFormat[CreateMultiDocumentModel] = Jsonx.formatCaseClass[CreateMultiDocumentModel]
-  implicit val createMultiCompanyTransactionModelOFormat: OFormat[CreateMultiCompanyTransactionModel] = Jsonx.formatCaseClass[CreateMultiCompanyTransactionModel]
+  implicit val createMultiCompanyTransactionModelOFormat: OFormat[CreateMultiCompanyTransactionModel] =
+    Jsonx.formatCaseClass[CreateMultiCompanyTransactionModel]
   implicit val filingCalendarModelOFormat: OFormat[FilingCalendarModel] = Jsonx.formatCaseClass[FilingCalendarModel]
-  implicit val locationModelOFormat: OFormat[LocationModel]   = Jsonx.formatCaseClass[LocationModel]
+  implicit val locationModelOFormat: OFormat[LocationModel] = Jsonx.formatCaseClass[LocationModel]
   implicit val nexusModelOFormat: OFormat[NexusModel] = Jsonx.formatCaseClass[NexusModel]
   implicit val createTransactionModelOFormat: OFormat[CreateTransactionModel] = Jsonx.formatCaseClass[CreateTransactionModel]
   implicit val filingRegionModelOFormat: OFormat[FilingRegionModel] = Jsonx.formatCaseClass[FilingRegionModel]
@@ -39,7 +40,7 @@ private[json] trait ModelFormats extends GenModelFormats {
   implicit val formMasterModelOFormat: OFormat[FormMasterModel] = Jsonx.formatCaseClass[FormMasterModel]
   implicit val transactionLineModelOFormat: OFormat[TransactionLineModel] = Jsonx.formatCaseClass[TransactionLineModel]
   implicit val filingReturnModelOFormat: OFormat[FilingReturnModel] = Jsonx.formatCaseClass[FilingReturnModel]
-  implicit val auditModelOFormat: OFormat[AuditModel]           = Jsonx.formatCaseClass[AuditModel]
+  implicit val auditModelOFormat: OFormat[AuditModel] = Jsonx.formatCaseClass[AuditModel]
   implicit val ecmsModelOFormat: OFormat[EcmsModel] = Jsonx.formatCaseClass[EcmsModel]
   implicit val companyModelOFormat: OFormat[CompanyModel] = Jsonx.formatCaseClass[CompanyModel]
   implicit val transactionModelOFormat: OFormat[TransactionModel] = Jsonx.formatCaseClass[TransactionModel]

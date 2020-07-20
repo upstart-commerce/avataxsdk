@@ -32,13 +32,16 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/filingrequests */
 trait FilingRequestsRootApi {
-  def query(filingCalendarId:Int, options:FiltrableQueryOptions):AvataxCollectionCall[FilingRequestModel]
+  def query(filingCalendarId: Int, options: FiltrableQueryOptions): AvataxCollectionCall[FilingRequestModel]
 }
 
 object FilingRequestsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): FilingRequestsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): FilingRequestsRootApi =
     new ApiRoot(requester, security) with FilingRequestsRootApi {
-      def query(filingCalendarId:Int, options:FiltrableQueryOptions):AvataxCollectionCall[FilingRequestModel] = {
+      def query(filingCalendarId: Int, options: FiltrableQueryOptions): AvataxCollectionCall[FilingRequestModel] = {
         val uri =
           Uri(s"/api/v2/filingrequests").withQuery(options.asQuery.merge(Query("filingCalendarId" -> filingCalendarId.toString)))
         val req = HttpRequest(uri = uri).withMethod(GET)

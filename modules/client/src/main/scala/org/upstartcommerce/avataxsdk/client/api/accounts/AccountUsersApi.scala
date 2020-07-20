@@ -31,26 +31,27 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/accounts/$accountId/users */
 trait AccountUsersRootApi {
-  def forId(userId:Int): AccountUsersApi
+  def forId(userId: Int): AccountUsersApi
 
-  def create(model:List[UserModel]):AvataxSimpleCall[List[UserModel]]
-  def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[UserModel]
+  def create(model: List[UserModel]): AvataxSimpleCall[List[UserModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UserModel]
 }
 
 object AccountUsersRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(accountId:Int)(implicit system: ActorSystem, materializer: Materializer): AccountUsersRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      accountId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): AccountUsersRootApi =
     new ApiRoot(requester, security) with AccountUsersRootApi {
       def forId(userId: Int): AccountUsersApi = AccountUsersApi(requester, security)(accountId, userId)
 
-      def create(model:List[UserModel]):AvataxSimpleCall[List[UserModel]] = {
+      def create(model: List[UserModel]): AvataxSimpleCall[List[UserModel]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[UserModel], List[UserModel]](req, model)
       }
 
-      def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[UserModel] = {
-        val uri = Uri(s"/api/v2/accounts/$accountId/users")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UserModel] = {
+        val uri = Uri(s"/api/v2/accounts/$accountId/users").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[UserModel](req)
       }
@@ -59,33 +60,36 @@ object AccountUsersRootApi {
 
 /** /api/v2/accounts/$accountId/users/$userId */
 trait AccountUsersApi {
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def get(include:Include):AvataxSimpleCall[UserModel]
-  def getEntitlements:AvataxSimpleCall[UserEntitlementModel]
-  def update(model:UserModel):AvataxSimpleCall[UserModel]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def get(include: Include): AvataxSimpleCall[UserModel]
+  def getEntitlements: AvataxSimpleCall[UserEntitlementModel]
+  def update(model: UserModel): AvataxSimpleCall[UserModel]
 }
 object AccountUsersApi {
-  def apply(requester: Requester, security: Option[Authorization])(accountId:Int, userId:Int)(implicit system: ActorSystem, materializer: Materializer): AccountUsersApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(accountId: Int, userId: Int)(implicit system: ActorSystem, materializer: Materializer): AccountUsersApi =
     new ApiRoot(requester, security) with AccountUsersApi {
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users/$userId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get(include:Include):AvataxSimpleCall[UserModel] = {
+      def get(include: Include): AvataxSimpleCall[UserModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users/$userId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[UserModel](req)
       }
 
-      def getEntitlements:AvataxSimpleCall[UserEntitlementModel] = {
+      def getEntitlements: AvataxSimpleCall[UserEntitlementModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users/$userId/entitlements")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[UserEntitlementModel](req)
       }
 
-      def update(model:UserModel):AvataxSimpleCall[UserModel] = {
+      def update(model: UserModel): AvataxSimpleCall[UserModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users/$userId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[UserModel, UserModel](req, model)

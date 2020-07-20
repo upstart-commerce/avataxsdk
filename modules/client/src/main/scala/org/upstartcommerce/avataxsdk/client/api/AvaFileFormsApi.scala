@@ -30,24 +30,27 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait AvaFileFormsRootApi {
-  def forId(formId:Int): AvaFileFormsApi
+  def forId(formId: Int): AvaFileFormsApi
 
-  def create(model:List[AvaFileFormModel]):AvataxSimpleCall[List[AvaFileFormModel]]
-  def query(include:Include, options: FiltrableQueryOptions):AvataxCollectionCall[AvaFileFormModel]
+  def create(model: List[AvaFileFormModel]): AvataxSimpleCall[List[AvaFileFormModel]]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[AvaFileFormModel]
 }
 
 object AvaFileFormsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsRootApi =
     new ApiRoot(requester, security) with AvaFileFormsRootApi {
       def forId(id: Int): AvaFileFormsApi = AvaFileFormsApi(requester, security)(id)
 
-      def create(model:List[AvaFileFormModel]):AvataxSimpleCall[List[AvaFileFormModel]] = {
+      def create(model: List[AvaFileFormModel]): AvataxSimpleCall[List[AvaFileFormModel]] = {
         val uri = Uri(s"/api/v2/avafileforms")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[AvaFileFormModel], List[AvaFileFormModel]](req, model)
       }
 
-      def query(include:Include, options: FiltrableQueryOptions):AvataxCollectionCall[AvaFileFormModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[AvaFileFormModel] = {
         val uri =
           Uri(s"/api/v2/avafileforms").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
@@ -57,26 +60,28 @@ object AvaFileFormsRootApi {
 }
 
 trait AvaFileFormsApi {
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def get:AvataxSimpleCall[AvaFileFormModel]
-  def update(model:AvaFileFormModel):AvataxSimpleCall[AvaFileFormModel]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def get: AvataxSimpleCall[AvaFileFormModel]
+  def update(model: AvaFileFormModel): AvataxSimpleCall[AvaFileFormModel]
 }
 object AvaFileFormsApi {
-  def apply(requester: Requester, security: Option[Authorization])(formId:Int)(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      formId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsApi =
     new ApiRoot(requester, security) with AvaFileFormsApi {
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/avafileforms/$formId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get:AvataxSimpleCall[AvaFileFormModel] = {
+      def get: AvataxSimpleCall[AvaFileFormModel] = {
         val uri = Uri(s"/api/v2/avafileforms/$formId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[AvaFileFormModel](req)
       }
 
-      def update(model:AvaFileFormModel):AvataxSimpleCall[AvaFileFormModel] = {
+      def update(model: AvaFileFormModel): AvataxSimpleCall[AvaFileFormModel] = {
         val uri = Uri(s"/api/v2/avafileforms/$formId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[AvaFileFormModel, AvaFileFormModel](req, model)

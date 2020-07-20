@@ -31,26 +31,28 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/accounts/$accountId/jurisdictionoverrides */
 trait AccountsJurisdictionOverridesRootApi {
-  def forJurisOverrideId(jurisOverrideId:Int): AccountsJurisdictionOverridesApi
+  def forJurisOverrideId(jurisOverrideId: Int): AccountsJurisdictionOverridesApi
 
-  def create(model:List[JurisdictionOverrideModel]):AvataxSimpleCall[List[JurisdictionOverrideModel]]
-  def list(include:Include, filter:FiltrableQueryOptions):AvataxCollectionCall[JurisdictionOverrideModel]
+  def create(model: List[JurisdictionOverrideModel]): AvataxSimpleCall[List[JurisdictionOverrideModel]]
+  def list(include: Include, filter: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionOverrideModel]
 }
 
 object AccountsJurisdictionOverridesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(accountId:Int)(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      accountId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesRootApi =
     new ApiRoot(requester, security) with AccountsJurisdictionOverridesRootApi {
-      def forJurisOverrideId(jurisOverrideId:Int): AccountsJurisdictionOverridesApi = AccountsJurisdictionOverridesApi(requester, security)(accountId, jurisOverrideId)
+      def forJurisOverrideId(jurisOverrideId: Int): AccountsJurisdictionOverridesApi =
+        AccountsJurisdictionOverridesApi(requester, security)(accountId, jurisOverrideId)
 
-      def create(model:List[JurisdictionOverrideModel]):AvataxSimpleCall[List[JurisdictionOverrideModel]] = {
+      def create(model: List[JurisdictionOverrideModel]): AvataxSimpleCall[List[JurisdictionOverrideModel]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/jurisdictionoverrides")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[List[JurisdictionOverrideModel], List[JurisdictionOverrideModel]](req, model)
       }
 
-      def list(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[JurisdictionOverrideModel] = {
-        val uri = Uri(s"/api/v2/accounts/$accountId/jurisdictionoverrides")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionOverrideModel] = {
+        val uri = Uri(s"/api/v2/accounts/$accountId/jurisdictionoverrides").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[JurisdictionOverrideModel](req)
       }
@@ -59,26 +61,29 @@ object AccountsJurisdictionOverridesRootApi {
 
 /** /api/v2/accounts/$accountId/jurisdictionoverrides/$jurisId */
 trait AccountsJurisdictionOverridesApi {
-  def delete:AvataxSimpleCall[List[ErrorDetail]]
-  def get(include:Include, options:FiltrableQueryOptions):AvataxSimpleCall[JurisdictionOverrideModel]
-  def update(model:JurisdictionOverrideModel):AvataxSimpleCall[JurisdictionOverrideModel]
+  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def get(include: Include, options: FiltrableQueryOptions): AvataxSimpleCall[JurisdictionOverrideModel]
+  def update(model: JurisdictionOverrideModel): AvataxSimpleCall[JurisdictionOverrideModel]
 }
 object AccountsJurisdictionOverridesApi {
-  def apply(requester: Requester, security: Option[Authorization])(accountId:Int, jurisOverrideId:Int)(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(accountId: Int, jurisOverrideId: Int)(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesApi =
     new ApiRoot(requester, security) with AccountsJurisdictionOverridesApi {
-      def delete:AvataxSimpleCall[List[ErrorDetail]] = {
+      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/jurisdictionoverrides/$jurisOverrideId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
         avataxSimpleCall[List[ErrorDetail]](req)
       }
 
-      def get(include:Include, options:FiltrableQueryOptions):AvataxSimpleCall[JurisdictionOverrideModel] = {
+      def get(include: Include, options: FiltrableQueryOptions): AvataxSimpleCall[JurisdictionOverrideModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/jurisdictionoverrides/$jurisOverrideId")
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxSimpleCall[JurisdictionOverrideModel](req)
       }
 
-      def update(model:JurisdictionOverrideModel):AvataxSimpleCall[JurisdictionOverrideModel] = {
+      def update(model: JurisdictionOverrideModel): AvataxSimpleCall[JurisdictionOverrideModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/jurisdictionoverrides/$jurisOverrideId")
         val req = HttpRequest(uri = uri).withMethod(PUT)
         avataxBodyCall[JurisdictionOverrideModel, JurisdictionOverrideModel](req, model)

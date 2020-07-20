@@ -30,13 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait LocationsRootApi {
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[LocationModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[LocationModel]
 }
 
 object LocationsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): LocationsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): LocationsRootApi =
     new ApiRoot(requester, security) with LocationsRootApi {
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[LocationModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[LocationModel] = {
         val uri = Uri(s"/api/v2/locations").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[LocationModel](req)

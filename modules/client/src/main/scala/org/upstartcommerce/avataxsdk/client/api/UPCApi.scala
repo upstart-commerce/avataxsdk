@@ -30,15 +30,14 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait UPCRootApi {
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[UPCModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UPCModel]
 }
 
 object UPCRootApi {
   def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): UPCRootApi =
     new ApiRoot(requester, security) with UPCRootApi {
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[UPCModel] = {
-        val uri = Uri(s"/api/v2/upcs")
-          .withQuery(include.asQuery.merge(options.asQuery))
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UPCModel] = {
+        val uri = Uri(s"/api/v2/upcs").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[UPCModel](req)
       }

@@ -31,24 +31,26 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 /** /api/v2/companies/$companyId/reports */
 trait CompanyReportsRootApi {
-  def forId(reportId:Long): CompanyReportsApi
+  def forId(reportId: Long): CompanyReportsApi
 
-  def exportDocumentLine(model:ExportDocumentLineModel):AvataxSimpleCall[String]
-  def initiateExportDocumentLineReport(model:ExportDocumentLineModel):AvataxSimpleCall[List[ReportModel]]
+  def exportDocumentLine(model: ExportDocumentLineModel): AvataxSimpleCall[String]
+  def initiateExportDocumentLineReport(model: ExportDocumentLineModel): AvataxSimpleCall[List[ReportModel]]
 }
 
 object CompanyReportsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int)(implicit system: ActorSystem, materializer: Materializer): CompanyReportsRootApi =
+  def apply(requester: Requester, security: Option[Authorization])(
+      companyId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyReportsRootApi =
     new ApiRoot(requester, security) with CompanyReportsRootApi {
       def forId(reportId: Long): CompanyReportsApi = CompanyReportsApi(requester, security)(companyId, reportId)
 
-      def exportDocumentLine(model:ExportDocumentLineModel):AvataxSimpleCall[String] = {
+      def exportDocumentLine(model: ExportDocumentLineModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/companies/$companyId/reports/exportdocumentline")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[ExportDocumentLineModel, String](req, model)
       }
 
-      def initiateExportDocumentLineReport(model:ExportDocumentLineModel):AvataxSimpleCall[List[ReportModel]] = {
+      def initiateExportDocumentLineReport(model: ExportDocumentLineModel): AvataxSimpleCall[List[ReportModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/reports/exportdocumentline/initiate")
         val req = HttpRequest(uri = uri).withMethod(POST)
         avataxBodyCall[ExportDocumentLineModel, List[ReportModel]](req, model)
@@ -57,10 +59,11 @@ object CompanyReportsRootApi {
 }
 
 /** /api/v2/companies/$companyId/reports/$reportId */
-trait CompanyReportsApi {
-}
+trait CompanyReportsApi {}
 object CompanyReportsApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId:Int, reportId:Long)(implicit system: ActorSystem, materializer: Materializer): CompanyReportsApi =
-    new ApiRoot(requester, security) with CompanyReportsApi {
-    }
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(companyId: Int, reportId: Long)(implicit system: ActorSystem, materializer: Materializer): CompanyReportsApi =
+    new ApiRoot(requester, security) with CompanyReportsApi {}
 }

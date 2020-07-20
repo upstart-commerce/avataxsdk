@@ -48,7 +48,7 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization])(im
     * Fetches data based on request
     */
   def fetch[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, A]): Future[A] = {
-    val req2 = req.withHeaders(req.headers ++ security.toSeq:_*)
+    val req2 = req.withHeaders(req.headers ++ security.toSeq: _*)
     val resp = requester.request(req2)
     import scala.concurrent.duration._
     resp.flatMap {
@@ -71,11 +71,10 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization])(im
     Source
       .unfoldAsync[Option[HttpRequest], List[A]](Some(req)) {
         case Some(url) =>
-          batchFetch[A](url)
-            .map {
-              case FetchResult(_, values, Some(next)) => Some((Some(url.withUri(next)), values))
-              case FetchResult(_, values, None)       => Some((None, values))
-            }
+          batchFetch[A](url).map {
+            case FetchResult(_, values, Some(next)) => Some((Some(url.withUri(next)), values))
+            case FetchResult(_, values, None) => Some((None, values))
+          }
         case None => Future.successful(None)
       }
       .flatMapConcat(xs => Source(xs))
@@ -86,7 +85,7 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization])(im
       def apply(): Future[A] = fetch[A](req)
     }
 
-  def avataxBodyCall[A:Writes, R: Format](req: HttpRequest, body:A)(implicit um: Unmarshaller[HttpResponse, R]): AvataxSimpleCall[R] =
+  def avataxBodyCall[A: Writes, R: Format](req: HttpRequest, body: A)(implicit um: Unmarshaller[HttpResponse, R]): AvataxSimpleCall[R] =
     new AvataxSimpleCall[R] {
       def apply(): Future[R] = marshal(body).flatMap { ent =>
         val req2 = req.withEntity(ent)
@@ -97,20 +96,22 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization])(im
   def avataxCollectionCall[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, FetchResult[A]]): AvataxCollectionCall[A] =
     new AvataxCollectionCall[A] {
       def batch(): Future[FetchResult[A]] = batchFetch[A](req)
-      def stream: Source[A, NotUsed]      = continuousStream[A](req)
+      def stream: Source[A, NotUsed] = continuousStream[A](req)
     }
 
-  def avataxCollectionBodyCall[A:Writes, R:Format](req: HttpRequest, body:A)(implicit um: Unmarshaller[HttpResponse, FetchResult[R]]): AvataxCollectionCall[R] =
+  def avataxCollectionBodyCall[A: Writes, R: Format](req: HttpRequest, body: A)(
+      implicit um: Unmarshaller[HttpResponse, FetchResult[R]]
+  ): AvataxCollectionCall[R] =
     new AvataxCollectionCall[R] {
       def batch(): Future[FetchResult[R]] = marshal(body).flatMap { ent =>
         batchFetch[R](req.withEntity(ent))
       }
-      def stream: Source[R, NotUsed]      = Source.future(marshal(body)).flatMapConcat { ent =>
+      def stream: Source[R, NotUsed] = Source.future(marshal(body)).flatMapConcat { ent =>
         continuousStream[R](req.withEntity(ent))
       }
     }
 
-  private def marshal[A: Writes](entity: A):Future[RequestEntity] = {
+  private def marshal[A: Writes](entity: A): Future[RequestEntity] = {
     Marshal(entity).to[RequestEntity]
   }
 }

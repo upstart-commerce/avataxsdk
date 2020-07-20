@@ -30,13 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 
 trait DistanceThresholdsRootApi {
-  def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[CompanyDistanceThresholdModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CompanyDistanceThresholdModel]
 }
 
 object DistanceThresholdsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): DistanceThresholdsRootApi =
+  def apply(
+      requester: Requester,
+      security: Option[Authorization]
+  )(implicit system: ActorSystem, materializer: Materializer): DistanceThresholdsRootApi =
     new ApiRoot(requester, security) with DistanceThresholdsRootApi {
-      def query(include:Include, options:FiltrableQueryOptions):AvataxCollectionCall[CompanyDistanceThresholdModel] = {
+      def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CompanyDistanceThresholdModel] = {
         val uri = Uri(s"/api/v2/distancethresholds").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[CompanyDistanceThresholdModel](req)
