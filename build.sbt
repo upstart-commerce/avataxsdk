@@ -1,25 +1,19 @@
 name := "avataxsdk"
 
-resolvers in Global += Resolver.url("upstartcommerce", url("https://upstartcommerce.bintray.com/nochannel"))(Resolver.ivyStylePatterns)
-lazy val bintraySettings: Seq[Setting[_]] = Seq(
-  bintrayOmitLicense := true,
-  bintrayOrganization := Some("upstartcommerce"),
-  bintrayRepository := "generic",
-  bintrayReleaseOnPublish in ThisBuild := false,
+val artifactoryResolver =
+  Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
+resolvers in Global += artifactoryResolver
+lazy val publishSettings: Seq[Setting[_]] = Seq(
+  publishTo := Some(
+    Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/generic"))(Resolver.ivyStylePatterns)
+  ),
+  credentials += Credentials(Path.userHome / ".sbt" / ".credentials"),
   publishMavenStyle := false
 )
 
 organization in ThisBuild := "org.upstartcommerce"
-licenses in ThisBuild += ("Apache-2.0", url("https://bintray.com/upstartcommerce"))
 
-lazy val notPublishSettings = Seq(
-  publishArtifact := false,
-  skip in publish := true,
-  bintrayOmitLicense := false,
-  bintrayRelease := {},
-  publishLocal := {},
-  publish := {}
-)
+lazy val notPublishSettings = Seq(publishArtifact := false, skip in publish := true, publishLocal := {}, publish := {})
 
 val scala_2_12V = "2.12.12"
 val scala_2_13V = "2.13.3"
@@ -100,13 +94,13 @@ lazy val commonSettings = scalacSettings ++ Seq(
 lazy val core = project
   .in(file("modules/core"))
   .settings(commonSettings)
-  .settings(name := "avataxsdk-core", bintraySettings, libraryDependencies ++= Seq(compatLibForScala, scalatest % Test))
+  .settings(name := "avataxsdk-core", publishSettings, libraryDependencies ++= Seq(compatLibForScala, scalatest % Test))
 
 lazy val jsonPlay = project
   .in(file("modules/json-play"))
   .settings(commonSettings)
   .settings(
-    bintraySettings,
+    publishSettings,
     name := "avataxsdk-json-play",
     libraryDependencies ++= Seq(compatLibForScala, playJson, playJsonExt, shapeless, scalatest % Test)
   )
@@ -116,7 +110,7 @@ lazy val client = project
   .in(file("modules/client"))
   .settings(commonSettings)
   .settings(
-    bintraySettings,
+    publishSettings,
     name := "avataxsdk-client",
     libraryDependencies ++= Seq(compatLibForScala, akkaHttp, akkaStream, akkaHttpJson, scalatest % Test)
   )
