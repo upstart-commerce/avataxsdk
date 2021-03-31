@@ -1,5 +1,6 @@
 name := "avataxsdk"
 
+credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
 val artifactoryResolver =
   Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 resolvers in Global += artifactoryResolver
