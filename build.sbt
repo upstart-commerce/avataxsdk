@@ -1,18 +1,14 @@
 name := "avataxsdk"
 
-credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
-val artifactoryResolver =
-  Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
-resolvers in Global += artifactoryResolver
+organization in ThisBuild := "org.upstartcommerce"
+
 lazy val publishSettings: Seq[Setting[_]] = Seq(
   publishTo := Some(
-    Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/generic"))(Resolver.ivyStylePatterns)
+    Resolver.url("upstartcommerce-public", url("https://upstartcommerce.jfrog.io/artifactory/generic"))(Resolver.ivyStylePatterns)
   ),
   credentials += Credentials(Path.userHome / ".sbt" / ".credentials"),
   publishMavenStyle := false
 )
-
-organization in ThisBuild := "org.upstartcommerce"
 
 lazy val notPublishSettings = Seq(publishArtifact := false, skip in publish := true, publishLocal := {}, publish := {})
 
@@ -88,7 +84,7 @@ lazy val scalacSettings = Seq(
 
 lazy val commonSettings = scalacSettings ++ Seq(
   scalaVersion := scala_2_13V,
-  crossScalaVersions := Seq(scala_2_12V, scala_2_13V),
+  crossScalaVersions := Seq( /* scala_2_12V, */ scala_2_13V),
   parallelExecution in Test := false
 )
 
