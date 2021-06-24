@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class CertExpressInvitationModel(
@@ -30,7 +30,7 @@ final case class CertExpressInvitationModel(
     exemptReasons: Option[List[Int]] = None,
     deliveryMethod: Option[CertificateRequestDeliveryMethod] = None,
     message: Option[String] = None,
-    date: Option[Date] = None,
+    date: Option[Instant] = None,
     requestLink: Option[String] = None
 ) {
   lazy val exposureZonesRaw: List[Int] = exposureZones.getOrElse(List.empty)
@@ -47,6 +47,6 @@ final case class CertExpressInvitationModel(
   def withExemptReasons(value: List[Int]): CertExpressInvitationModel = copy(exemptReasons = Some(value))
   def withDeliveryMethod(value: CertificateRequestDeliveryMethod): CertExpressInvitationModel = copy(deliveryMethod = Some(value))
   def withMessage(value: String): CertExpressInvitationModel = copy(message = Some(value))
-  def withDate(value: Date): CertExpressInvitationModel = copy(date = Some(value))
+  def withDate(value: Instant): CertExpressInvitationModel = copy(date = Some(value))
   def withRequestLink(value: String): CertExpressInvitationModel = copy(requestLink = Some(value))
 }

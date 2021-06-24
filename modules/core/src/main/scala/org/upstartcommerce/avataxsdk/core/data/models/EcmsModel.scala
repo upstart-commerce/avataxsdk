@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class EcmsModel(
@@ -35,14 +35,14 @@ final case class EcmsModel(
     businessTypeOtherDescription: Option[String] = None,
     exemptReasonId: Option[String] = None,
     exemptReasonOtherDescription: Option[String] = None,
-    effectiveDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
     regionsApplicable: String,
     exemptCertStatusId: ExemptCertStatusId,
-    createdDate: Option[Date] = None,
-    lastTransactionDate: Option[Date] = None,
-    expiryDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
+    lastTransactionDate: Option[Instant] = None,
+    expiryDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
     countryIssued: Option[String] = None,
     avaCertId: Option[String] = None,
@@ -67,14 +67,14 @@ final case class EcmsModel(
   def withBusinessTypeOtherDescription(value: String): EcmsModel = copy(businessTypeOtherDescription = Some(value))
   def withExemptReasonId(value: String): EcmsModel = copy(exemptReasonId = Some(value))
   def withExemptReasonOtherDescription(value: String): EcmsModel = copy(exemptReasonOtherDescription = Some(value))
-  def withEffectiveDate(value: Date): EcmsModel = copy(effectiveDate = Some(value))
+  def withEffectiveDate(value: Instant): EcmsModel = copy(effectiveDate = Some(value))
   def withRegionsApplicable(value: String): EcmsModel = copy(regionsApplicable = value)
   def withExemptCertStatusId(value: ExemptCertStatusId): EcmsModel = copy(exemptCertStatusId = value)
-  def withCreatedDate(value: Date): EcmsModel = copy(createdDate = Some(value))
-  def withLastTransactionDate(value: Date): EcmsModel = copy(lastTransactionDate = Some(value))
-  def withExpiryDate(value: Date): EcmsModel = copy(expiryDate = Some(value))
+  def withCreatedDate(value: Instant): EcmsModel = copy(createdDate = Some(value))
+  def withLastTransactionDate(value: Instant): EcmsModel = copy(lastTransactionDate = Some(value))
+  def withExpiryDate(value: Instant): EcmsModel = copy(expiryDate = Some(value))
   def withCreatedUserId(value: Int): EcmsModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): EcmsModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): EcmsModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): EcmsModel = copy(modifiedUserId = Some(value))
   def withCountryIssued(value: String): EcmsModel = copy(countryIssued = Some(value))
   def withAvaCertId(value: String): EcmsModel = copy(avaCertId = Some(value))

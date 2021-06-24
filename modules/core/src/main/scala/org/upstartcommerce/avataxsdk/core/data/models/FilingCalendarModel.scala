@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingCalendarModel(
@@ -47,8 +47,8 @@ final case class FilingCalendarModel(
     phone: Option[String] = None,
     customerFilingInstructions: Option[String] = None,
     legalEntityName: Option[String] = None,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     filingTypeId: Option[FilingTypeId] = None,
     eFileUsername: Option[String] = None,
     eFilePassword: Option[String] = None,
@@ -70,9 +70,9 @@ final case class FilingCalendarModel(
     taxAuthorityId: Option[Int] = None,
     taxAuthorityName: Option[String] = None,
     taxAuthorityType: Option[String] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
     settings: Option[List[CompanyReturnSettingModel]] = None
 ) {
@@ -106,8 +106,8 @@ final case class FilingCalendarModel(
   def withPhone(value: String): FilingCalendarModel = copy(phone = Some(value))
   def withCustomerFilingInstructions(value: String): FilingCalendarModel = copy(customerFilingInstructions = Some(value))
   def withLegalEntityName(value: String): FilingCalendarModel = copy(legalEntityName = Some(value))
-  def withEffectiveDate(value: Date): FilingCalendarModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): FilingCalendarModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): FilingCalendarModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): FilingCalendarModel = copy(endDate = Some(value))
   def withFilingTypeId(value: FilingTypeId): FilingCalendarModel = copy(filingTypeId = Some(value))
   def withEFileUsername(value: String): FilingCalendarModel = copy(eFileUsername = Some(value))
   def withEFilePassword(value: String): FilingCalendarModel = copy(eFilePassword = Some(value))
@@ -129,9 +129,9 @@ final case class FilingCalendarModel(
   def withTaxAuthorityId(value: Int): FilingCalendarModel = copy(taxAuthorityId = Some(value))
   def withTaxAuthorityName(value: String): FilingCalendarModel = copy(taxAuthorityName = Some(value))
   def withTaxAuthorityType(value: String): FilingCalendarModel = copy(taxAuthorityType = Some(value))
-  def withCreatedDate(value: Date): FilingCalendarModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): FilingCalendarModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): FilingCalendarModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): FilingCalendarModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): FilingCalendarModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): FilingCalendarModel = copy(modifiedUserId = Some(value))
   def withSettings(value: List[CompanyReturnSettingModel]): FilingCalendarModel = copy(settings = Some(value))
 }

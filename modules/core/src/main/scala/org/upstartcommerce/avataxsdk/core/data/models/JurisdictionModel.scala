@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class JurisdictionModel(
@@ -34,8 +34,8 @@ final case class JurisdictionModel(
     countyFips: Option[String] = None,
     placeFips: Option[String] = None,
     id: Option[Int] = None,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None
 ) {
 
   def withCode(value: String): JurisdictionModel = copy(code = value)
@@ -54,6 +54,6 @@ final case class JurisdictionModel(
   def withCountyFips(value: String): JurisdictionModel = copy(countyFips = Some(value))
   def withPlaceFips(value: String): JurisdictionModel = copy(placeFips = Some(value))
   def withId(value: Int): JurisdictionModel = copy(id = Some(value))
-  def withEffectiveDate(value: Date): JurisdictionModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): JurisdictionModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): JurisdictionModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): JurisdictionModel = copy(endDate = Some(value))
 }

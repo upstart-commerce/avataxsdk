@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingReturnModel(
@@ -25,9 +25,9 @@ final case class FilingReturnModel(
     taxAuthorityId: Option[Int] = None,
     status: Option[FilingStatusId] = None,
     filingFrequency: Option[FilingFrequencyId] = None,
-    filedDate: Option[Date] = None,
-    startPeriod: Option[Date] = None,
-    endPeriod: Option[Date] = None,
+    filedDate: Option[Instant] = None,
+    startPeriod: Option[Instant] = None,
+    endPeriod: Option[Instant] = None,
     salesAmount: Option[BigDecimal] = None,
     filingType: Option[FilingTypeId] = None,
     formName: Option[String] = None,
@@ -72,9 +72,9 @@ final case class FilingReturnModel(
     attachments: Option[List[FilingAttachmentModel]] = None,
     excludedCarryOverCredits: Option[FilingReturnCreditModel] = None,
     appliedCarryOverCredits: Option[FilingReturnCreditModel] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None
+    modifiedDate: Option[Instant] = None
 ) {
   lazy val adjustmentsRaw: List[FilingAdjustmentModel] = adjustments.getOrElse(List.empty)
   lazy val augmentationsRaw: List[FilingAugmentationModel] = augmentations.getOrElse(List.empty)
@@ -87,9 +87,9 @@ final case class FilingReturnModel(
   def withTaxAuthorityId(value: Int): FilingReturnModel = copy(taxAuthorityId = Some(value))
   def withStatus(value: FilingStatusId): FilingReturnModel = copy(status = Some(value))
   def withFilingFrequency(value: FilingFrequencyId): FilingReturnModel = copy(filingFrequency = Some(value))
-  def withFiledDate(value: Date): FilingReturnModel = copy(filedDate = Some(value))
-  def withStartPeriod(value: Date): FilingReturnModel = copy(startPeriod = Some(value))
-  def withEndPeriod(value: Date): FilingReturnModel = copy(endPeriod = Some(value))
+  def withFiledDate(value: Instant): FilingReturnModel = copy(filedDate = Some(value))
+  def withStartPeriod(value: Instant): FilingReturnModel = copy(startPeriod = Some(value))
+  def withEndPeriod(value: Instant): FilingReturnModel = copy(endPeriod = Some(value))
   def withSalesAmount(value: BigDecimal): FilingReturnModel = copy(salesAmount = Some(value))
   def withFilingType(value: FilingTypeId): FilingReturnModel = copy(filingType = Some(value))
   def withFormName(value: String): FilingReturnModel = copy(formName = Some(value))
@@ -134,7 +134,7 @@ final case class FilingReturnModel(
   def withAttachments(value: List[FilingAttachmentModel]): FilingReturnModel = copy(attachments = Some(value))
   def withExcludedCarryOverCredits(value: FilingReturnCreditModel): FilingReturnModel = copy(excludedCarryOverCredits = Some(value))
   def withAppliedCarryOverCredits(value: FilingReturnCreditModel): FilingReturnModel = copy(appliedCarryOverCredits = Some(value))
-  def withCreatedDate(value: Date): FilingReturnModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): FilingReturnModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): FilingReturnModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): FilingReturnModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): FilingReturnModel = copy(modifiedDate = Some(value))
 }

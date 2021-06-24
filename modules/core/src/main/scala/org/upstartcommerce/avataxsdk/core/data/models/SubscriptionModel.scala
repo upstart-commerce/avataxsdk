@@ -14,19 +14,18 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class SubscriptionModel(
     id: Option[Int] = None,
     accountId: Option[Int] = None,
     subscriptionTypeId: Option[Int] = None,
     subscriptionDescription: Option[String] = None,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
-    createdDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -34,10 +33,10 @@ final case class SubscriptionModel(
   def withAccountId(value: Int): SubscriptionModel = copy(accountId = Some(value))
   def withSubscriptionTypeId(value: Int): SubscriptionModel = copy(subscriptionTypeId = Some(value))
   def withSubscriptionDescription(value: String): SubscriptionModel = copy(subscriptionDescription = Some(value))
-  def withEffectiveDate(value: Date): SubscriptionModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): SubscriptionModel = copy(endDate = Some(value))
-  def withCreatedDate(value: Date): SubscriptionModel = copy(createdDate = Some(value))
+  def withEffectiveDate(value: Instant): SubscriptionModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): SubscriptionModel = copy(endDate = Some(value))
+  def withCreatedDate(value: Instant): SubscriptionModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): SubscriptionModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): SubscriptionModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): SubscriptionModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): SubscriptionModel = copy(modifiedUserId = Some(value))
 }

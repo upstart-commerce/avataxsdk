@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class CustomerModel(
     id: Option[Int] = None,
@@ -32,9 +31,9 @@ final case class CustomerModel(
     faxNumber: Option[String] = None,
     emailAddress: Option[String] = None,
     contactName: Option[String] = None,
-    lastTransaction: Option[Date] = None,
-    createdDate: Option[Date] = None,
-    modifiedDate: Option[Date] = None,
+    lastTransaction: Option[Instant] = None,
+    createdDate: Option[Instant] = None,
+    modifiedDate: Option[Instant] = None,
     country: String,
     region: String,
     isBill: Option[Boolean] = None,
@@ -63,9 +62,9 @@ final case class CustomerModel(
   def withFaxNumber(value: String): CustomerModel = copy(faxNumber = Some(value))
   def withEmailAddress(value: String): CustomerModel = copy(emailAddress = Some(value))
   def withContactName(value: String): CustomerModel = copy(contactName = Some(value))
-  def withLastTransaction(value: Date): CustomerModel = copy(lastTransaction = Some(value))
-  def withCreatedDate(value: Date): CustomerModel = copy(createdDate = Some(value))
-  def withModifiedDate(value: Date): CustomerModel = copy(modifiedDate = Some(value))
+  def withLastTransaction(value: Instant): CustomerModel = copy(lastTransaction = Some(value))
+  def withCreatedDate(value: Instant): CustomerModel = copy(createdDate = Some(value))
+  def withModifiedDate(value: Instant): CustomerModel = copy(modifiedDate = Some(value))
   def withCountry(value: String): CustomerModel = copy(country = value)
   def withRegion(value: String): CustomerModel = copy(region = value)
   def withIsBill(value: Boolean): CustomerModel = copy(isBill = Some(value))

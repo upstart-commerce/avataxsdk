@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class CreateMultiDocumentModel(
@@ -23,7 +23,7 @@ final case class CreateMultiDocumentModel(
     allowAdjust: Option[Boolean] = None,
     `type`: Option[DocumentType] = None,
     companyCode: Option[String] = None,
-    date: Date,
+    date: Instant,
     salespersonCode: Option[String] = None,
     customerCode: String,
     customerUsageType: Option[String] = None,
@@ -41,7 +41,7 @@ final case class CreateMultiDocumentModel(
     currencyCode: Option[String] = None,
     serviceMode: Option[ServiceMode] = None,
     exchangeRate: Option[BigDecimal] = None,
-    exchangeRateEffectiveDate: Option[Date] = None,
+    exchangeRateEffectiveDate: Option[Instant] = None,
     posLaneCode: Option[String] = None,
     businessIdentificationNo: Option[String] = None,
     isSellerImporterOfRecord: Option[Boolean] = None,
@@ -55,7 +55,7 @@ final case class CreateMultiDocumentModel(
   def withAllowAdjust(value: Boolean): CreateMultiDocumentModel = copy(allowAdjust = Some(value))
   def withType(value: DocumentType): CreateMultiDocumentModel = copy(`type` = Some(value))
   def withCompanyCode(value: String): CreateMultiDocumentModel = copy(companyCode = Some(value))
-  def withDate(value: Date): CreateMultiDocumentModel = copy(date = value)
+  def withDate(value: Instant): CreateMultiDocumentModel = copy(date = value)
   def withSalespersonCode(value: String): CreateMultiDocumentModel = copy(salespersonCode = Some(value))
   def withCustomerCode(value: String): CreateMultiDocumentModel = copy(customerCode = value)
   def withCustomerUsageType(value: String): CreateMultiDocumentModel = copy(customerUsageType = Some(value))
@@ -73,7 +73,7 @@ final case class CreateMultiDocumentModel(
   def withCurrencyCode(value: String): CreateMultiDocumentModel = copy(currencyCode = Some(value))
   def withServiceMode(value: ServiceMode): CreateMultiDocumentModel = copy(serviceMode = Some(value))
   def withExchangeRate(value: BigDecimal): CreateMultiDocumentModel = copy(exchangeRate = Some(value))
-  def withExchangeRateEffectiveDate(value: Date): CreateMultiDocumentModel = copy(exchangeRateEffectiveDate = Some(value))
+  def withExchangeRateEffectiveDate(value: Instant): CreateMultiDocumentModel = copy(exchangeRateEffectiveDate = Some(value))
   def withPosLaneCode(value: String): CreateMultiDocumentModel = copy(posLaneCode = Some(value))
   def withBusinessIdentificationNo(value: String): CreateMultiDocumentModel = copy(businessIdentificationNo = Some(value))
   def withIsSellerImporterOfRecord(value: Boolean): CreateMultiDocumentModel = copy(isSellerImporterOfRecord = Some(value))

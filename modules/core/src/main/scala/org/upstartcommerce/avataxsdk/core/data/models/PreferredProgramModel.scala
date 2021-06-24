@@ -14,22 +14,21 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class PreferredProgramModel(
     id: Option[Int] = None,
     code: Option[String] = None,
     originCountry: Option[String] = None,
     destinationCountry: Option[String] = None,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None
 ) {
 
   def withId(value: Int): PreferredProgramModel = copy(id = Some(value))
   def withCode(value: String): PreferredProgramModel = copy(code = Some(value))
   def withOriginCountry(value: String): PreferredProgramModel = copy(originCountry = Some(value))
   def withDestinationCountry(value: String): PreferredProgramModel = copy(destinationCountry = Some(value))
-  def withEffectiveDate(value: Date): PreferredProgramModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): PreferredProgramModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): PreferredProgramModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): PreferredProgramModel = copy(endDate = Some(value))
 }

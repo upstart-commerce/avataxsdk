@@ -14,7 +14,6 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
 import java.time.Instant
 
 import org.upstartcommerce.avataxsdk.core.data.enums._
@@ -42,7 +41,7 @@ final case class CreateTransactionModel(
     currencyCode: Option[String] = None,
     serviceMode: Option[ServiceMode] = None,
     exchangeRate: Option[BigDecimal] = None,
-    exchangeRateEffectiveDate: Option[Date] = None,
+    exchangeRateEffectiveDate: Option[Instant] = None,
     posLaneCode: Option[String] = None,
     businessIdentificationNo: Option[String] = None,
     isSellerImporterOfRecord: Option[Boolean] = None,
@@ -73,7 +72,7 @@ final case class CreateTransactionModel(
   def withCurrencyCode(value: String): CreateTransactionModel = copy(currencyCode = Some(value))
   def withServiceMode(value: ServiceMode): CreateTransactionModel = copy(serviceMode = Some(value))
   def withExchangeRate(value: BigDecimal): CreateTransactionModel = copy(exchangeRate = Some(value))
-  def withExchangeRateEffectiveDate(value: Date): CreateTransactionModel = copy(exchangeRateEffectiveDate = Some(value))
+  def withExchangeRateEffectiveDate(value: Instant): CreateTransactionModel = copy(exchangeRateEffectiveDate = Some(value))
   def withPosLaneCode(value: String): CreateTransactionModel = copy(posLaneCode = Some(value))
   def withBusinessIdentificationNo(value: String): CreateTransactionModel = copy(businessIdentificationNo = Some(value))
   def withIsSellerImporterOfRecord(value: Boolean): CreateTransactionModel = copy(isSellerImporterOfRecord = Some(value))

@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class NotificationModel(
@@ -30,15 +30,15 @@ final case class NotificationModel(
     needsAction: Option[Boolean] = None,
     actionName: Option[String] = None,
     actionLink: Option[String] = None,
-    actionDueDate: Option[Date] = None,
+    actionDueDate: Option[Instant] = None,
     dismissed: Option[Boolean] = None,
     dismissedByUserId: Option[Int] = None,
-    dismissedDate: Option[Date] = None,
-    expireDate: Date,
+    dismissedDate: Option[Instant] = None,
+    expireDate: Instant,
     createdUserId: Option[Int] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None
+    modifiedDate: Option[Instant] = None
 ) {
 
   def withId(value: Long): NotificationModel = copy(id = Some(value))
@@ -53,13 +53,13 @@ final case class NotificationModel(
   def withNeedsAction(value: Boolean): NotificationModel = copy(needsAction = Some(value))
   def withActionName(value: String): NotificationModel = copy(actionName = Some(value))
   def withActionLink(value: String): NotificationModel = copy(actionLink = Some(value))
-  def withActionDueDate(value: Date): NotificationModel = copy(actionDueDate = Some(value))
+  def withActionDueDate(value: Instant): NotificationModel = copy(actionDueDate = Some(value))
   def withDismissed(value: Boolean): NotificationModel = copy(dismissed = Some(value))
   def withDismissedByUserId(value: Int): NotificationModel = copy(dismissedByUserId = Some(value))
-  def withDismissedDate(value: Date): NotificationModel = copy(dismissedDate = Some(value))
-  def withExpireDate(value: Date): NotificationModel = copy(expireDate = value)
+  def withDismissedDate(value: Instant): NotificationModel = copy(dismissedDate = Some(value))
+  def withExpireDate(value: Instant): NotificationModel = copy(expireDate = value)
   def withCreatedUserId(value: Int): NotificationModel = copy(createdUserId = Some(value))
-  def withCreatedDate(value: Date): NotificationModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): NotificationModel = copy(createdDate = Some(value))
   def withModifiedUserId(value: Int): NotificationModel = copy(modifiedUserId = Some(value))
-  def withModifiedDate(value: Date): NotificationModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): NotificationModel = copy(modifiedDate = Some(value))
 }

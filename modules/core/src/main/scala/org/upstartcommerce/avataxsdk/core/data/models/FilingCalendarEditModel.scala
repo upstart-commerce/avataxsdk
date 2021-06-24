@@ -14,8 +14,6 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingCalendarEditModel(fieldName: String, questionId: Int, oldValue: Map[String, String], newValue: Map[String, String]) {
   def withFieldName(value: String): FilingCalendarEditModel = copy(fieldName = value)

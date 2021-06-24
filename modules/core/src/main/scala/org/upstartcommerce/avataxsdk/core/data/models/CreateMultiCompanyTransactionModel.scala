@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class CreateMultiCompanyTransactionModel(
@@ -22,7 +22,7 @@ final case class CreateMultiCompanyTransactionModel(
     lines: Option[List[MultiCompanyLineItemModel]] = None,
     `type`: Option[DocumentType] = None,
     companyCode: Option[String] = None,
-    date: Option[Date] = None,
+    date: Option[Instant] = None,
     salespersonCode: Option[String] = None,
     customerCode: Option[String] = None,
     customerUsageType: Option[String] = None,
@@ -39,7 +39,7 @@ final case class CreateMultiCompanyTransactionModel(
     currencyCode: Option[String] = None,
     serviceMode: Option[ServiceMode] = None,
     exchangeRate: Option[BigDecimal] = None,
-    exchangeRateEffectiveDate: Option[Date] = None,
+    exchangeRateEffectiveDate: Option[Instant] = None,
     posLaneCode: Option[String] = None,
     businessIdentificationNo: Option[String] = None,
     isSellerImporterOfRecord: Option[Boolean] = None,
@@ -53,7 +53,7 @@ final case class CreateMultiCompanyTransactionModel(
   def withLines(value: List[MultiCompanyLineItemModel]): CreateMultiCompanyTransactionModel = copy(lines = Some(value))
   def withType(value: DocumentType): CreateMultiCompanyTransactionModel = copy(`type` = Some(value))
   def withCompanyCode(value: String): CreateMultiCompanyTransactionModel = copy(companyCode = Some(value))
-  def withDate(value: Date): CreateMultiCompanyTransactionModel = copy(date = Some(value))
+  def withDate(value: Instant): CreateMultiCompanyTransactionModel = copy(date = Some(value))
   def withSalespersonCode(value: String): CreateMultiCompanyTransactionModel = copy(salespersonCode = Some(value))
   def withCustomerCode(value: String): CreateMultiCompanyTransactionModel = copy(customerCode = Some(value))
   def withCustomerUsageType(value: String): CreateMultiCompanyTransactionModel = copy(customerUsageType = Some(value))
@@ -70,7 +70,7 @@ final case class CreateMultiCompanyTransactionModel(
   def withCurrencyCode(value: String): CreateMultiCompanyTransactionModel = copy(currencyCode = Some(value))
   def withServiceMode(value: ServiceMode): CreateMultiCompanyTransactionModel = copy(serviceMode = Some(value))
   def withExchangeRate(value: BigDecimal): CreateMultiCompanyTransactionModel = copy(exchangeRate = Some(value))
-  def withExchangeRateEffectiveDate(value: Date): CreateMultiCompanyTransactionModel = copy(exchangeRateEffectiveDate = Some(value))
+  def withExchangeRateEffectiveDate(value: Instant): CreateMultiCompanyTransactionModel = copy(exchangeRateEffectiveDate = Some(value))
   def withPosLaneCode(value: String): CreateMultiCompanyTransactionModel = copy(posLaneCode = Some(value))
   def withBusinessIdentificationNo(value: String): CreateMultiCompanyTransactionModel = copy(businessIdentificationNo = Some(value))
   def withIsSellerImporterOfRecord(value: Boolean): CreateMultiCompanyTransactionModel = copy(isSellerImporterOfRecord = Some(value))

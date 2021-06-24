@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class AuditModel(
@@ -31,7 +31,7 @@ final case class AuditModel(
     serverVersion: Option[String] = None,
     referenceId: Option[Long] = None,
     severityLevelId: Option[Int] = None,
-    serverTimestamp: Option[Date] = None,
+    serverTimestamp: Option[Instant] = None,
     serverDuration: Option[Int] = None,
     serviceName: Option[String] = None,
     operation: Option[String] = None,
@@ -67,7 +67,7 @@ final case class AuditModel(
   def withServerVersion(value: String): AuditModel = copy(serverVersion = Some(value))
   def withReferenceId(value: Long): AuditModel = copy(referenceId = Some(value))
   def withSeverityLevelId(value: Int): AuditModel = copy(severityLevelId = Some(value))
-  def withServerTimestamp(value: Date): AuditModel = copy(serverTimestamp = Some(value))
+  def withServerTimestamp(value: Instant): AuditModel = copy(serverTimestamp = Some(value))
   def withServerDuration(value: Int): AuditModel = copy(serverDuration = Some(value))
   def withServiceName(value: String): AuditModel = copy(serviceName = Some(value))
   def withOperation(value: String): AuditModel = copy(operation = Some(value))

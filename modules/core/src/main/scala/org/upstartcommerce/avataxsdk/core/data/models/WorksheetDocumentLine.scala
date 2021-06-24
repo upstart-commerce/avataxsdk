@@ -14,11 +14,10 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class WorksheetDocumentLine(
-    reportingDate: Option[Date] = None,
+    reportingDate: Option[Instant] = None,
     lineNo: Option[String] = None,
     lineAmount: Option[BigDecimal] = None,
     exemptAmount: Option[BigDecimal] = None,
@@ -29,7 +28,7 @@ final case class WorksheetDocumentLine(
     transactionId: Option[String] = None
 ) {
   lazy val messagesRaw: List[Message] = messages.getOrElse(List.empty)
-  def withReportingDate(value: Date): WorksheetDocumentLine = copy(reportingDate = Some(value))
+  def withReportingDate(value: Instant): WorksheetDocumentLine = copy(reportingDate = Some(value))
   def withLineNo(value: String): WorksheetDocumentLine = copy(lineNo = Some(value))
   def withLineAmount(value: BigDecimal): WorksheetDocumentLine = copy(lineAmount = Some(value))
   def withExemptAmount(value: BigDecimal): WorksheetDocumentLine = copy(exemptAmount = Some(value))

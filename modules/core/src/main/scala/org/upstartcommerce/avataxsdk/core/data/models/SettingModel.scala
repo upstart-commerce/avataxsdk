@@ -14,8 +14,6 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class SettingModel(id: Int, companyId: Option[Int] = None, set: String, name: String, value: Option[String] = None) {
 

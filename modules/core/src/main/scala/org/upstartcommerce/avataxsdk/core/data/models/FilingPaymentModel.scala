@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingPaymentModel(
@@ -23,9 +23,9 @@ final case class FilingPaymentModel(
     paymentAmount: BigDecimal,
     `type`: PaymentType,
     isCalculated: Option[Boolean] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -34,8 +34,8 @@ final case class FilingPaymentModel(
   def withPaymentAmount(value: BigDecimal): FilingPaymentModel = copy(paymentAmount = value)
   def withType(value: PaymentType): FilingPaymentModel = copy(`type` = value)
   def withIsCalculated(value: Boolean): FilingPaymentModel = copy(isCalculated = Some(value))
-  def withCreatedDate(value: Date): FilingPaymentModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): FilingPaymentModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): FilingPaymentModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): FilingPaymentModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): FilingPaymentModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): FilingPaymentModel = copy(modifiedUserId = Some(value))
 }

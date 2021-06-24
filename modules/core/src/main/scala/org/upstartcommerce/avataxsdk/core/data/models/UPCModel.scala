@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class UPCModel(
     id: Int,
@@ -23,13 +22,13 @@ final case class UPCModel(
     upc: String,
     legacyTaxCode: Option[String] = None,
     description: String,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     usage: Option[Int] = None,
     isSystem: Option[Int] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -38,12 +37,12 @@ final case class UPCModel(
   def withUpc(value: String): UPCModel = copy(upc = value)
   def withLegacyTaxCode(value: String): UPCModel = copy(legacyTaxCode = Some(value))
   def withDescription(value: String): UPCModel = copy(description = value)
-  def withEffectiveDate(value: Date): UPCModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): UPCModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): UPCModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): UPCModel = copy(endDate = Some(value))
   def withUsage(value: Int): UPCModel = copy(usage = Some(value))
   def withIsSystem(value: Int): UPCModel = copy(isSystem = Some(value))
-  def withCreatedDate(value: Date): UPCModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): UPCModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): UPCModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): UPCModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): UPCModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): UPCModel = copy(modifiedUserId = Some(value))
 }

@@ -14,8 +14,6 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class TaxAuthorityTypeModel(id: Int, description: String, taxAuthorityGroup: Option[String] = None) {
 

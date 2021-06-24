@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class HsCodeModel(
     hsCode: Option[String] = None,
@@ -24,8 +23,8 @@ final case class HsCodeModel(
     description: String,
     system: Option[String] = None,
     destinationCountry: Option[String] = None,
-    effDate: Option[Date] = None,
-    endDate: Option[Date] = None
+    effDate: Option[Instant] = None,
+    endDate: Option[Instant] = None
 ) {
 
   def withHsCode(value: String): HsCodeModel = copy(hsCode = Some(value))
@@ -34,6 +33,6 @@ final case class HsCodeModel(
   def withDescription(value: String): HsCodeModel = copy(description = value)
   def withSystem(value: String): HsCodeModel = copy(system = Some(value))
   def withDestinationCountry(value: String): HsCodeModel = copy(destinationCountry = Some(value))
-  def withEffDate(value: Date): HsCodeModel = copy(effDate = Some(value))
-  def withEndDate(value: Date): HsCodeModel = copy(endDate = Some(value))
+  def withEffDate(value: Instant): HsCodeModel = copy(effDate = Some(value))
+  def withEndDate(value: Instant): HsCodeModel = copy(endDate = Some(value))
 }

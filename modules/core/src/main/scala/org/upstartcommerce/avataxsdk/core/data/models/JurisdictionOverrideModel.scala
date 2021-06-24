@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class JurisdictionOverrideModel(
@@ -26,11 +26,11 @@ final case class JurisdictionOverrideModel(
     region: String,
     country: Option[String] = None,
     postalCode: String,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
-    createdDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
     jurisdictions: List[JurisdictionModel],
     taxRegionId: Int,
@@ -45,11 +45,11 @@ final case class JurisdictionOverrideModel(
   def withRegion(value: String): JurisdictionOverrideModel = copy(region = value)
   def withCountry(value: String): JurisdictionOverrideModel = copy(country = Some(value))
   def withPostalCode(value: String): JurisdictionOverrideModel = copy(postalCode = value)
-  def withEffectiveDate(value: Date): JurisdictionOverrideModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): JurisdictionOverrideModel = copy(endDate = Some(value))
-  def withCreatedDate(value: Date): JurisdictionOverrideModel = copy(createdDate = Some(value))
+  def withEffectiveDate(value: Instant): JurisdictionOverrideModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): JurisdictionOverrideModel = copy(endDate = Some(value))
+  def withCreatedDate(value: Instant): JurisdictionOverrideModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): JurisdictionOverrideModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): JurisdictionOverrideModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): JurisdictionOverrideModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): JurisdictionOverrideModel = copy(modifiedUserId = Some(value))
   def withJurisdictions(value: List[JurisdictionModel]): JurisdictionOverrideModel = copy(jurisdictions = value)
   def withTaxRegionId(value: Int): JurisdictionOverrideModel = copy(taxRegionId = value)
