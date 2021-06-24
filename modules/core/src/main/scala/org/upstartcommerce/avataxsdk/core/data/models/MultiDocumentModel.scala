@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class MultiDocumentModel(
@@ -23,8 +23,8 @@ final case class MultiDocumentModel(
     code: Option[String] = None,
     `type`: Option[DocumentType] = None,
     createdUserId: Option[Int] = None,
-    createdDate: Option[Date] = None,
-    modifiedDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
     documents: Option[List[TransactionModel]] = None
 ) {
@@ -34,8 +34,8 @@ final case class MultiDocumentModel(
   def withCode(value: String): MultiDocumentModel = copy(code = Some(value))
   def withType(value: DocumentType): MultiDocumentModel = copy(`type` = Some(value))
   def withCreatedUserId(value: Int): MultiDocumentModel = copy(createdUserId = Some(value))
-  def withCreatedDate(value: Date): MultiDocumentModel = copy(createdDate = Some(value))
-  def withModifiedDate(value: Date): MultiDocumentModel = copy(modifiedDate = Some(value))
+  def withCreatedDate(value: Instant): MultiDocumentModel = copy(createdDate = Some(value))
+  def withModifiedDate(value: Instant): MultiDocumentModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): MultiDocumentModel = copy(modifiedUserId = Some(value))
   def withDocuments(value: List[TransactionModel]): MultiDocumentModel = copy(documents = Some(value))
 }

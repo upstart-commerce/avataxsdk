@@ -14,12 +14,11 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class ReportParametersModel(
-    startDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    startDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     country: Option[String] = None,
     state: Option[String] = None,
     dateFilter: Option[String] = None,
@@ -29,8 +28,8 @@ final case class ReportParametersModel(
     currencyCode: Option[String] = None
 ) {
 
-  def withStartDate(value: Date): ReportParametersModel = copy(startDate = Some(value))
-  def withEndDate(value: Date): ReportParametersModel = copy(endDate = Some(value))
+  def withStartDate(value: Instant): ReportParametersModel = copy(startDate = Some(value))
+  def withEndDate(value: Instant): ReportParametersModel = copy(endDate = Some(value))
   def withCountry(value: String): ReportParametersModel = copy(country = Some(value))
   def withState(value: String): ReportParametersModel = copy(state = Some(value))
   def withDateFilter(value: String): ReportParametersModel = copy(dateFilter = Some(value))

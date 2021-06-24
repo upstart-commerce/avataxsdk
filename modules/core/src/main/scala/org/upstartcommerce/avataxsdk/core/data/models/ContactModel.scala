@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class ContactModel(
     id: Int,
@@ -36,9 +35,9 @@ final case class ContactModel(
     phone: Option[String] = None,
     mobile: Option[String] = None,
     fax: Option[String] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -60,8 +59,8 @@ final case class ContactModel(
   def withPhone(value: String): ContactModel = copy(phone = Some(value))
   def withMobile(value: String): ContactModel = copy(mobile = Some(value))
   def withFax(value: String): ContactModel = copy(fax = Some(value))
-  def withCreatedDate(value: Date): ContactModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): ContactModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): ContactModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): ContactModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): ContactModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): ContactModel = copy(modifiedUserId = Some(value))
 }

@@ -14,14 +14,13 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class NoticeFinanceModel(
     id: Option[Int] = None,
     noticeId: Option[Int] = None,
-    noticeDate: Option[Date] = None,
-    dueDate: Option[Date] = None,
+    noticeDate: Option[Instant] = None,
+    dueDate: Option[Instant] = None,
     noticeNumber: Option[String] = None,
     taxDue: Option[BigDecimal] = None,
     penalty: Option[BigDecimal] = None,
@@ -33,17 +32,17 @@ final case class NoticeFinanceModel(
     cspFeeRefund: Option[BigDecimal] = None,
     fileName: Option[String] = None,
     resourceFileId: Option[Long] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
     attachmentUploadRequest: Option[ResourceFileUploadRequestModel] = None
 ) {
 
   def withId(value: Int): NoticeFinanceModel = copy(id = Some(value))
   def withNoticeId(value: Int): NoticeFinanceModel = copy(noticeId = Some(value))
-  def withNoticeDate(value: Date): NoticeFinanceModel = copy(noticeDate = Some(value))
-  def withDueDate(value: Date): NoticeFinanceModel = copy(dueDate = Some(value))
+  def withNoticeDate(value: Instant): NoticeFinanceModel = copy(noticeDate = Some(value))
+  def withDueDate(value: Instant): NoticeFinanceModel = copy(dueDate = Some(value))
   def withNoticeNumber(value: String): NoticeFinanceModel = copy(noticeNumber = Some(value))
   def withTaxDue(value: BigDecimal): NoticeFinanceModel = copy(taxDue = Some(value))
   def withPenalty(value: BigDecimal): NoticeFinanceModel = copy(penalty = Some(value))
@@ -55,9 +54,9 @@ final case class NoticeFinanceModel(
   def withCspFeeRefund(value: BigDecimal): NoticeFinanceModel = copy(cspFeeRefund = Some(value))
   def withFileName(value: String): NoticeFinanceModel = copy(fileName = Some(value))
   def withResourceFileId(value: Long): NoticeFinanceModel = copy(resourceFileId = Some(value))
-  def withCreatedDate(value: Date): NoticeFinanceModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): NoticeFinanceModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): NoticeFinanceModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): NoticeFinanceModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): NoticeFinanceModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): NoticeFinanceModel = copy(modifiedUserId = Some(value))
   def withAttachmentUploadRequest(value: ResourceFileUploadRequestModel): NoticeFinanceModel = copy(attachmentUploadRequest = Some(value))
 }

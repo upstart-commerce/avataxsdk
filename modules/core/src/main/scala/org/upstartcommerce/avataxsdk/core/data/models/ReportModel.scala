@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class ReportModel(
     id: Option[Long] = None,
@@ -27,10 +26,10 @@ final case class ReportModel(
     size: Option[Int] = None,
     format: Option[String] = None,
     file: Option[String] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
     createdUser: Option[String] = None,
-    completedDate: Option[Date] = None
+    completedDate: Option[Instant] = None
 ) {
 
   def withId(value: Long): ReportModel = copy(id = Some(value))
@@ -42,8 +41,8 @@ final case class ReportModel(
   def withSize(value: Int): ReportModel = copy(size = Some(value))
   def withFormat(value: String): ReportModel = copy(format = Some(value))
   def withFile(value: String): ReportModel = copy(file = Some(value))
-  def withCreatedDate(value: Date): ReportModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): ReportModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): ReportModel = copy(createdUserId = Some(value))
   def withCreatedUser(value: String): ReportModel = copy(createdUser = Some(value))
-  def withCompletedDate(value: Date): ReportModel = copy(completedDate = Some(value))
+  def withCompletedDate(value: Instant): ReportModel = copy(completedDate = Some(value))
 }

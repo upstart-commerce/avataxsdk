@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class EcmsDetailModel(
     exemptCertDetailId: Int,
@@ -24,7 +23,7 @@ final case class EcmsDetailModel(
     region: String,
     idNo: Option[String] = None,
     country: String,
-    endDate: Option[Date] = None,
+    endDate: Option[Instant] = None,
     idType: Option[String] = None,
     isTaxCodeListExclusionList: Option[Int] = None,
     taxCodes: Option[List[EcmsDetailTaxCodeModel]] = None
@@ -36,7 +35,7 @@ final case class EcmsDetailModel(
   def withRegion(value: String): EcmsDetailModel = copy(region = value)
   def withIdNo(value: String): EcmsDetailModel = copy(idNo = Some(value))
   def withCountry(value: String): EcmsDetailModel = copy(country = value)
-  def withEndDate(value: Date): EcmsDetailModel = copy(endDate = Some(value))
+  def withEndDate(value: Instant): EcmsDetailModel = copy(endDate = Some(value))
   def withIdType(value: String): EcmsDetailModel = copy(idType = Some(value))
   def withIsTaxCodeListExclusionList(value: Int): EcmsDetailModel = copy(isTaxCodeListExclusionList = Some(value))
   def withTaxCodes(value: List[EcmsDetailTaxCodeModel]): EcmsDetailModel = copy(taxCodes = Some(value))

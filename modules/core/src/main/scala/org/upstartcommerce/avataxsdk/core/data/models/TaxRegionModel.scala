@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class TaxRegionModel(
     id: Option[Int] = None,
@@ -27,8 +26,8 @@ final case class TaxRegionModel(
     country: Option[String] = None,
     serCode: Option[String] = None,
     signatureCode: Option[String] = None,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     isAcm: Option[Boolean] = None,
     isSst: Option[Boolean] = None
 ) {
@@ -42,8 +41,8 @@ final case class TaxRegionModel(
   def withCountry(value: String): TaxRegionModel = copy(country = Some(value))
   def withSerCode(value: String): TaxRegionModel = copy(serCode = Some(value))
   def withSignatureCode(value: String): TaxRegionModel = copy(signatureCode = Some(value))
-  def withEffectiveDate(value: Date): TaxRegionModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): TaxRegionModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): TaxRegionModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): TaxRegionModel = copy(endDate = Some(value))
   def withIsAcm(value: Boolean): TaxRegionModel = copy(isAcm = Some(value))
   def withIsSst(value: Boolean): TaxRegionModel = copy(isSst = Some(value))
 }

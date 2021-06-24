@@ -14,14 +14,13 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class CertificateModel(
     id: Option[Int] = None,
     companyId: Option[Int] = None,
-    signedDate: Date,
-    expirationDate: Date,
+    signedDate: Instant,
+    expirationDate: Instant,
     filename: Option[String] = None,
     valid: Option[Boolean] = None,
     verified: Option[Boolean] = None,
@@ -30,8 +29,8 @@ final case class CertificateModel(
     validatedExemptionReason: Option[ExemptionReasonModel] = None,
     exemptionReason: ExemptionReasonModel,
     status: Option[String] = None,
-    createdDate: Option[Date] = None,
-    modifiedDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
+    modifiedDate: Option[Instant] = None,
     pageCount: Option[Int] = None,
     customers: Option[List[CustomerModel]] = None,
     poNumbers: Option[List[PoNumberModel]] = None,
@@ -46,8 +45,8 @@ final case class CertificateModel(
   lazy val pagesRaw: List[String] = pages.getOrElse(List.empty)
   def withId(value: Int): CertificateModel = copy(id = Some(value))
   def withCompanyId(value: Int): CertificateModel = copy(companyId = Some(value))
-  def withSignedDate(value: Date): CertificateModel = copy(signedDate = value)
-  def withExpirationDate(value: Date): CertificateModel = copy(expirationDate = value)
+  def withSignedDate(value: Instant): CertificateModel = copy(signedDate = value)
+  def withExpirationDate(value: Instant): CertificateModel = copy(expirationDate = value)
   def withFilename(value: String): CertificateModel = copy(filename = Some(value))
   def withValid(value: Boolean): CertificateModel = copy(valid = Some(value))
   def withVerified(value: Boolean): CertificateModel = copy(verified = Some(value))
@@ -56,8 +55,8 @@ final case class CertificateModel(
   def withValidatedExemptionReason(value: ExemptionReasonModel): CertificateModel = copy(validatedExemptionReason = Some(value))
   def withExemptionReason(value: ExemptionReasonModel): CertificateModel = copy(exemptionReason = value)
   def withStatus(value: String): CertificateModel = copy(status = Some(value))
-  def withCreatedDate(value: Date): CertificateModel = copy(createdDate = Some(value))
-  def withModifiedDate(value: Date): CertificateModel = copy(modifiedDate = Some(value))
+  def withCreatedDate(value: Instant): CertificateModel = copy(createdDate = Some(value))
+  def withModifiedDate(value: Instant): CertificateModel = copy(modifiedDate = Some(value))
   def withPageCount(value: Int): CertificateModel = copy(pageCount = Some(value))
   def withCustomers(value: List[CustomerModel]): CertificateModel = copy(customers = Some(value))
   def withPoNumbers(value: List[PoNumberModel]): CertificateModel = copy(poNumbers = Some(value))

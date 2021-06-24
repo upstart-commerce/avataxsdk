@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class UserModel(
@@ -29,9 +29,9 @@ final case class UserModel(
     securityRoleId: SecurityRoleId,
     passwordStatus: Option[PasswordStatusId] = None,
     isActive: Option[Boolean] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -46,8 +46,8 @@ final case class UserModel(
   def withSecurityRoleId(value: SecurityRoleId): UserModel = copy(securityRoleId = value)
   def withPasswordStatus(value: PasswordStatusId): UserModel = copy(passwordStatus = Some(value))
   def withIsActive(value: Boolean): UserModel = copy(isActive = Some(value))
-  def withCreatedDate(value: Date): UserModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): UserModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): UserModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): UserModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): UserModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): UserModel = copy(modifiedUserId = Some(value))
 }

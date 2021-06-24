@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class TaxRuleModel(
@@ -37,8 +37,8 @@ final case class TaxRuleModel(
     cap: Option[BigDecimal] = None,
     threshold: Option[BigDecimal] = None,
     options: Option[String] = None,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     description: Option[String] = None,
     countyFIPS: Option[String] = None,
     isSTPro: Option[Boolean] = None,
@@ -51,9 +51,9 @@ final case class TaxRuleModel(
     currencyCode: Option[String] = None,
     preferredProgramId: Option[Int] = None,
     uomId: Option[Int] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -76,8 +76,8 @@ final case class TaxRuleModel(
   def withCap(value: BigDecimal): TaxRuleModel = copy(cap = Some(value))
   def withThreshold(value: BigDecimal): TaxRuleModel = copy(threshold = Some(value))
   def withOptions(value: String): TaxRuleModel = copy(options = Some(value))
-  def withEffectiveDate(value: Date): TaxRuleModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): TaxRuleModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): TaxRuleModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): TaxRuleModel = copy(endDate = Some(value))
   def withDescription(value: String): TaxRuleModel = copy(description = Some(value))
   def withCountyFIPS(value: String): TaxRuleModel = copy(countyFIPS = Some(value))
   def withIsSTPro(value: Boolean): TaxRuleModel = copy(isSTPro = Some(value))
@@ -90,8 +90,8 @@ final case class TaxRuleModel(
   def withCurrencyCode(value: String): TaxRuleModel = copy(currencyCode = Some(value))
   def withPreferredProgramId(value: Int): TaxRuleModel = copy(preferredProgramId = Some(value))
   def withUomId(value: Int): TaxRuleModel = copy(uomId = Some(value))
-  def withCreatedDate(value: Date): TaxRuleModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): TaxRuleModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): TaxRuleModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): TaxRuleModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): TaxRuleModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): TaxRuleModel = copy(modifiedUserId = Some(value))
 }

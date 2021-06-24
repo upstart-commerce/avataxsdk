@@ -14,12 +14,12 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class DeclareNexusByAddressModel(
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     textCase: Option[TextCase] = None,
     line1: Option[String] = None,
     line2: Option[String] = None,
@@ -32,8 +32,8 @@ final case class DeclareNexusByAddressModel(
     longitude: Option[BigDecimal] = None
 ) {
 
-  def withEffectiveDate(value: Date): DeclareNexusByAddressModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): DeclareNexusByAddressModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): DeclareNexusByAddressModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): DeclareNexusByAddressModel = copy(endDate = Some(value))
   def withTextCase(value: TextCase): DeclareNexusByAddressModel = copy(textCase = Some(value))
   def withLine1(value: String): DeclareNexusByAddressModel = copy(line1 = Some(value))
   def withLine2(value: String): DeclareNexusByAddressModel = copy(line2 = Some(value))

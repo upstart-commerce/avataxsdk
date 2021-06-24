@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class FundingConfigurationModel(
     companyId: Option[Int] = None,
@@ -23,7 +22,7 @@ final case class FundingConfigurationModel(
     currency: Option[String] = None,
     isFundingSetup: Option[Boolean] = None,
     fundingMethod: Option[String] = None,
-    lastUpdated: Option[Date] = None
+    lastUpdated: Option[Instant] = None
 ) {
 
   def withCompanyId(value: Int): FundingConfigurationModel = copy(companyId = Some(value))
@@ -31,5 +30,5 @@ final case class FundingConfigurationModel(
   def withCurrency(value: String): FundingConfigurationModel = copy(currency = Some(value))
   def withIsFundingSetup(value: Boolean): FundingConfigurationModel = copy(isFundingSetup = Some(value))
   def withFundingMethod(value: String): FundingConfigurationModel = copy(fundingMethod = Some(value))
-  def withLastUpdated(value: Date): FundingConfigurationModel = copy(lastUpdated = Some(value))
+  def withLastUpdated(value: Instant): FundingConfigurationModel = copy(lastUpdated = Some(value))
 }

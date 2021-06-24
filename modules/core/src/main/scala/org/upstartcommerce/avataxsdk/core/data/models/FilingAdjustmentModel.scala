@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingAdjustmentModel(
@@ -26,9 +26,9 @@ final case class FilingAdjustmentModel(
     isCalculated: Option[Boolean] = None,
     accountType: PaymentAccountTypeId,
     reason: Option[String] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -40,8 +40,8 @@ final case class FilingAdjustmentModel(
   def withIsCalculated(value: Boolean): FilingAdjustmentModel = copy(isCalculated = Some(value))
   def withAccountType(value: PaymentAccountTypeId): FilingAdjustmentModel = copy(accountType = value)
   def withReason(value: String): FilingAdjustmentModel = copy(reason = Some(value))
-  def withCreatedDate(value: Date): FilingAdjustmentModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): FilingAdjustmentModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): FilingAdjustmentModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): FilingAdjustmentModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): FilingAdjustmentModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): FilingAdjustmentModel = copy(modifiedUserId = Some(value))
 }

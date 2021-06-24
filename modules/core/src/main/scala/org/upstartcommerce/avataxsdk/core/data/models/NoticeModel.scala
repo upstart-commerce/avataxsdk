@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class NoticeModel(
@@ -22,8 +22,8 @@ final case class NoticeModel(
     companyId: Int,
     statusId: Int,
     status: Option[String] = None,
-    receivedDate: Date,
-    closedDate: Option[Date] = None,
+    receivedDate: Instant,
+    closedDate: Option[Instant] = None,
     totalRemit: Option[BigDecimal] = None,
     customerTypeId: NoticeCustomerType,
     country: Option[String] = None,
@@ -44,7 +44,7 @@ final case class NoticeModel(
     priorityId: NoticePriorityId,
     customerComment: Option[String] = None,
     hideFromCustomer: Boolean,
-    expectedResolutionDate: Option[Date] = None,
+    expectedResolutionDate: Option[Instant] = None,
     showResolutionDateToCustomer: Boolean,
     closedByUserId: Option[Int] = None,
     createdByUserName: Option[String] = None,
@@ -61,9 +61,9 @@ final case class NoticeModel(
     finances: Option[List[NoticeFinanceModel]] = None,
     responsibility: Option[List[NoticeResponsibilityDetailModel]] = None,
     rootCause: Option[List[NoticeRootCauseDetailModel]] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
   lazy val commentsRaw: List[NoticeCommentModel] = comments.getOrElse(List.empty)
@@ -74,8 +74,8 @@ final case class NoticeModel(
   def withCompanyId(value: Int): NoticeModel = copy(companyId = value)
   def withStatusId(value: Int): NoticeModel = copy(statusId = value)
   def withStatus(value: String): NoticeModel = copy(status = Some(value))
-  def withReceivedDate(value: Date): NoticeModel = copy(receivedDate = value)
-  def withClosedDate(value: Date): NoticeModel = copy(closedDate = Some(value))
+  def withReceivedDate(value: Instant): NoticeModel = copy(receivedDate = value)
+  def withClosedDate(value: Instant): NoticeModel = copy(closedDate = Some(value))
   def withTotalRemit(value: BigDecimal): NoticeModel = copy(totalRemit = Some(value))
   def withCustomerTypeId(value: NoticeCustomerType): NoticeModel = copy(customerTypeId = value)
   def withCountry(value: String): NoticeModel = copy(country = Some(value))
@@ -96,7 +96,7 @@ final case class NoticeModel(
   def withPriorityId(value: NoticePriorityId): NoticeModel = copy(priorityId = value)
   def withCustomerComment(value: String): NoticeModel = copy(customerComment = Some(value))
   def withHideFromCustomer(value: Boolean): NoticeModel = copy(hideFromCustomer = value)
-  def withExpectedResolutionDate(value: Date): NoticeModel = copy(expectedResolutionDate = Some(value))
+  def withExpectedResolutionDate(value: Instant): NoticeModel = copy(expectedResolutionDate = Some(value))
   def withShowResolutionDateToCustomer(value: Boolean): NoticeModel = copy(showResolutionDateToCustomer = value)
   def withClosedByUserId(value: Int): NoticeModel = copy(closedByUserId = Some(value))
   def withCreatedByUserName(value: String): NoticeModel = copy(createdByUserName = Some(value))
@@ -113,8 +113,8 @@ final case class NoticeModel(
   def withFinances(value: List[NoticeFinanceModel]): NoticeModel = copy(finances = Some(value))
   def withResponsibility(value: List[NoticeResponsibilityDetailModel]): NoticeModel = copy(responsibility = Some(value))
   def withRootCause(value: List[NoticeRootCauseDetailModel]): NoticeModel = copy(rootCause = Some(value))
-  def withCreatedDate(value: Date): NoticeModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): NoticeModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): NoticeModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): NoticeModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): NoticeModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): NoticeModel = copy(modifiedUserId = Some(value))
 }

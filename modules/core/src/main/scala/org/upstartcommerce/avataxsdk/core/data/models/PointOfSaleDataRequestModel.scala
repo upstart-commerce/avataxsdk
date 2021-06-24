@@ -14,12 +14,12 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class PointOfSaleDataRequestModel(
     companyCode: String,
-    documentDate: Option[Date] = None,
+    documentDate: Option[Instant] = None,
     responseType: Option[PointOfSaleFileType] = None,
     taxCodes: Option[List[String]] = None,
     itemCodes: Option[List[String]] = None,
@@ -31,7 +31,7 @@ final case class PointOfSaleDataRequestModel(
   lazy val itemCodesRaw: List[String] = itemCodes.getOrElse(List.empty)
   lazy val locationCodesRaw: List[String] = locationCodes.getOrElse(List.empty)
   def withCompanyCode(value: String): PointOfSaleDataRequestModel = copy(companyCode = value)
-  def withDocumentDate(value: Date): PointOfSaleDataRequestModel = copy(documentDate = Some(value))
+  def withDocumentDate(value: Instant): PointOfSaleDataRequestModel = copy(documentDate = Some(value))
   def withResponseType(value: PointOfSaleFileType): PointOfSaleDataRequestModel = copy(responseType = Some(value))
   def withTaxCodes(value: List[String]): PointOfSaleDataRequestModel = copy(taxCodes = Some(value))
   def withItemCodes(value: List[String]): PointOfSaleDataRequestModel = copy(itemCodes = Some(value))

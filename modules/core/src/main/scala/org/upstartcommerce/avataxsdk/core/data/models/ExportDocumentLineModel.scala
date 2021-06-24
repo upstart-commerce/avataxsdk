@@ -14,13 +14,13 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class ExportDocumentLineModel(
     format: Option[ReportFormat] = None,
-    startDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    startDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     country: Option[String] = None,
     state: Option[String] = None,
     dateFilter: Option[ReportDateFilter] = None,
@@ -31,8 +31,8 @@ final case class ExportDocumentLineModel(
 ) {
 
   def withFormat(value: ReportFormat): ExportDocumentLineModel = copy(format = Some(value))
-  def withStartDate(value: Date): ExportDocumentLineModel = copy(startDate = Some(value))
-  def withEndDate(value: Date): ExportDocumentLineModel = copy(endDate = Some(value))
+  def withStartDate(value: Instant): ExportDocumentLineModel = copy(startDate = Some(value))
+  def withEndDate(value: Instant): ExportDocumentLineModel = copy(endDate = Some(value))
   def withCountry(value: String): ExportDocumentLineModel = copy(country = Some(value))
   def withState(value: String): ExportDocumentLineModel = copy(state = Some(value))
   def withDateFilter(value: ReportDateFilter): ExportDocumentLineModel = copy(dateFilter = Some(value))
