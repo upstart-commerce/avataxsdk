@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class NexusModel(
@@ -26,8 +26,8 @@ final case class NexusModel(
     jurisdictionTypeId: Option[JurisdictionType] = None,
     jurisCode: String,
     jurisName: String,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     shortName: Option[String] = None,
     signatureCode: Option[String] = None,
     stateAssignedNo: Option[String] = None,
@@ -38,9 +38,9 @@ final case class NexusModel(
     hasPermanentEstablishment: Option[Boolean] = None,
     taxId: Option[String] = None,
     streamlinedSalesTax: Option[Boolean] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
     nexusTaxTypeGroup: Option[String] = None,
     taxAuthorityId: Option[Long] = None,
@@ -55,8 +55,8 @@ final case class NexusModel(
   def withJurisdictionTypeId(value: JurisdictionType): NexusModel = copy(jurisdictionTypeId = Some(value))
   def withJurisCode(value: String): NexusModel = copy(jurisCode = value)
   def withJurisName(value: String): NexusModel = copy(jurisName = value)
-  def withEffectiveDate(value: Date): NexusModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): NexusModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): NexusModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): NexusModel = copy(endDate = Some(value))
   def withShortName(value: String): NexusModel = copy(shortName = Some(value))
   def withSignatureCode(value: String): NexusModel = copy(signatureCode = Some(value))
   def withStateAssignedNo(value: String): NexusModel = copy(stateAssignedNo = Some(value))
@@ -67,9 +67,9 @@ final case class NexusModel(
   def withHasPermanentEstablishment(value: Boolean): NexusModel = copy(hasPermanentEstablishment = Some(value))
   def withTaxId(value: String): NexusModel = copy(taxId = Some(value))
   def withStreamlinedSalesTax(value: Boolean): NexusModel = copy(streamlinedSalesTax = Some(value))
-  def withCreatedDate(value: Date): NexusModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): NexusModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): NexusModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): NexusModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): NexusModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): NexusModel = copy(modifiedUserId = Some(value))
   def withNexusTaxTypeGroup(value: String): NexusModel = copy(nexusTaxTypeGroup = Some(value))
   def withTaxAuthorityId(value: Long): NexusModel = copy(taxAuthorityId = Some(value))

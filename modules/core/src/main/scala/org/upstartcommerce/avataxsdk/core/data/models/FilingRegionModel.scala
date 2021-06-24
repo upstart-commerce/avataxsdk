@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingRegionModel(
@@ -32,16 +32,16 @@ final case class FilingRegionModel(
     consumerUseTaxAmount: Option[BigDecimal] = None,
     consumerUseNonTaxableAmount: Option[BigDecimal] = None,
     consumerUseTaxableAmount: Option[BigDecimal] = None,
-    approveDate: Option[Date] = None,
-    startDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    approveDate: Option[Instant] = None,
+    startDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     hasNexus: Option[Boolean] = None,
     status: Option[FilingStatusId] = None,
     returns: Option[List[FilingReturnModel]] = None,
     suggestReturns: Option[List[FilingsCheckupSuggestedFormModel]] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
   lazy val returnsRaw: List[FilingReturnModel] = returns.getOrElse(List.empty)
@@ -60,15 +60,15 @@ final case class FilingRegionModel(
   def withConsumerUseTaxAmount(value: BigDecimal): FilingRegionModel = copy(consumerUseTaxAmount = Some(value))
   def withConsumerUseNonTaxableAmount(value: BigDecimal): FilingRegionModel = copy(consumerUseNonTaxableAmount = Some(value))
   def withConsumerUseTaxableAmount(value: BigDecimal): FilingRegionModel = copy(consumerUseTaxableAmount = Some(value))
-  def withApproveDate(value: Date): FilingRegionModel = copy(approveDate = Some(value))
-  def withStartDate(value: Date): FilingRegionModel = copy(startDate = Some(value))
-  def withEndDate(value: Date): FilingRegionModel = copy(endDate = Some(value))
+  def withApproveDate(value: Instant): FilingRegionModel = copy(approveDate = Some(value))
+  def withStartDate(value: Instant): FilingRegionModel = copy(startDate = Some(value))
+  def withEndDate(value: Instant): FilingRegionModel = copy(endDate = Some(value))
   def withHasNexus(value: Boolean): FilingRegionModel = copy(hasNexus = Some(value))
   def withStatus(value: FilingStatusId): FilingRegionModel = copy(status = Some(value))
   def withReturns(value: List[FilingReturnModel]): FilingRegionModel = copy(returns = Some(value))
   def withSuggestReturns(value: List[FilingsCheckupSuggestedFormModel]): FilingRegionModel = copy(suggestReturns = Some(value))
-  def withCreatedDate(value: Date): FilingRegionModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): FilingRegionModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): FilingRegionModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): FilingRegionModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): FilingRegionModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): FilingRegionModel = copy(modifiedUserId = Some(value))
 }

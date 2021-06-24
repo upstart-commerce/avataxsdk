@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingModel(
@@ -23,9 +23,9 @@ final case class FilingModel(
     month: Option[Int] = None,
     year: Option[Short] = None,
     `type`: Option[WorksheetTypeId] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
     filingRegions: Option[List[FilingRegionModel]] = None
 ) {
@@ -35,9 +35,9 @@ final case class FilingModel(
   def withMonth(value: Int): FilingModel = copy(month = Some(value))
   def withYear(value: Short): FilingModel = copy(year = Some(value))
   def withType(value: WorksheetTypeId): FilingModel = copy(`type` = Some(value))
-  def withCreatedDate(value: Date): FilingModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): FilingModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): FilingModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): FilingModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): FilingModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): FilingModel = copy(modifiedUserId = Some(value))
   def withFilingRegions(value: List[FilingRegionModel]): FilingModel = copy(filingRegions = Some(value))
 }

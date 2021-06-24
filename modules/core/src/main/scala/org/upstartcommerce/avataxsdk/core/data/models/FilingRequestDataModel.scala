@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingRequestDataModel(
@@ -26,8 +26,8 @@ final case class FilingRequestDataModel(
     months: Short,
     taxTypeId: Option[MatchingTaxType] = None,
     locationCode: Option[String] = None,
-    effDate: Date,
-    endDate: Option[Date] = None,
+    effDate: Instant,
+    endDate: Option[Instant] = None,
     isClone: Option[Boolean] = None,
     country: Option[String] = None,
     region: Option[String] = None,
@@ -44,8 +44,8 @@ final case class FilingRequestDataModel(
   def withMonths(value: Short): FilingRequestDataModel = copy(months = value)
   def withTaxTypeId(value: MatchingTaxType): FilingRequestDataModel = copy(taxTypeId = Some(value))
   def withLocationCode(value: String): FilingRequestDataModel = copy(locationCode = Some(value))
-  def withEffDate(value: Date): FilingRequestDataModel = copy(effDate = value)
-  def withEndDate(value: Date): FilingRequestDataModel = copy(endDate = Some(value))
+  def withEffDate(value: Instant): FilingRequestDataModel = copy(effDate = value)
+  def withEndDate(value: Instant): FilingRequestDataModel = copy(endDate = Some(value))
   def withIsClone(value: Boolean): FilingRequestDataModel = copy(isClone = Some(value))
   def withCountry(value: String): FilingRequestDataModel = copy(country = Some(value))
   def withRegion(value: String): FilingRequestDataModel = copy(region = Some(value))

@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class ItemModel(
     id: Long,
@@ -25,9 +24,9 @@ final case class ItemModel(
     taxCode: Option[String] = None,
     description: String,
     itemGroup: Option[String] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
     classifications: Option[List[ClassificationModel]] = None,
     parameters: Option[List[ItemParameterModel]] = None
@@ -41,9 +40,9 @@ final case class ItemModel(
   def withTaxCode(value: String): ItemModel = copy(taxCode = Some(value))
   def withDescription(value: String): ItemModel = copy(description = value)
   def withItemGroup(value: String): ItemModel = copy(itemGroup = Some(value))
-  def withCreatedDate(value: Date): ItemModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): ItemModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): ItemModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): ItemModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): ItemModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): ItemModel = copy(modifiedUserId = Some(value))
   def withClassifications(value: List[ClassificationModel]): ItemModel = copy(classifications = Some(value))
   def withParameters(value: List[ItemParameterModel]): ItemModel = copy(parameters = Some(value))

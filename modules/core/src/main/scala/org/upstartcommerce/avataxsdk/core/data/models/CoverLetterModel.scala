@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class CoverLetterModel(
     id: Option[Int] = None,
@@ -23,8 +22,8 @@ final case class CoverLetterModel(
     title: Option[String] = None,
     subject: Option[String] = None,
     description: Option[String] = None,
-    createdDate: Option[Date] = None,
-    modifiedDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
+    modifiedDate: Option[Instant] = None,
     active: Option[Boolean] = None,
     pageCount: Option[Int] = None,
     templateFilename: Option[String] = None,
@@ -36,8 +35,8 @@ final case class CoverLetterModel(
   def withTitle(value: String): CoverLetterModel = copy(title = Some(value))
   def withSubject(value: String): CoverLetterModel = copy(subject = Some(value))
   def withDescription(value: String): CoverLetterModel = copy(description = Some(value))
-  def withCreatedDate(value: Date): CoverLetterModel = copy(createdDate = Some(value))
-  def withModifiedDate(value: Date): CoverLetterModel = copy(modifiedDate = Some(value))
+  def withCreatedDate(value: Instant): CoverLetterModel = copy(createdDate = Some(value))
+  def withModifiedDate(value: Instant): CoverLetterModel = copy(modifiedDate = Some(value))
   def withActive(value: Boolean): CoverLetterModel = copy(active = Some(value))
   def withPageCount(value: Int): CoverLetterModel = copy(pageCount = Some(value))
   def withTemplateFilename(value: String): CoverLetterModel = copy(templateFilename = Some(value))

@@ -14,7 +14,6 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class CommitMultiDocumentModel(code: String, `type`: Option[DocumentType] = None, commit: Boolean) {

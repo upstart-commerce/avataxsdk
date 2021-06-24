@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class ComplianceJurisdictionRateModel(
     jurisdictionId: Option[Int] = None,
@@ -26,8 +25,8 @@ final case class ComplianceJurisdictionRateModel(
     rate: Option[BigDecimal] = None,
     rateTypeId: Option[String] = None,
     taxTypeId: Option[String] = None,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     stateAssignedCode: Option[String] = None,
     taxAuthorityId: Option[Int] = None
 ) {
@@ -40,8 +39,8 @@ final case class ComplianceJurisdictionRateModel(
   def withRate(value: BigDecimal): ComplianceJurisdictionRateModel = copy(rate = Some(value))
   def withRateTypeId(value: String): ComplianceJurisdictionRateModel = copy(rateTypeId = Some(value))
   def withTaxTypeId(value: String): ComplianceJurisdictionRateModel = copy(taxTypeId = Some(value))
-  def withEffectiveDate(value: Date): ComplianceJurisdictionRateModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): ComplianceJurisdictionRateModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): ComplianceJurisdictionRateModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): ComplianceJurisdictionRateModel = copy(endDate = Some(value))
   def withStateAssignedCode(value: String): ComplianceJurisdictionRateModel = copy(stateAssignedCode = Some(value))
   def withTaxAuthorityId(value: Int): ComplianceJurisdictionRateModel = copy(taxAuthorityId = Some(value))
 }

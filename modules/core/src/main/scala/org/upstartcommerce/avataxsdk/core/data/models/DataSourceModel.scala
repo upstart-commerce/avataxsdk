@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class DataSourceModel(
     id: Option[Int] = None,
@@ -25,12 +24,12 @@ final case class DataSourceModel(
     isEnabled: Option[Boolean] = None,
     isSynced: Option[Boolean] = None,
     isAuthorized: Option[Boolean] = None,
-    lastSyncedDate: Option[Date] = None,
+    lastSyncedDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
-    deletedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
+    deletedDate: Option[Instant] = None,
     recalculate: Option[Boolean] = None
 ) {
 
@@ -41,11 +40,11 @@ final case class DataSourceModel(
   def withIsEnabled(value: Boolean): DataSourceModel = copy(isEnabled = Some(value))
   def withIsSynced(value: Boolean): DataSourceModel = copy(isSynced = Some(value))
   def withIsAuthorized(value: Boolean): DataSourceModel = copy(isAuthorized = Some(value))
-  def withLastSyncedDate(value: Date): DataSourceModel = copy(lastSyncedDate = Some(value))
+  def withLastSyncedDate(value: Instant): DataSourceModel = copy(lastSyncedDate = Some(value))
   def withCreatedUserId(value: Int): DataSourceModel = copy(createdUserId = Some(value))
-  def withCreatedDate(value: Date): DataSourceModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): DataSourceModel = copy(createdDate = Some(value))
   def withModifiedUserId(value: Int): DataSourceModel = copy(modifiedUserId = Some(value))
-  def withModifiedDate(value: Date): DataSourceModel = copy(modifiedDate = Some(value))
-  def withDeletedDate(value: Date): DataSourceModel = copy(deletedDate = Some(value))
+  def withModifiedDate(value: Instant): DataSourceModel = copy(modifiedDate = Some(value))
+  def withDeletedDate(value: Instant): DataSourceModel = copy(deletedDate = Some(value))
   def withRecalculate(value: Boolean): DataSourceModel = copy(recalculate = Some(value))
 }

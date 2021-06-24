@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class FundingStatusModel(
     requestId: Option[Long] = None,
@@ -30,9 +29,9 @@ final case class FundingStatusModel(
     methodReturn: Option[FundingESignMethodReturn] = None,
     status: Option[String] = None,
     errorMessage: Option[String] = None,
-    lastPolled: Option[Date] = None,
-    lastSigned: Option[Date] = None,
-    lastActivated: Option[Date] = None,
+    lastPolled: Option[Instant] = None,
+    lastSigned: Option[Instant] = None,
+    lastActivated: Option[Instant] = None,
     templateRequestId: Option[Long] = None
 ) {
 
@@ -48,8 +47,8 @@ final case class FundingStatusModel(
   def withMethodReturn(value: FundingESignMethodReturn): FundingStatusModel = copy(methodReturn = Some(value))
   def withStatus(value: String): FundingStatusModel = copy(status = Some(value))
   def withErrorMessage(value: String): FundingStatusModel = copy(errorMessage = Some(value))
-  def withLastPolled(value: Date): FundingStatusModel = copy(lastPolled = Some(value))
-  def withLastSigned(value: Date): FundingStatusModel = copy(lastSigned = Some(value))
-  def withLastActivated(value: Date): FundingStatusModel = copy(lastActivated = Some(value))
+  def withLastPolled(value: Instant): FundingStatusModel = copy(lastPolled = Some(value))
+  def withLastSigned(value: Instant): FundingStatusModel = copy(lastSigned = Some(value))
+  def withLastActivated(value: Instant): FundingStatusModel = copy(lastActivated = Some(value))
   def withTemplateRequestId(value: Long): FundingStatusModel = copy(templateRequestId = Some(value))
 }

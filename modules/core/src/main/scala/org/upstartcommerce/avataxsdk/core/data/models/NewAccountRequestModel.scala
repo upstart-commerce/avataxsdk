@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class NewAccountRequestModel(
@@ -22,8 +22,8 @@ final case class NewAccountRequestModel(
     connectorId: Option[String] = None,
     campaign: Option[String] = None,
     leadSource: Option[String] = None,
-    effectiveDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effectiveDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     accountName: String,
     website: Option[String] = None,
     paymentMethodId: Option[String] = None,
@@ -47,8 +47,8 @@ final case class NewAccountRequestModel(
   def withConnectorId(value: String): NewAccountRequestModel = copy(connectorId = Some(value))
   def withCampaign(value: String): NewAccountRequestModel = copy(campaign = Some(value))
   def withLeadSource(value: String): NewAccountRequestModel = copy(leadSource = Some(value))
-  def withEffectiveDate(value: Date): NewAccountRequestModel = copy(effectiveDate = Some(value))
-  def withEndDate(value: Date): NewAccountRequestModel = copy(endDate = Some(value))
+  def withEffectiveDate(value: Instant): NewAccountRequestModel = copy(effectiveDate = Some(value))
+  def withEndDate(value: Instant): NewAccountRequestModel = copy(endDate = Some(value))
   def withAccountName(value: String): NewAccountRequestModel = copy(accountName = value)
   def withWebsite(value: String): NewAccountRequestModel = copy(website = Some(value))
   def withPaymentMethodId(value: String): NewAccountRequestModel = copy(paymentMethodId = Some(value))

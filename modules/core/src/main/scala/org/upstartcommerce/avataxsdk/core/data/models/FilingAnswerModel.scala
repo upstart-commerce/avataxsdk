@@ -14,8 +14,6 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingAnswerModel(filingQuestionId: Long, answer: Option[Map[String, String]] = None) {
   lazy val answerRaw: Map[String, String] = answer.getOrElse(Map.empty)

@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class CompanyReturnSettingModel(
     id: Option[Long] = None,
@@ -23,9 +22,9 @@ final case class CompanyReturnSettingModel(
     filingQuestionId: Long,
     filingQuestionCode: Option[String] = None,
     value: Option[String] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -34,8 +33,8 @@ final case class CompanyReturnSettingModel(
   def withFilingQuestionId(value: Long): CompanyReturnSettingModel = copy(filingQuestionId = value)
   def withFilingQuestionCode(value: String): CompanyReturnSettingModel = copy(filingQuestionCode = Some(value))
   def withValue(value: String): CompanyReturnSettingModel = copy(value = Some(value))
-  def withCreatedDate(value: Date): CompanyReturnSettingModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): CompanyReturnSettingModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): CompanyReturnSettingModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): CompanyReturnSettingModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): CompanyReturnSettingModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): CompanyReturnSettingModel = copy(modifiedUserId = Some(value))
 }

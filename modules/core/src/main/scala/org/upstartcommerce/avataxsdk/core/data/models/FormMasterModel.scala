@@ -14,8 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
-import org.upstartcommerce.avataxsdk.core.data.enums._
+import java.time.Instant
 
 final case class FormMasterModel(
     id: Option[Int] = None,
@@ -65,9 +64,9 @@ final case class FormMasterModel(
     peerReviewedId: Option[String] = None,
     peerReviewedDate: Option[String] = None,
     createdUserId: Option[Int] = None,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     dorAddressMailTo: Option[String] = None,
     dorAddress1: Option[String] = None,
     dorAddress2: Option[String] = None,
@@ -100,8 +99,8 @@ final case class FormMasterModel(
     stackAggregation: Option[Boolean] = None,
     roundingPrecision: Option[String] = None,
     inconsistencyTolerance: Option[String] = None,
-    effDate: Option[Date] = None,
-    endDate: Option[Date] = None,
+    effDate: Option[Instant] = None,
+    endDate: Option[Instant] = None,
     visibleToCustomers: Option[Boolean] = None,
     requiresOutletSetup: Option[Boolean] = None,
     achCreditAllowed: Option[Boolean] = None,
@@ -169,9 +168,9 @@ final case class FormMasterModel(
   def withPeerReviewedId(value: String): FormMasterModel = copy(peerReviewedId = Some(value))
   def withPeerReviewedDate(value: String): FormMasterModel = copy(peerReviewedDate = Some(value))
   def withCreatedUserId(value: Int): FormMasterModel = copy(createdUserId = Some(value))
-  def withCreatedDate(value: Date): FormMasterModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): FormMasterModel = copy(createdDate = Some(value))
   def withModifiedUserId(value: Int): FormMasterModel = copy(modifiedUserId = Some(value))
-  def withModifiedDate(value: Date): FormMasterModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): FormMasterModel = copy(modifiedDate = Some(value))
   def withDorAddressMailTo(value: String): FormMasterModel = copy(dorAddressMailTo = Some(value))
   def withDorAddress1(value: String): FormMasterModel = copy(dorAddress1 = Some(value))
   def withDorAddress2(value: String): FormMasterModel = copy(dorAddress2 = Some(value))
@@ -204,8 +203,8 @@ final case class FormMasterModel(
   def withStackAggregation(value: Boolean): FormMasterModel = copy(stackAggregation = Some(value))
   def withRoundingPrecision(value: String): FormMasterModel = copy(roundingPrecision = Some(value))
   def withInconsistencyTolerance(value: String): FormMasterModel = copy(inconsistencyTolerance = Some(value))
-  def withEffDate(value: Date): FormMasterModel = copy(effDate = Some(value))
-  def withEndDate(value: Date): FormMasterModel = copy(endDate = Some(value))
+  def withEffDate(value: Instant): FormMasterModel = copy(effDate = Some(value))
+  def withEndDate(value: Instant): FormMasterModel = copy(endDate = Some(value))
   def withVisibleToCustomers(value: Boolean): FormMasterModel = copy(visibleToCustomers = Some(value))
   def withRequiresOutletSetup(value: Boolean): FormMasterModel = copy(requiresOutletSetup = Some(value))
   def withAchCreditAllowed(value: Boolean): FormMasterModel = copy(achCreditAllowed = Some(value))

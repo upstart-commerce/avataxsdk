@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.sql.Date
+import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class FilingRequestModel(
@@ -22,9 +22,9 @@ final case class FilingRequestModel(
     companyId: Int,
     filingRequestStatusId: Option[FilingRequestStatus] = None,
     data: FilingRequestDataModel,
-    createdDate: Option[Date] = None,
+    createdDate: Option[Instant] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Date] = None,
+    modifiedDate: Option[Instant] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -32,8 +32,8 @@ final case class FilingRequestModel(
   def withCompanyId(value: Int): FilingRequestModel = copy(companyId = value)
   def withFilingRequestStatusId(value: FilingRequestStatus): FilingRequestModel = copy(filingRequestStatusId = Some(value))
   def withData(value: FilingRequestDataModel): FilingRequestModel = copy(data = value)
-  def withCreatedDate(value: Date): FilingRequestModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Instant): FilingRequestModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): FilingRequestModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Date): FilingRequestModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Instant): FilingRequestModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): FilingRequestModel = copy(modifiedUserId = Some(value))
 }
