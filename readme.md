@@ -18,10 +18,10 @@ Add following to your build.sbt
 ```scala
 resolvers in Global += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 
-libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.9" // or whatever latest version is
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.10" // or whatever latest version is
 
 // or if you want ONLY data model
-// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.9"
+// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.10"
 ```
 
 ### Usage
@@ -46,7 +46,7 @@ Basic usage is:
 ```
 See `example` subproject for more examples.
 
-There is a good reference for data model 
+There is a good reference for data model
 [here](https://developer.avalara.com/api-reference/avatax/rest/v2/models/)
 
 Please avoid blocking (awaiting) on futures from this api.
