@@ -1,8 +1,5 @@
 # Avatax Client
 
-[_![Build](https://travis-ci.org/upstart-commerce/avataxsdk.svg?branch=master)_](https://travis-ci.org/upstart-commerce/avataxsdk)
-[ ![Download](https://api.bintray.com/packages/upstartcommerce/generic/avataxsdk-client/images/download.svg) ](https://bintray.com/upstartcommerce/generic/avataxsdk-client/_latestVersion)
-
 Pure Scala library for interaction with Avatax APIs.
 
 Project is split into following modules:
