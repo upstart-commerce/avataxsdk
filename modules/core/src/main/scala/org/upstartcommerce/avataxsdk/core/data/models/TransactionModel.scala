@@ -14,15 +14,16 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
+
+import java.util.Date
 
 final case class TransactionModel(
     id: Option[Long] = None,
     code: Option[String] = None,
     companyId: Option[Int] = None,
-    date: Option[Instant] = None,
-    paymentDate: Option[Instant] = None,
+    date: Option[Date] = None,
+    paymentDate: Option[Date] = None,
     status: Option[DocumentStatus] = None,
     `type`: Option[DocumentType] = None,
     batchCode: Option[String] = None,
@@ -56,15 +57,15 @@ final case class TransactionModel(
     softwareVersion: Option[String] = None,
     originAddressId: Option[Long] = None,
     destinationAddressId: Option[Long] = None,
-    exchangeRateEffectiveDate: Option[Instant] = None,
+    exchangeRateEffectiveDate: Option[Date] = None,
     exchangeRate: Option[BigDecimal] = None,
     isSellerImporterOfRecord: Option[Boolean] = None,
     description: Option[String] = None,
     email: Option[String] = None,
     businessIdentificationNo: Option[String] = None,
-    modifiedDate: Option[Instant] = None,
+    modifiedDate: Option[Date] = None,
     modifiedUserId: Option[Int] = None,
-    taxDate: Option[Instant] = None,
+    taxDate: Option[Date] = None,
     lines: Option[List[TransactionLineModel]] = None,
     addresses: Option[List[TransactionAddressModel]] = None,
     locationTypes: Option[List[TransactionLocationTypeModel]] = None,
@@ -85,8 +86,8 @@ final case class TransactionModel(
   def withId(value: Long): TransactionModel = copy(id = Some(value))
   def withCode(value: String): TransactionModel = copy(code = Some(value))
   def withCompanyId(value: Int): TransactionModel = copy(companyId = Some(value))
-  def withDate(value: Instant): TransactionModel = copy(date = Some(value))
-  def withPaymentDate(value: Instant): TransactionModel = copy(paymentDate = Some(value))
+  def withDate(value: Date): TransactionModel = copy(date = Some(value))
+  def withPaymentDate(value: Date): TransactionModel = copy(paymentDate = Some(value))
   def withStatus(value: DocumentStatus): TransactionModel = copy(status = Some(value))
   def withType(value: DocumentType): TransactionModel = copy(`type` = Some(value))
   def withBatchCode(value: String): TransactionModel = copy(batchCode = Some(value))
@@ -120,15 +121,15 @@ final case class TransactionModel(
   def withSoftwareVersion(value: String): TransactionModel = copy(softwareVersion = Some(value))
   def withOriginAddressId(value: Long): TransactionModel = copy(originAddressId = Some(value))
   def withDestinationAddressId(value: Long): TransactionModel = copy(destinationAddressId = Some(value))
-  def withExchangeRateEffectiveDate(value: Instant): TransactionModel = copy(exchangeRateEffectiveDate = Some(value))
+  def withExchangeRateEffectiveDate(value: Date): TransactionModel = copy(exchangeRateEffectiveDate = Some(value))
   def withExchangeRate(value: BigDecimal): TransactionModel = copy(exchangeRate = Some(value))
   def withIsSellerImporterOfRecord(value: Boolean): TransactionModel = copy(isSellerImporterOfRecord = Some(value))
   def withDescription(value: String): TransactionModel = copy(description = Some(value))
   def withEmail(value: String): TransactionModel = copy(email = Some(value))
   def withBusinessIdentificationNo(value: String): TransactionModel = copy(businessIdentificationNo = Some(value))
-  def withModifiedDate(value: Instant): TransactionModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Date): TransactionModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): TransactionModel = copy(modifiedUserId = Some(value))
-  def withTaxDate(value: Instant): TransactionModel = copy(taxDate = Some(value))
+  def withTaxDate(value: Date): TransactionModel = copy(taxDate = Some(value))
   def withLines(value: List[TransactionLineModel]): TransactionModel = copy(lines = Some(value))
   def withAddresses(value: List[TransactionAddressModel]): TransactionModel = copy(addresses = Some(value))
   def withLocationTypes(value: List[TransactionLocationTypeModel]): TransactionModel = copy(locationTypes = Some(value))
