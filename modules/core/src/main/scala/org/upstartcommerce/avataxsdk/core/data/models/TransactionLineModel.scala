@@ -17,6 +17,8 @@ package org.upstartcommerce.avataxsdk.core.data.models
 import java.time.Instant
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
+import java.sql.Date
+
 final case class TransactionLineModel(
     id: Option[Long] = None,
     transactionId: Option[Long] = None,
@@ -40,7 +42,7 @@ final case class TransactionLineModel(
     quantity: Option[BigDecimal] = None,
     ref1: Option[String] = None,
     ref2: Option[String] = None,
-    reportingDate: Option[Instant] = None,
+    reportingDate: Option[Date] = None,
     revAccount: Option[String] = None,
     sourcing: Option[Sourcing] = None,
     tax: Option[BigDecimal] = None,
@@ -48,7 +50,7 @@ final case class TransactionLineModel(
     taxCalculated: Option[BigDecimal] = None,
     taxCode: Option[String] = None,
     taxCodeId: Option[Int] = None,
-    taxDate: Option[Instant] = None,
+    taxDate: Option[Date] = None,
     taxEngine: Option[String] = None,
     taxOverrideType: Option[TaxOverrideType] = None,
     businessIdentificationNo: Option[String] = None,
@@ -90,7 +92,7 @@ final case class TransactionLineModel(
   def withQuantity(value: BigDecimal): TransactionLineModel = copy(quantity = Some(value))
   def withRef1(value: String): TransactionLineModel = copy(ref1 = Some(value))
   def withRef2(value: String): TransactionLineModel = copy(ref2 = Some(value))
-  def withReportingDate(value: Instant): TransactionLineModel = copy(reportingDate = Some(value))
+  def withReportingDate(value: Date): TransactionLineModel = copy(reportingDate = Some(value))
   def withRevAccount(value: String): TransactionLineModel = copy(revAccount = Some(value))
   def withSourcing(value: Sourcing): TransactionLineModel = copy(sourcing = Some(value))
   def withTax(value: BigDecimal): TransactionLineModel = copy(tax = Some(value))
@@ -98,7 +100,7 @@ final case class TransactionLineModel(
   def withTaxCalculated(value: BigDecimal): TransactionLineModel = copy(taxCalculated = Some(value))
   def withTaxCode(value: String): TransactionLineModel = copy(taxCode = Some(value))
   def withTaxCodeId(value: Int): TransactionLineModel = copy(taxCodeId = Some(value))
-  def withTaxDate(value: Instant): TransactionLineModel = copy(taxDate = Some(value))
+  def withTaxDate(value: Date): TransactionLineModel = copy(taxDate = Some(value))
   def withTaxEngine(value: String): TransactionLineModel = copy(taxEngine = Some(value))
   def withTaxOverrideType(value: TaxOverrideType): TransactionLineModel = copy(taxOverrideType = Some(value))
   def withBusinessIdentificationNo(value: String): TransactionLineModel = copy(businessIdentificationNo = Some(value))
