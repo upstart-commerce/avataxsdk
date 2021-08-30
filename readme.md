@@ -15,10 +15,10 @@ Add following to your build.sbt
 ```scala
 resolvers in Global += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 
-libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.10" // or whatever latest version is
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.12" // or whatever latest version is
 
 // or if you want ONLY data model
-// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.10"
+// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.12"
 ```
 
 ### Usage
