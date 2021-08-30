@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.time.Instant
+import java.time.LocalDateTime
 
 final case class TaxCodeModel(
     id: Option[Int] = None,
@@ -28,9 +28,9 @@ final case class TaxCodeModel(
     entityUseCode: Option[String] = None,
     isActive: Option[Boolean] = None,
     isSSTCertified: Option[Boolean] = None,
-    createdDate: Option[Instant] = None,
+    createdDate: Option[LocalDateTime] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Instant] = None,
+    modifiedDate: Option[LocalDateTime] = None,
     modifiedUserId: Option[Int] = None
 ) {
 
@@ -45,8 +45,8 @@ final case class TaxCodeModel(
   def withEntityUseCode(value: String): TaxCodeModel = copy(entityUseCode = Some(value))
   def withIsActive(value: Boolean): TaxCodeModel = copy(isActive = Some(value))
   def withIsSSTCertified(value: Boolean): TaxCodeModel = copy(isSSTCertified = Some(value))
-  def withCreatedDate(value: Instant): TaxCodeModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: LocalDateTime): TaxCodeModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): TaxCodeModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Instant): TaxCodeModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: LocalDateTime): TaxCodeModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): TaxCodeModel = copy(modifiedUserId = Some(value))
 }

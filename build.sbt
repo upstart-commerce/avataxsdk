@@ -13,7 +13,7 @@ lazy val publishSettings: Seq[Setting[_]] = Seq(
 lazy val notPublishSettings = Seq(publishArtifact := false, skip in publish := true, publishLocal := {}, publish := {})
 
 val scala_2_12V = "2.12.12"
-val scala_2_13V = "2.13.3"
+val scala_2_13V = "2.13.6"
 
 lazy val scalatest = "org.scalatest" %% "scalatest" % "3.2.0"
 
