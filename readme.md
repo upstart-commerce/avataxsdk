@@ -13,7 +13,7 @@ Project is split into following modules:
 
 Add following to your build.sbt
 ```scala
-resolvers in Global += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
+Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 
 libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.12" // or whatever latest version is
 

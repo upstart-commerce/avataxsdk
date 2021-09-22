@@ -1,6 +1,6 @@
 name := "avataxsdk"
 
-organization in ThisBuild := "org.upstartcommerce"
+ThisBuild / organization := "org.upstartcommerce"
 
 lazy val publishSettings: Seq[Setting[_]] = Seq(
   publishTo := Some(
@@ -10,7 +10,7 @@ lazy val publishSettings: Seq[Setting[_]] = Seq(
   publishMavenStyle := false
 )
 
-lazy val notPublishSettings = Seq(publishArtifact := false, skip in publish := true, publishLocal := {}, publish := {})
+lazy val notPublishSettings = Seq(publishArtifact := false, publish / skip := true, publishLocal := {}, publish := {})
 
 val scala_2_12V = "2.12.12"
 val scala_2_13V = "2.13.6"
@@ -78,8 +78,8 @@ lazy val scalacSettings = Seq(
       )
     else Seq.empty
   },
-  scalacOptions in (Compile, console) --= Seq("-Xfatal-warnings", "-Ywarn-unused:imports", "-Yno-imports"),
-  scalacOptions in (Compile, doc) --= Seq("-Xfatal-warnings", "-Ywarn-unused:imports", "-Yno-imports")
+  Compile / console / scalacOptions --= Seq("-Xfatal-warnings", "-Ywarn-unused:imports", "-Yno-imports"),
+  Compile / doc / scalacOptions --= Seq("-Xfatal-warnings", "-Ywarn-unused:imports", "-Yno-imports")
 )
 
 val avataxsdk = (project in file(".")).settings(notPublishSettings).aggregate(core, jsonPlay, client, example)
@@ -87,7 +87,7 @@ val avataxsdk = (project in file(".")).settings(notPublishSettings).aggregate(co
 lazy val commonSettings = scalacSettings ++ Seq(
   scalaVersion := scala_2_13V,
   crossScalaVersions := Seq( /* scala_2_12V, */ scala_2_13V),
-  parallelExecution in Test := false
+  Test / parallelExecution := false
 )
 
 lazy val core = project
