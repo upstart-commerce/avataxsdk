@@ -14,7 +14,7 @@
  */
 
 package org.upstartcommerce.avataxsdk.core.data.models
-import java.time.Instant
+import java.sql.Date
 import org.upstartcommerce.avataxsdk.core.data.enums._
 
 final case class CompanyModel(
@@ -30,7 +30,7 @@ final case class CompanyModel(
     taxpayerIdNumber: Option[String] = None,
     hasProfile: Option[Boolean] = None,
     isReportingEntity: Option[Boolean] = None,
-    sstEffectiveDate: Option[Instant] = None,
+    sstEffectiveDate: Option[Date] = None,
     defaultCountry: String,
     baseCurrencyCode: Option[String] = None,
     roundingLevelId: Option[RoundingLevelId] = None,
@@ -39,9 +39,9 @@ final case class CompanyModel(
     taxDependencyLevelId: Option[TaxDependencyLevelId] = None,
     inProgress: Option[Boolean] = None,
     businessIdentificationNo: Option[String] = None,
-    createdDate: Option[Instant] = None,
+    createdDate: Option[Date] = None,
     createdUserId: Option[Int] = None,
-    modifiedDate: Option[Instant] = None,
+    modifiedDate: Option[Date] = None,
     modifiedUserId: Option[Int] = None,
     contacts: Option[List[ContactModel]] = None,
     items: Option[List[ItemModel]] = None,
@@ -76,7 +76,7 @@ final case class CompanyModel(
   def withTaxpayerIdNumber(value: String): CompanyModel = copy(taxpayerIdNumber = Some(value))
   def withHasProfile(value: Boolean): CompanyModel = copy(hasProfile = Some(value))
   def withIsReportingEntity(value: Boolean): CompanyModel = copy(isReportingEntity = Some(value))
-  def withSstEffectiveDate(value: Instant): CompanyModel = copy(sstEffectiveDate = Some(value))
+  def withSstEffectiveDate(value: Date): CompanyModel = copy(sstEffectiveDate = Some(value))
   def withDefaultCountry(value: String): CompanyModel = copy(defaultCountry = value)
   def withBaseCurrencyCode(value: String): CompanyModel = copy(baseCurrencyCode = Some(value))
   def withRoundingLevelId(value: RoundingLevelId): CompanyModel = copy(roundingLevelId = Some(value))
@@ -85,9 +85,9 @@ final case class CompanyModel(
   def withTaxDependencyLevelId(value: TaxDependencyLevelId): CompanyModel = copy(taxDependencyLevelId = Some(value))
   def withInProgress(value: Boolean): CompanyModel = copy(inProgress = Some(value))
   def withBusinessIdentificationNo(value: String): CompanyModel = copy(businessIdentificationNo = Some(value))
-  def withCreatedDate(value: Instant): CompanyModel = copy(createdDate = Some(value))
+  def withCreatedDate(value: Date): CompanyModel = copy(createdDate = Some(value))
   def withCreatedUserId(value: Int): CompanyModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: Instant): CompanyModel = copy(modifiedDate = Some(value))
+  def withModifiedDate(value: Date): CompanyModel = copy(modifiedDate = Some(value))
   def withModifiedUserId(value: Int): CompanyModel = copy(modifiedUserId = Some(value))
   def withContacts(value: List[ContactModel]): CompanyModel = copy(contacts = Some(value))
   def withItems(value: List[ItemModel]): CompanyModel = copy(items = Some(value))
