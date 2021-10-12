@@ -25,22 +25,22 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait AccountAdvancedRuleScriptRootApi {
   def forScriptType(scriptType: AdvancedRuleScriptType): AccountAdvancedRuleScriptApi
 }
 
 object AccountAdvancedRuleScriptRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
   )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleScriptRootApi =
-    new ApiRoot(requester, security) with AccountAdvancedRuleScriptRootApi {
+    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleScriptRootApi {
       def forScriptType(scriptType: AdvancedRuleScriptType): AccountAdvancedRuleScriptApi =
-        AccountAdvancedRuleScriptApi(requester, security)(accountId, scriptType)
+        AccountAdvancedRuleScriptApi(requester, security, clientHeaders)(accountId, scriptType)
     }
 }
 
@@ -57,11 +57,11 @@ trait AccountAdvancedRuleScriptApi {
 }
 
 object AccountAdvancedRuleScriptApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int,
       scriptType: AdvancedRuleScriptType
   )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleScriptApi =
-    new ApiRoot(requester, security) with AccountAdvancedRuleScriptApi {
+    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleScriptApi {
       def approve: AvataxSimpleCall[AdvancedRuleScriptModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/advancedrulescripts/$scriptType/approve")
         val req = HttpRequest(uri = uri).withMethod(POST)

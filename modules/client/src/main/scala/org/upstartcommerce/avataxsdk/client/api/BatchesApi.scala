@@ -24,21 +24,21 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait BatchesRootApi {
   def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[BatchModel]
 }
 
 object BatchesRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): BatchesRootApi =
-    new ApiRoot(requester, security) with BatchesRootApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): BatchesRootApi =
+    new ApiRoot(requester, security, clientHeaders) with BatchesRootApi {
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[BatchModel] = {
         val uri = Uri(s"/api/v2/batches").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
@@ -55,11 +55,11 @@ trait CompanyBatchesRootApi {
 }
 
 object CompanyBatchesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyBatchesRootApi =
-    new ApiRoot(requester, security) with CompanyBatchesRootApi {
-      def forBatchId(id: Int): CompanyBatchesApi = CompanyBatchesApi(requester, security)(companyId, id)
+    new ApiRoot(requester, security, clientHeaders) with CompanyBatchesRootApi {
+      def forBatchId(id: Int): CompanyBatchesApi = CompanyBatchesApi(requester, security, clientHeaders)(companyId, id)
 
       def create(model: List[BatchModel]): AvataxSimpleCall[List[BatchModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/batches")
@@ -82,11 +82,11 @@ trait CompanyBatchesApi {
   def get: AvataxSimpleCall[BatchModel]
 }
 object CompanyBatchesApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, batchId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyBatchesApi =
-    new ApiRoot(requester, security) with CompanyBatchesApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      batchId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyBatchesApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyBatchesApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/batches/$batchId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

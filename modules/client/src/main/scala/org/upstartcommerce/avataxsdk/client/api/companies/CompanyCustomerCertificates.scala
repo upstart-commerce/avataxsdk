@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/customers/$customerCode/certificates */
 trait CompanyCustomerCertificatesRootApi {
@@ -40,13 +40,13 @@ trait CompanyCustomerCertificatesRootApi {
 }
 
 object CompanyCustomerCertificatesRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, customerCode: String)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesRootApi =
-    new ApiRoot(requester, security) with CompanyCustomerCertificatesRootApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      customerCode: String
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesRootApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomerCertificatesRootApi {
       def forCertId(certificateId: Int): CompanyCustomerCertificatesApi =
-        CompanyCustomerCertificatesApi(requester, security)(companyId, customerCode, certificateId)
+        CompanyCustomerCertificatesApi(requester, security, clientHeaders)(companyId, customerCode, certificateId)
 
       def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertificateModel] = {
         val uri =
@@ -72,9 +72,10 @@ object CompanyCustomerCertificatesRootApi {
 /** /api/v2/companies/$companyId/customers/$customerCode/certificates/$certificateId */
 trait CompanyCustomerCertificatesApi {}
 object CompanyCustomerCertificatesApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId: Int, customerCode: String, certificateId: Int)(
-      implicit system: ActorSystem,
-      materializer: Materializer
-  ): CompanyCustomerCertificatesApi =
-    new ApiRoot(requester, security) with CompanyCustomerCertificatesApi {}
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      customerCode: String,
+      certificateId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomerCertificatesApi {}
 }

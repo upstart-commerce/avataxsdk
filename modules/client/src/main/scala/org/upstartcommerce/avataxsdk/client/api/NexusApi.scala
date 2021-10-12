@@ -27,6 +27,7 @@ import org.upstartcommerce.avataxsdk.json._
 import akka.http.scaladsl.model.headers.Authorization
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/nexus */
 trait NexusRootApi {
@@ -34,8 +35,11 @@ trait NexusRootApi {
 }
 
 object NexusRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): NexusRootApi =
-    new ApiRoot(requester, security) with NexusRootApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): NexusRootApi =
+    new ApiRoot(requester, security, clientHeaders) with NexusRootApi {
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel] = {
         val uri = Uri(s"/api/v2/nexus").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)

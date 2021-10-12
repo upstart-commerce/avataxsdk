@@ -27,10 +27,10 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyCode/transactions */
 trait CompanyTransactionsRootApi {
@@ -40,11 +40,12 @@ trait CompanyTransactionsRootApi {
 }
 
 object CompanyTransactionsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyCode: String
   )(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsRootApi =
-    new ApiRoot(requester, security) with CompanyTransactionsRootApi {
-      def forId(transactionCode: String): CompanyTransactionsApi = CompanyTransactionsApi(requester, security)(companyCode, transactionCode)
+    new ApiRoot(requester, security, clientHeaders) with CompanyTransactionsRootApi {
+      def forId(transactionCode: String): CompanyTransactionsApi =
+        CompanyTransactionsApi(requester, security, clientHeaders)(companyCode, transactionCode)
 
       def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TransactionModel] = {
         val uri = Uri(s"/api/v2/companies/$companyCode/transactions").withQuery(include.asQuery.merge(options.asQuery))
@@ -78,11 +79,11 @@ trait CompanyTransactionsApi {
   def void(documentType: DocumentType, model: VoidTransactionModel): AvataxSimpleCall[TransactionModel]
 }
 object CompanyTransactionsApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyCode: String, transactionCode: String)(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsApi =
-    new ApiRoot(requester, security) with CompanyTransactionsApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyCode: String,
+      transactionCode: String
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyTransactionsApi {
 
       def adjust(documentType: DocumentType, model: AdjustTransactionModel): AvataxSimpleCall[TransactionModel] = {
         val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/adjust").withQuery(Query("companyCode" -> companyCode))

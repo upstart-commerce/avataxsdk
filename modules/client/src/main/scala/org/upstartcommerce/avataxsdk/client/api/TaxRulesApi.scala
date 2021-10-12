@@ -24,21 +24,21 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait TaxRulesRootApi {
   def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxRuleModel]
 }
 
 object TaxRulesRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): TaxRulesRootApi =
-    new ApiRoot(requester, security) with TaxRulesRootApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): TaxRulesRootApi =
+    new ApiRoot(requester, security, clientHeaders) with TaxRulesRootApi {
 
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxRuleModel] = {
         val uri = Uri(s"/api/v2/taxrules").withQuery(include.asQuery.merge(options.asQuery))

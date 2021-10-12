@@ -28,6 +28,7 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/accounts/$accountId/users */
 trait AccountUsersRootApi {
@@ -38,11 +39,11 @@ trait AccountUsersRootApi {
 }
 
 object AccountUsersRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
   )(implicit system: ActorSystem, materializer: Materializer): AccountUsersRootApi =
-    new ApiRoot(requester, security) with AccountUsersRootApi {
-      def forId(userId: Int): AccountUsersApi = AccountUsersApi(requester, security)(accountId, userId)
+    new ApiRoot(requester, security, clientHeaders) with AccountUsersRootApi {
+      def forId(userId: Int): AccountUsersApi = AccountUsersApi(requester, security, clientHeaders)(accountId, userId)
 
       def create(model: List[UserModel]): AvataxSimpleCall[List[UserModel]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users")
@@ -66,11 +67,11 @@ trait AccountUsersApi {
   def update(model: UserModel): AvataxSimpleCall[UserModel]
 }
 object AccountUsersApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(accountId: Int, userId: Int)(implicit system: ActorSystem, materializer: Materializer): AccountUsersApi =
-    new ApiRoot(requester, security) with AccountUsersApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      accountId: Int,
+      userId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): AccountUsersApi =
+    new ApiRoot(requester, security, clientHeaders) with AccountUsersApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users/$userId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

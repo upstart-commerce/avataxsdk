@@ -23,10 +23,10 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait AccountAdvancedRuleTableRootApi {
   def forTableName(csvTableName: String): AccountAdvancedRuleTableApi
@@ -35,12 +35,12 @@ trait AccountAdvancedRuleTableRootApi {
 }
 
 object AccountAdvancedRuleTableRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
   )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleTableRootApi =
-    new ApiRoot(requester, security) with AccountAdvancedRuleTableRootApi {
+    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleTableRootApi {
       def forTableName(csvTableName: String): AccountAdvancedRuleTableApi =
-        AccountAdvancedRuleTableApi(requester, security)(accountId, csvTableName)
+        AccountAdvancedRuleTableApi(requester, security, clientHeaders)(accountId, csvTableName)
 
       def get: AvataxSimpleCall[AdvancedRuleTableModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/advancedruletables")
@@ -60,11 +60,11 @@ trait AccountAdvancedRuleTableApi {
 }
 
 object AccountAdvancedRuleTableApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(accountId: Int, csvTableName: String)(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleTableApi =
-    new ApiRoot(requester, security) with AccountAdvancedRuleTableApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      accountId: Int,
+      csvTableName: String
+  )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleTableApi =
+    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleTableApi {
 
       def create(file: String): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/advancedruletables/$csvTableName")

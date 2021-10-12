@@ -28,6 +28,7 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/accounts/$accountId/subscriptions */
 trait AccountSubscriptionsRootApi {
@@ -38,11 +39,12 @@ trait AccountSubscriptionsRootApi {
 }
 
 object AccountSubscriptionsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
   )(implicit system: ActorSystem, materializer: Materializer): AccountSubscriptionsRootApi =
-    new ApiRoot(requester, security) with AccountSubscriptionsRootApi {
-      def forId(subscriptionId: Int): AccountSubscriptionsApi = AccountSubscriptionsApi(requester, security)(accountId, subscriptionId)
+    new ApiRoot(requester, security, clientHeaders) with AccountSubscriptionsRootApi {
+      def forId(subscriptionId: Int): AccountSubscriptionsApi =
+        AccountSubscriptionsApi(requester, security, clientHeaders)(accountId, subscriptionId)
 
       def create(model: List[SubscriptionModel]): AvataxSimpleCall[List[SubscriptionModel]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/subscriptions")
@@ -65,11 +67,11 @@ trait AccountSubscriptionsApi {
   def get: AvataxSimpleCall[SubscriptionModel]
 }
 object AccountSubscriptionsApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(accountId: Int, subscriptionId: Int)(implicit system: ActorSystem, materializer: Materializer): AccountSubscriptionsApi =
-    new ApiRoot(requester, security) with AccountSubscriptionsApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      accountId: Int,
+      subscriptionId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): AccountSubscriptionsApi =
+    new ApiRoot(requester, security, clientHeaders) with AccountSubscriptionsApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/subscriptions/$subscriptionId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

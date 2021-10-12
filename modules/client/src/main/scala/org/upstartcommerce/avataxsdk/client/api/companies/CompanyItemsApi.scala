@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/items */
 trait CompanyItemsRootApi {
@@ -39,11 +39,11 @@ trait CompanyItemsRootApi {
 }
 
 object CompanyItemsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyItemsRootApi =
-    new ApiRoot(requester, security) with CompanyItemsRootApi {
-      def forItemId(itemId: Long): CompanyItemsApi = CompanyItemsApi(requester, security)(companyId, itemId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyItemsRootApi {
+      def forItemId(itemId: Long): CompanyItemsApi = CompanyItemsApi(requester, security, clientHeaders)(companyId, itemId)
 
       def createItems(model: List[ItemModel]): AvataxSimpleCall[List[ItemModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items")
@@ -76,11 +76,11 @@ trait CompanyItemsApi {
   def updateParameter(parameterId: Long, model: ItemParameterModel): AvataxSimpleCall[ItemParameterModel]
 }
 object CompanyItemsApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, itemId: Long)(implicit system: ActorSystem, materializer: Materializer): CompanyItemsApi =
-    new ApiRoot(requester, security) with CompanyItemsApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      itemId: Long
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyItemsApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyItemsApi {
       def createClassifications(model: List[ItemClassificationInputModel]): AvataxSimpleCall[List[ItemClassificationOutputModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications")
         val req = HttpRequest(uri = uri).withMethod(POST)

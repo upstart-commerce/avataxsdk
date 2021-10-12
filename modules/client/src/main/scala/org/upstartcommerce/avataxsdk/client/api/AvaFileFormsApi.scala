@@ -24,10 +24,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait AvaFileFormsRootApi {
   def forId(formId: Int): AvaFileFormsApi
@@ -37,12 +37,12 @@ trait AvaFileFormsRootApi {
 }
 
 object AvaFileFormsRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsRootApi =
-    new ApiRoot(requester, security) with AvaFileFormsRootApi {
-      def forId(id: Int): AvaFileFormsApi = AvaFileFormsApi(requester, security)(id)
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): AvaFileFormsRootApi =
+    new ApiRoot(requester, security, clientHeaders) with AvaFileFormsRootApi {
+      def forId(id: Int): AvaFileFormsApi = AvaFileFormsApi(requester, security, clientHeaders)(id)
 
       def create(model: List[AvaFileFormModel]): AvataxSimpleCall[List[AvaFileFormModel]] = {
         val uri = Uri(s"/api/v2/avafileforms")
@@ -65,10 +65,10 @@ trait AvaFileFormsApi {
   def update(model: AvaFileFormModel): AvataxSimpleCall[AvaFileFormModel]
 }
 object AvaFileFormsApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       formId: Int
   )(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsApi =
-    new ApiRoot(requester, security) with AvaFileFormsApi {
+    new ApiRoot(requester, security, clientHeaders) with AvaFileFormsApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/avafileforms/$formId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

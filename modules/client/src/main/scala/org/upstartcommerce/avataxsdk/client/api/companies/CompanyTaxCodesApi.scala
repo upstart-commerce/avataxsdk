@@ -24,11 +24,11 @@ import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
-
 import akka.http.scaladsl.model.headers.Authorization
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/taxcodes */
 trait CompanyTaxCodesRootApi {
@@ -39,11 +39,11 @@ trait CompanyTaxCodesRootApi {
 }
 
 object CompanyTaxCodesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyTaxCodesRootApi =
-    new ApiRoot(requester, security) with CompanyTaxCodesRootApi {
-      def forId(taxCodeId: Int): CompanyTaxCodesApi = CompanyTaxCodesApi(requester, security)(companyId, taxCodeId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyTaxCodesRootApi {
+      def forId(taxCodeId: Int): CompanyTaxCodesApi = CompanyTaxCodesApi(requester, security, clientHeaders)(companyId, taxCodeId)
 
       def create(model: List[TaxCodeModel]): AvataxSimpleCall[List[TaxCodeModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/taxcodes")
@@ -66,11 +66,11 @@ trait CompanyTaxCodesApi {
   def update(model: TaxCodeModel): AvataxSimpleCall[TaxCodeModel]
 }
 object CompanyTaxCodesApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, taxCodeId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyTaxCodesApi =
-    new ApiRoot(requester, security) with CompanyTaxCodesApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      taxCodeId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyTaxCodesApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyTaxCodesApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/taxcodes/$taxCodeId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

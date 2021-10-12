@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/contacts */
 trait CompanyContactsRootApi {
@@ -40,11 +40,11 @@ trait CompanyContactsRootApi {
 }
 
 object CompanyContactsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyContactsRootApi =
-    new ApiRoot(requester, security) with CompanyContactsRootApi {
-      def forContactId(id: Int): CompanyContactsApi = CompanyContactsApi(requester, security)(companyId, id)
+    new ApiRoot(requester, security, clientHeaders) with CompanyContactsRootApi {
+      def forContactId(id: Int): CompanyContactsApi = CompanyContactsApi(requester, security, clientHeaders)(companyId, id)
 
       def create(model: List[ContactModel]): AvataxSimpleCall[List[ContactModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/contacts")
@@ -66,11 +66,11 @@ trait CompanyContactsApi {
   def get: AvataxSimpleCall[ContactModel]
 }
 object CompanyContactsApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, contactId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyContactsApi =
-    new ApiRoot(requester, security) with CompanyContactsApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      contactId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyContactsApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyContactsApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/contacts/$contactId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

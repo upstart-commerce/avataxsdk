@@ -28,6 +28,7 @@ import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import akka.http.scaladsl.model.headers.Authorization
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait AddressesRootApi {
   def resolve(
@@ -44,11 +45,11 @@ trait AddressesRootApi {
 }
 
 object AddressesRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): AddressesRootApi =
-    new ApiRoot(requester, security) with AddressesRootApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): AddressesRootApi =
+    new ApiRoot(requester, security, clientHeaders) with AddressesRootApi {
       def resolve(
           line1: String,
           line2: String,

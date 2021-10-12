@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/settings */
 trait CompanySettingsRootApi {
@@ -39,11 +39,11 @@ trait CompanySettingsRootApi {
 }
 
 object CompanySettingsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanySettingsRootApi =
-    new ApiRoot(requester, security) with CompanySettingsRootApi {
-      def forId(settingsId: Int): CompanySettingsApi = CompanySettingsApi(requester, security)(companyId, settingsId)
+    new ApiRoot(requester, security, clientHeaders) with CompanySettingsRootApi {
+      def forId(settingsId: Int): CompanySettingsApi = CompanySettingsApi(requester, security, clientHeaders)(companyId, settingsId)
 
       def create(model: List[SettingModel]): AvataxSimpleCall[List[SettingModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/settings")
@@ -68,11 +68,11 @@ trait CompanySettingsApi {
 }
 
 object CompanySettingsApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, settingsId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanySettingsApi =
-    new ApiRoot(requester, security) with CompanySettingsApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      settingsId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanySettingsApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanySettingsApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/settings/$settingsId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

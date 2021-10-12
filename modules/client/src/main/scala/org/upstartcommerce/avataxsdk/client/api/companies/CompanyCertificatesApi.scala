@@ -30,6 +30,7 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** api/v2/companies/$companyId/certificates */
 trait CompanyCertificatesRootApi {
@@ -41,11 +42,12 @@ trait CompanyCertificatesRootApi {
 }
 
 object CompanyCertificatesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesRootApi =
-    new ApiRoot(requester, security) with CompanyCertificatesRootApi {
-      def forId(certificateId: Int): CompanyCertificatesApi = CompanyCertificatesApi(requester, security)(companyId, certificateId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyCertificatesRootApi {
+      def forId(certificateId: Int): CompanyCertificatesApi =
+        CompanyCertificatesApi(requester, security, clientHeaders)(companyId, certificateId)
 
       def create(preValidatedExemptionReason: Boolean, model: List[CertificateModel]): AvataxSimpleCall[List[CertificateModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates")
@@ -90,11 +92,11 @@ trait CompanyCertificatesApi {
 }
 
 object CompanyCertificatesApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, certificateId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesApi =
-    new ApiRoot(requester, security) with CompanyCertificatesApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      certificateId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCertificatesApi {
       def delete: AvataxSimpleCall[CertificateModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

@@ -24,10 +24,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/notifications */
 trait NotificationsRootApi {
@@ -38,12 +38,12 @@ trait NotificationsRootApi {
 }
 
 object NotificationsRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): NotificationsRootApi =
-    new ApiRoot(requester, security) with NotificationsRootApi {
-      def forId(notificationId: Long): NotificationsApi = NotificationsApi(requester, security)(notificationId)
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): NotificationsRootApi =
+    new ApiRoot(requester, security, clientHeaders) with NotificationsRootApi {
+      def forId(notificationId: Long): NotificationsApi = NotificationsApi(requester, security, clientHeaders)(notificationId)
 
       def list(options: FiltrableQueryOptions): AvataxCollectionCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications").withQuery(options.asQuery)
@@ -67,10 +67,10 @@ trait NotificationsApi {
   def update(model: NotificationModel): AvataxSimpleCall[NotificationModel]
 }
 object NotificationsApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       notificationId: Long
   )(implicit system: ActorSystem, materializer: Materializer): NotificationsApi =
-    new ApiRoot(requester, security) with NotificationsApi {
+    new ApiRoot(requester, security, clientHeaders) with NotificationsApi {
       def dismiss: AvataxSimpleCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications/$notificationId/dismiss")
         val req = HttpRequest(uri = uri).withMethod(PUT)

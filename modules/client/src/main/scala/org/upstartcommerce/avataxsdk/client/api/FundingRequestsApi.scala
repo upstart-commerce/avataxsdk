@@ -23,10 +23,10 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait FundingRequestsRootApi {
   def forId(fundingReqId: Long): FundingRequestsApi
@@ -34,12 +34,12 @@ trait FundingRequestsRootApi {
 }
 
 object FundingRequestsRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): FundingRequestsRootApi =
-    new ApiRoot(requester, security) with FundingRequestsRootApi {
-      def forId(fundingReqId: Long): FundingRequestsApi = FundingRequestsApi(requester, security)(fundingReqId)
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): FundingRequestsRootApi =
+    new ApiRoot(requester, security, clientHeaders) with FundingRequestsRootApi {
+      def forId(fundingReqId: Long): FundingRequestsApi = FundingRequestsApi(requester, security, clientHeaders)(fundingReqId)
     }
 }
 
@@ -48,10 +48,10 @@ trait FundingRequestsApi {
   def status: AvataxSimpleCall[FundingStatusModel]
 }
 object FundingRequestsApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       fundingReqId: Long
   )(implicit system: ActorSystem, materializer: Materializer): FundingRequestsApi =
-    new ApiRoot(requester, security) with FundingRequestsApi {
+    new ApiRoot(requester, security, clientHeaders) with FundingRequestsApi {
       def activate: AvataxSimpleCall[FundingStatusModel] = {
         val uri = Uri(s"/api/v2/fundingrequests/$fundingReqId/widget")
         val req = HttpRequest(uri = uri).withMethod(GET)

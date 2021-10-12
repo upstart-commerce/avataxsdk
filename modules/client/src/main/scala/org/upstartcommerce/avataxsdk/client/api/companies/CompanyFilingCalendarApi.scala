@@ -26,10 +26,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/filingcalendars/ */
 trait CompanyFilingCalendarRootApi {
@@ -47,12 +47,12 @@ trait CompanyFilingCalendarRootApi {
 }
 
 object CompanyFilingCalendarRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarRootApi =
-    new ApiRoot(requester, security) with CompanyFilingCalendarRootApi {
+    new ApiRoot(requester, security, clientHeaders) with CompanyFilingCalendarRootApi {
       def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi =
-        CompanyFilingCalendarApi(requester, security)(companyId, filingCalendarId)
+        CompanyFilingCalendarApi(requester, security, clientHeaders)(companyId, filingCalendarId)
 
       def create(model: List[FilingCalendarModel]): AvataxSimpleCall[FilingCalendarModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars")
@@ -97,11 +97,11 @@ trait CompanyFilingCalendarApi {
   def update(model: FilingCalendarModel): AvataxSimpleCall[FilingCalendarModel]
 }
 object CompanyFilingCalendarApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, filingCalendarId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarApi =
-    new ApiRoot(requester, security) with CompanyFilingCalendarApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      filingCalendarId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyFilingCalendarApi {
       def cancelRequests(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId/cancel/request")
         val req = HttpRequest(uri = uri).withMethod(POST)

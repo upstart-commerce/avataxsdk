@@ -28,6 +28,7 @@ import org.upstartcommerce.avataxsdk.json._
 import akka.http.scaladsl.model.headers.Authorization
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** api/v2/companies/$companyId/customers/$customerCode/certexpressinvites */
 trait CompanyCustomerCertExpressInvitationRootApi {
@@ -37,13 +38,13 @@ trait CompanyCustomerCertExpressInvitationRootApi {
 }
 
 object CompanyCustomerCertExpressInvitationRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       customerCode: String
   )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertExpressInvitationRootApi =
-    new ApiRoot(requester, security) with CompanyCustomerCertExpressInvitationRootApi {
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomerCertExpressInvitationRootApi {
       def forId(certExpressId: Int): CompanyCustomerCertExpressInvitationApi =
-        CompanyCustomerCertExpressInvitationApi(requester, security)(companyId, customerCode, certExpressId)
+        CompanyCustomerCertExpressInvitationApi(requester, security, clientHeaders)(companyId, customerCode, certExpressId)
 
       def create(model: List[CreateCertExpressInvitationModel]): AvataxSimpleCall[List[CertExpressInvitationStatusModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/customers/$customerCode/certexpressinvites}")
@@ -59,11 +60,12 @@ trait CompanyCustomerCertExpressInvitationApi {
 }
 
 object CompanyCustomerCertExpressInvitationApi {
-  def apply(requester: Requester, security: Option[Authorization])(companyId: Int, customerCode: String, certExpressId: Int)(
-      implicit system: ActorSystem,
-      materializer: Materializer
-  ): CompanyCustomerCertExpressInvitationApi =
-    new ApiRoot(requester, security) with CompanyCustomerCertExpressInvitationApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      customerCode: String,
+      certExpressId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertExpressInvitationApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomerCertExpressInvitationApi {
       def get(include: Include): AvataxSimpleCall[CertExpressInvitationModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/customers/$customerCode/certexpressinvites/$certExpressId")
         val req = HttpRequest(uri = uri).withMethod(GET)

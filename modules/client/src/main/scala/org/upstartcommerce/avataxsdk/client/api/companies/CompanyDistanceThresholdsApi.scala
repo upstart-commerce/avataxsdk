@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/distancethresholds */
 trait CompanyDistanceThresholdRootApi {
@@ -39,11 +39,12 @@ trait CompanyDistanceThresholdRootApi {
 }
 
 object CompanyDistanceThresholdRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyDistanceThresholdRootApi =
-    new ApiRoot(requester, security) with CompanyDistanceThresholdRootApi {
-      def forId(distThreshId: Long): CompanyDistanceThresholdApi = CompanyDistanceThresholdApi(requester, security)(companyId, distThreshId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyDistanceThresholdRootApi {
+      def forId(distThreshId: Long): CompanyDistanceThresholdApi =
+        CompanyDistanceThresholdApi(requester, security, clientHeaders)(companyId, distThreshId)
 
       def create(model: List[CompanyDistanceThresholdModel]): AvataxSimpleCall[List[CompanyDistanceThresholdModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/distancethresholds")
@@ -66,11 +67,11 @@ trait CompanyDistanceThresholdApi {
   def update(model: CompanyDistanceThresholdModel): AvataxSimpleCall[CompanyDistanceThresholdModel]
 }
 object CompanyDistanceThresholdApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, distThreshId: Long)(implicit system: ActorSystem, materializer: Materializer): CompanyDistanceThresholdApi =
-    new ApiRoot(requester, security) with CompanyDistanceThresholdApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      distThreshId: Long
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyDistanceThresholdApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyDistanceThresholdApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/distancethresholds/$distThreshId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

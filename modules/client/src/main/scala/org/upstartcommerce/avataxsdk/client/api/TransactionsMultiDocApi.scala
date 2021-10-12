@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/transactions */
 trait TransactionsRootApi {
@@ -51,13 +51,14 @@ trait TransactionsRootApi {
 }
 
 object TransactionsRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): TransactionsRootApi =
-    new ApiRoot(requester, security) with TransactionsRootApi {
-      def forTransactionId(transactionId: Long): TransactionsApi = TransactionsApi(requester, security)(transactionId)
-      def forMultiDocTransId(multiDocTransId: Long): TransactionsMultiDocApi = TransactionsMultiDocApi(requester, security)(multiDocTransId)
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): TransactionsRootApi =
+    new ApiRoot(requester, security, clientHeaders) with TransactionsRootApi {
+      def forTransactionId(transactionId: Long): TransactionsApi = TransactionsApi(requester, security, clientHeaders)(transactionId)
+      def forMultiDocTransId(multiDocTransId: Long): TransactionsMultiDocApi =
+        TransactionsMultiDocApi(requester, security, clientHeaders)(multiDocTransId)
 
       def bulkLock(model: BulkLockTransactionModel): AvataxSimpleCall[BulkLockTransactionResult] = {
         val uri = Uri(s"/api/v2/transactions/lock")
@@ -154,10 +155,10 @@ trait TransactionsMultiDocApi {
   def get(include: Include): AvataxSimpleCall[MultiDocumentModel]
 }
 object TransactionsMultiDocApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       multiDocTransId: Long
   )(implicit system: ActorSystem, materializer: Materializer): TransactionsMultiDocApi =
-    new ApiRoot(requester, security) with TransactionsMultiDocApi {
+    new ApiRoot(requester, security, clientHeaders) with TransactionsMultiDocApi {
       def get(include: Include): AvataxSimpleCall[MultiDocumentModel] = {
         val uri = Uri(s"/api/v2/transactions/multidocument/$multiDocTransId").withQuery(include.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)
@@ -171,10 +172,10 @@ trait TransactionsApi {
   def get(include: Include): AvataxSimpleCall[TransactionModel]
 }
 object TransactionsApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       transactionId: Long
   )(implicit system: ActorSystem, materializer: Materializer): TransactionsApi =
-    new ApiRoot(requester, security) with TransactionsApi {
+    new ApiRoot(requester, security, clientHeaders) with TransactionsApi {
       def get(include: Include): AvataxSimpleCall[TransactionModel] = {
         val uri = Uri(s"/api/v2/transactions/$transactionId").withQuery(include.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)

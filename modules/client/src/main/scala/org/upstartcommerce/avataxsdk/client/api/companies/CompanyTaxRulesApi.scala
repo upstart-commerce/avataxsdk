@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/taxrules */
 trait CompanyTaxRulesRootApi {
@@ -39,11 +39,11 @@ trait CompanyTaxRulesRootApi {
 }
 
 object CompanyTaxRulesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyTaxRulesRootApi =
-    new ApiRoot(requester, security) with CompanyTaxRulesRootApi {
-      def forId(taxRuleId: Int): CompanyTaxRulesApi = CompanyTaxRulesApi(requester, security)(companyId, taxRuleId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyTaxRulesRootApi {
+      def forId(taxRuleId: Int): CompanyTaxRulesApi = CompanyTaxRulesApi(requester, security, clientHeaders)(companyId, taxRuleId)
 
       def create(model: List[TaxRuleModel]): AvataxSimpleCall[List[TaxRuleModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/taxrules")
@@ -65,11 +65,11 @@ trait CompanyTaxRulesApi {
   def update(model: TaxRuleModel): AvataxSimpleCall[TaxRuleModel]
 }
 object CompanyTaxRulesApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, taxRuleId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyTaxRulesApi =
-    new ApiRoot(requester, security) with CompanyTaxRulesApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      taxRuleId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyTaxRulesApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyTaxRulesApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/taxrules/$taxRuleId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

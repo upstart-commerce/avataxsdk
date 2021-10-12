@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/upcs */
 trait CompanyUPCsRootApi {
@@ -39,11 +39,11 @@ trait CompanyUPCsRootApi {
 }
 
 object CompanyUPCsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsRootApi =
-    new ApiRoot(requester, security) with CompanyUPCsRootApi {
-      def forId(upcId: Int): CompanyUPCsApi = CompanyUPCsApi(requester, security)(companyId, upcId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyUPCsRootApi {
+      def forId(upcId: Int): CompanyUPCsApi = CompanyUPCsApi(requester, security, clientHeaders)(companyId, upcId)
 
       def create(model: List[UPCModel]): AvataxSimpleCall[List[UPCModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs")
@@ -65,11 +65,11 @@ trait CompanyUPCsApi {
   def update(model: UPCModel): AvataxSimpleCall[UPCModel]
 }
 object CompanyUPCsApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, upcId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsApi =
-    new ApiRoot(requester, security) with CompanyUPCsApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      upcId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyUPCsApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs/$upcId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

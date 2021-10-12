@@ -27,10 +27,10 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** api/v2/companies */
 trait CompaniesRootApi {
@@ -46,13 +46,14 @@ trait CompaniesRootApi {
 }
 
 object CompaniesRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): CompaniesRootApi =
-    new ApiRoot(requester, security) with CompaniesRootApi {
-      def forCompanyId(companyId: Int): CompaniesApi = CompaniesApi(requester, security)(companyId)
-      def forCompanyCode(companyCode: String): CompaniesForCodeApi = CompaniesForCodeApi(requester, security)(companyCode)
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): CompaniesRootApi =
+    new ApiRoot(requester, security, clientHeaders) with CompaniesRootApi {
+      def forCompanyId(companyId: Int): CompaniesApi = CompaniesApi(requester, security, clientHeaders)(companyId)
+      def forCompanyCode(companyCode: String): CompaniesForCodeApi =
+        CompaniesForCodeApi(requester, security, clientHeaders)(companyCode)
 
       def initialize(model: CompanyInitializationModel): AvataxSimpleCall[CompanyModel] = {
         val uri = Uri(s"/api/v2/companies/initialize")
@@ -91,11 +92,11 @@ trait CompaniesForCodeApi {
   def transactions: CompanyTransactionsRootApi
 }
 object CompaniesForCodeApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyCode: String
   )(implicit system: ActorSystem, materializer: Materializer): CompaniesForCodeApi = {
-    new ApiRoot(requester, security) with CompaniesForCodeApi {
-      val transactions: CompanyTransactionsRootApi = CompanyTransactionsRootApi(requester, security)(companyCode)
+    new ApiRoot(requester, security, clientHeaders) with CompaniesForCodeApi {
+      val transactions: CompanyTransactionsRootApi = CompanyTransactionsRootApi(requester, security, clientHeaders)(companyCode)
     }
   }
 }
@@ -199,25 +200,26 @@ trait CompaniesApi {
 }
 
 object CompaniesApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompaniesApi =
-    new ApiRoot(requester, security) with CompaniesApi {
-      val customers: CompanyCustomersRootApi = CompanyCustomersRootApi(requester, security)(companyId)
-      val certificates: CompanyCertificatesRootApi = CompanyCertificatesRootApi(requester, security)(companyId)
-      val contacts: CompanyContactsRootApi = CompanyContactsRootApi(requester, security)(companyId)
-      val dataSources: CompanyDataSourcesRootApi = CompanyDataSourcesRootApi(requester, security)(companyId)
-      val distanceThresholds: CompanyDistanceThresholdRootApi = CompanyDistanceThresholdRootApi(requester, security)(companyId)
-      val filingRequests: CompanyFilingRequestsRootApi = CompanyFilingRequestsRootApi(requester, security)(companyId)
-      val companyRequests: CompanyFilingCalendarRootApi = CompanyFilingCalendarRootApi(requester, security)(companyId)
-      val locations: CompanyLocationsRootApi = CompanyLocationsRootApi(requester, security)(companyId)
-      val nexuses: CompanyNexusRootApi = CompanyNexusRootApi(requester, security)(companyId)
-      val notices: CompanyNoticesRootApi = CompanyNoticesRootApi(requester, security)(companyId)
-      val settings: CompanySettingsRootApi = CompanySettingsRootApi(requester, security)(companyId)
-      val taxCodes: CompanyTaxCodesRootApi = CompanyTaxCodesRootApi(requester, security)(companyId)
-      val reports: CompanyReportsRootApi = CompanyReportsRootApi(requester, security)(companyId)
-      val taxRules: CompanyTaxRulesRootApi = CompanyTaxRulesRootApi(requester, security)(companyId)
-      val upcs: CompanyUPCsRootApi = CompanyUPCsRootApi(requester, security)(companyId)
+    new ApiRoot(requester, security, clientHeaders) with CompaniesApi {
+      val customers: CompanyCustomersRootApi = CompanyCustomersRootApi(requester, security, clientHeaders)(companyId)
+      val certificates: CompanyCertificatesRootApi = CompanyCertificatesRootApi(requester, security, clientHeaders)(companyId)
+      val contacts: CompanyContactsRootApi = CompanyContactsRootApi(requester, security, clientHeaders)(companyId)
+      val dataSources: CompanyDataSourcesRootApi = CompanyDataSourcesRootApi(requester, security, clientHeaders)(companyId)
+      val distanceThresholds: CompanyDistanceThresholdRootApi =
+        CompanyDistanceThresholdRootApi(requester, security, clientHeaders)(companyId)
+      val filingRequests: CompanyFilingRequestsRootApi = CompanyFilingRequestsRootApi(requester, security, clientHeaders)(companyId)
+      val companyRequests: CompanyFilingCalendarRootApi = CompanyFilingCalendarRootApi(requester, security, clientHeaders)(companyId)
+      val locations: CompanyLocationsRootApi = CompanyLocationsRootApi(requester, security, clientHeaders)(companyId)
+      val nexuses: CompanyNexusRootApi = CompanyNexusRootApi(requester, security, clientHeaders)(companyId)
+      val notices: CompanyNoticesRootApi = CompanyNoticesRootApi(requester, security, clientHeaders)(companyId)
+      val settings: CompanySettingsRootApi = CompanySettingsRootApi(requester, security, clientHeaders)(companyId)
+      val taxCodes: CompanyTaxCodesRootApi = CompanyTaxCodesRootApi(requester, security, clientHeaders)(companyId)
+      val reports: CompanyReportsRootApi = CompanyReportsRootApi(requester, security, clientHeaders)(companyId)
+      val taxRules: CompanyTaxRulesRootApi = CompanyTaxRulesRootApi(requester, security, clientHeaders)(companyId)
+      val upcs: CompanyUPCsRootApi = CompanyUPCsRootApi(requester, security, clientHeaders)(companyId)
 
       def listCertExpressInvitations(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertExpressInvitationModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certexpressinvites").withQuery(include.asQuery.merge(options.asQuery))

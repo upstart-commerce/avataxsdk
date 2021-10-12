@@ -24,10 +24,10 @@ import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/reports */
 trait CompanyReportsRootApi {
@@ -38,11 +38,11 @@ trait CompanyReportsRootApi {
 }
 
 object CompanyReportsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyReportsRootApi =
-    new ApiRoot(requester, security) with CompanyReportsRootApi {
-      def forId(reportId: Long): CompanyReportsApi = CompanyReportsApi(requester, security)(companyId, reportId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyReportsRootApi {
+      def forId(reportId: Long): CompanyReportsApi = CompanyReportsApi(requester, security, clientHeaders)(companyId, reportId)
 
       def exportDocumentLine(model: ExportDocumentLineModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/companies/$companyId/reports/exportdocumentline")
@@ -61,9 +61,9 @@ object CompanyReportsRootApi {
 /** /api/v2/companies/$companyId/reports/$reportId */
 trait CompanyReportsApi {}
 object CompanyReportsApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, reportId: Long)(implicit system: ActorSystem, materializer: Materializer): CompanyReportsApi =
-    new ApiRoot(requester, security) with CompanyReportsApi {}
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      reportId: Long
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyReportsApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyReportsApi {}
 }

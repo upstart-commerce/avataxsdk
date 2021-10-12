@@ -24,18 +24,21 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait ItemsRootApi {
   def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ItemModel]
 }
 
 object ItemsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(implicit system: ActorSystem, materializer: Materializer): ItemsRootApi =
-    new ApiRoot(requester, security) with ItemsRootApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): ItemsRootApi =
+    new ApiRoot(requester, security, clientHeaders) with ItemsRootApi {
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ItemModel] = {
         val uri = Uri(s"/api/v2/items").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)

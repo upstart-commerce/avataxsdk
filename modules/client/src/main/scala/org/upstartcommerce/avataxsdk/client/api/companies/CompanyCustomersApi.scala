@@ -24,11 +24,11 @@ import org.upstartcommerce.avataxsdk.client.api._
 import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
-
 import akka.http.scaladsl.model.headers.Authorization
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** api/v2/companies/$companyId/customers */
 trait CompanyCustomersRootApi {
@@ -39,11 +39,12 @@ trait CompanyCustomersRootApi {
 }
 
 object CompanyCustomersRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersRootApi =
-    new ApiRoot(requester, security) with CompanyCustomersRootApi {
-      def forCustomerCode(code: String): CompanyCustomersApi = CompanyCustomersApi(requester, security)(companyId, code)
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomersRootApi {
+      def forCustomerCode(code: String): CompanyCustomersApi =
+        CompanyCustomersApi(requester, security, clientHeaders)(companyId, code)
 
       def create(model: List[CustomerModel]): AvataxSimpleCall[List[CustomerModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/customers")
@@ -72,15 +73,15 @@ trait CompanyCustomersApi {
 }
 
 object CompanyCustomersApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, customerCode: String)(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersApi =
-    new ApiRoot(requester, security) with CompanyCustomersApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      customerCode: String
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomersApi {
       val certExpressInvites: CompanyCustomerCertExpressInvitationRootApi =
-        CompanyCustomerCertExpressInvitationRootApi(requester, security)(companyId, customerCode)
+        CompanyCustomerCertExpressInvitationRootApi(requester, security, clientHeaders)(companyId, customerCode)
       val certificates: CompanyCustomerCertificatesRootApi =
-        CompanyCustomerCertificatesRootApi(requester, security)(companyId, customerCode)
+        CompanyCustomerCertificatesRootApi(requester, security, clientHeaders)(companyId, customerCode)
 
       def deleteCustomer(companyId: Int, customerCode: String): AvataxSimpleCall[CustomerModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/customers/$customerCode")

@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait DefinitionsRootApi {
   def getCrossBorderCode(country: String, hsCode: String): AvataxCollectionCall[HsCodeModel]
@@ -123,11 +123,11 @@ trait DefinitionsRootApi {
 }
 
 object DefinitionsRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): DefinitionsRootApi =
-    new ApiRoot(requester, security) with DefinitionsRootApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): DefinitionsRootApi =
+    new ApiRoot(requester, security, clientHeaders) with DefinitionsRootApi {
       def getCrossBorderCode(country: String, hsCode: String): AvataxCollectionCall[HsCodeModel] = {
         val uri = Uri(s"/api/v2/definitions/crossborder/$country/$hsCode/hierarchy")
         val req = HttpRequest(uri = uri).withMethod(GET)

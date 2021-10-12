@@ -24,7 +24,14 @@ object Test extends App {
 
   val user: String = ""
   val password: String = ""
-  val client = AvataxClient(Environment.Sandbox, poolQueueSize = 64, security = Some(SecuritySettings(user, password)))
+  val clientHeaders = ClientHeaders("MyApplication", "1.0", "CustomAvalaraSDK-Scala", "0.0.13", Some("IP"))
+
+  val client = AvataxClient(
+    Environment.Sandbox,
+    poolQueueSize = 64,
+    security = Some(SecuritySettings(user, password)),
+    clientHeaders = Some(clientHeaders)
+  )
 
 //  println("ping:")
 //  val request = client.utilities.ping()
@@ -32,17 +39,22 @@ object Test extends App {
 //  //  println(response)
 //  println(Json.toJson(response))
   //
-  println("address validation:")
-  val request1 = client.addresses.resolve("2000 Main Street", "", "", "Irvine", "CA", "92614", "US", "").apply()
-  val response1 = Await.result(request1, Duration.Inf)
-  println(Json.toJson(response1))
-  client.companies.forCompanyId(852652).customers.forCustomerCode("").get(Include())
+//  println("address validation:")
+//  val request1 = client.addresses.resolve("2000 Main Street", "", "", "Irvine", "CA", "92614", "US", "").apply()
+//  val response1 = Await.result(request1, Duration.Inf)
+//  println(Json.toJson(response1))
+//  client.companies.forCompanyId(852652).customers.forCustomerCode("").get(Include())
   //
-  println("get all companies:")
-  val req2 =
-    client.companies.query(Include(), FiltrableQueryOptions().withTop(1)).stream
-  val resp2f = req2.runForeach(println)
-  val resp2 = Await.result(resp2f, Duration.Inf)
+//  println("get all companies:")
+//  val req2 =
+//    client.companies.query(Include(), FiltrableQueryOptions().withTop(2)).stream
+//  val req2 = client.companies.query(Include(), FiltrableQueryOptions()).stream.runForeach(m => println(m))
+
+//  println("get all companies again:")
+
+  val req3 = client.companies.query(Include(), FiltrableQueryOptions()).batch().map(println)
+  //  val resp2f = req2.runForeach(println)
+//  val resp2 = Await.result(resp2f, Duration.Inf)
   //
   //  println("get company via id:")
   //  val request2 = client.companies.forCompanyId(852652).get(null).apply()
@@ -119,7 +131,7 @@ object Test extends App {
 //                                | 	 	 	"description": "Yarn"
 //                                | 	 	}
 //                                | 	],
-//                                | 	"type": "SalesOrder",
+//                                | 	"type": "SalesInvoice",
 //                                | 	"companyCode": "UPSTARTCOMMERCEINC",
 //                                | 	"customerCode": "ABC",
 //                                |   "date": "2021-02-04T00:00:00+00:00",
@@ -144,32 +156,33 @@ object Test extends App {
 //                                | 	"description": "Yarn",
 //                                | 	"debugLevel": "Normal"
 //                                |}""".stripMargin
-//  println("create transaction:")
+  println("create transaction:")
 //  val transactionJsonVal: JsValue = Json.parse(transactionJsonString)
 //  //  println(transactionJsonVal)
 //  val transaction: CreateTransactionModel = transactionJsonVal.as[CreateTransactionModel]
-//
+
 //  println(Json.toJson(transaction))
-//  val address = AddressLocationInfo(
-//    line1 = Some("2000 Main Street"),
-//    city = Some("Irvine"),
-//    region = Some("CA"),
-//    country = Some("US"),
-//    postalCode = Some("92614")
-//  )
-//  val model = CreateTransactionModel(
-//    `type` = Some(DocumentType.SalesOrder),
-//    companyCode = Some("UPSTARTCOMMERCEINC"),
-//    customerCode = "ABC",
-//    purchaseOrderNo = Some("1234"),
-//    lines = List(LineItemModel(amount = 20.0)),
-//    currencyCode = Some("USD"),
-//    date = Instant.now(),
-//    addresses = Some(AddressesModel(singleLocation = Some(address)))
-//  )
-//  val request5 = client.transactions.createTransaction(Include(), model).apply()
-//  val response5 = Await.result(request5, Duration.Inf)
-//  println(Json.toJson(response5))
+  val address = AddressLocationInfo(
+    line1 = Some("2000 Main Street"),
+    city = Some("Irvine"),
+    region = Some("CA"),
+    country = Some("US"),
+    postalCode = Some("92614")
+  )
+  val model = CreateTransactionModel(
+    `type` = Some(DocumentType.SalesInvoice),
+    companyCode = Some("UPSTARTCOMMERCEINC"),
+    customerCode = "Test",
+    purchaseOrderNo = Some("1234"),
+    lines = List(LineItemModel(amount = 500.0)),
+    currencyCode = Some("USD"),
+    date = Instant.now(),
+    addresses = Some(AddressesModel(singleLocation = Some(address)))
+  )
+  val request5 = client.transactions.createTransaction(Include(), model).apply()
+  val response5 = Await.result(request5, Duration.Inf)
+
+  println(Json.toJson(response5))
   //  val certificateJsonString = """[{
   //                                | 	"id": 0,
   //                                | 	"signedDate": "2021-02-04T22:14:03.1379624Z",

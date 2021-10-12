@@ -25,11 +25,11 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
-
 import akka.http.scaladsl.model.headers.Authorization
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/accounts */
 trait AccountsRootApi {
@@ -42,12 +42,12 @@ trait AccountsRootApi {
 }
 
 object AccountsRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): AccountsRootApi =
-    new ApiRoot(requester, security) with AccountsRootApi {
-      def forAccount(accountId: Int): AccountsApi = AccountsApi(requester, security)(accountId)
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): AccountsRootApi =
+    new ApiRoot(requester, security, clientHeaders) with AccountsRootApi {
+      def forAccount(accountId: Int): AccountsApi = AccountsApi(requester, security, clientHeaders)(accountId)
 
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[AccountModel] = {
         val uri = Uri(s"/api/v2/accounts").withQuery(include.asQuery.merge(options.asQuery))
@@ -94,17 +94,19 @@ trait AccountsApi {
 }
 
 object AccountsApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
   )(implicit system: ActorSystem, materializer: Materializer): AccountsApi =
-    new ApiRoot(requester, security) with AccountsApi {
+    new ApiRoot(requester, security, clientHeaders) with AccountsApi {
 
-      val advancedRuleScripts: AccountAdvancedRuleScriptRootApi = AccountAdvancedRuleScriptRootApi(requester, security)(accountId)
-      val advancedRuleTable: AccountAdvancedRuleTableRootApi = AccountAdvancedRuleTableRootApi(requester, security)(accountId)
+      val advancedRuleScripts: AccountAdvancedRuleScriptRootApi =
+        AccountAdvancedRuleScriptRootApi(requester, security, clientHeaders)(accountId)
+      val advancedRuleTable: AccountAdvancedRuleTableRootApi =
+        AccountAdvancedRuleTableRootApi(requester, security, clientHeaders)(accountId)
       val accountJurisdictionOverrides: AccountsJurisdictionOverridesRootApi =
-        AccountsJurisdictionOverridesRootApi(requester, security)(accountId)
-      val subscriptions: AccountSubscriptionsRootApi = AccountSubscriptionsRootApi(requester, security)(accountId)
-      val users: AccountUsersRootApi = AccountUsersRootApi(requester, security)(accountId)
+        AccountsJurisdictionOverridesRootApi(requester, security, clientHeaders)(accountId)
+      val subscriptions: AccountSubscriptionsRootApi = AccountSubscriptionsRootApi(requester, security, clientHeaders)(accountId)
+      val users: AccountUsersRootApi = AccountUsersRootApi(requester, security, clientHeaders)(accountId)
 
       def resetLicenseKey(model: ResetLicenseKeyModel): AvataxSimpleCall[LicenseKeyModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/resetlicensekey")

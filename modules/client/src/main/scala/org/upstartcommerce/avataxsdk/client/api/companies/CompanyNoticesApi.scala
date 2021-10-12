@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId */
 trait CompanyNoticesRootApi {
@@ -41,11 +41,11 @@ trait CompanyNoticesRootApi {
 }
 
 object CompanyNoticesRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesRootApi =
-    new ApiRoot(requester, security) with CompanyNoticesRootApi {
-      def forNoticeId(noticeId: Int): CompanyNoticesApi = CompanyNoticesApi(requester, security)(companyId, noticeId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyNoticesRootApi {
+      def forNoticeId(noticeId: Int): CompanyNoticesApi = CompanyNoticesApi(requester, security, clientHeaders)(companyId, noticeId)
 
       def create(model: List[NoticeModel]): AvataxSimpleCall[List[NoticeModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices")
@@ -94,11 +94,11 @@ trait CompanyNoticesApi {
   def updateComments(commentDetailsId: Int, model: NoticeCommentModel): AvataxSimpleCall[NoticeCommentModel]
 }
 object CompanyNoticesApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, noticeId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesApi =
-    new ApiRoot(requester, security) with CompanyNoticesApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      noticeId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyNoticesApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyNoticesApi {
       def createComment(model: List[NoticeCommentModel]): AvataxSimpleCall[List[NoticeCommentModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/notices/$noticeId/comments")
         val req = HttpRequest(uri = uri).withMethod(POST)

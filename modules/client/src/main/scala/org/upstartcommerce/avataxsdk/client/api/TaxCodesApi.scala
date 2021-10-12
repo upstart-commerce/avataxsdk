@@ -24,10 +24,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait TaxCodesRootApi {
   def forId(taxCodeId: Int): TaxCodesApi
@@ -36,12 +36,12 @@ trait TaxCodesRootApi {
 }
 
 object TaxCodesRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): TaxCodesRootApi =
-    new ApiRoot(requester, security) with TaxCodesRootApi {
-      def forId(taxCodeId: Int): TaxCodesApi = TaxCodesApi(requester, security)(taxCodeId)
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): TaxCodesRootApi =
+    new ApiRoot(requester, security, clientHeaders) with TaxCodesRootApi {
+      def forId(taxCodeId: Int): TaxCodesApi = TaxCodesApi(requester, security, clientHeaders)(taxCodeId)
 
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeModel] = {
         val uri = Uri(s"/api/v2/taxcodes").withQuery(include.asQuery.merge(options.asQuery))
@@ -53,8 +53,8 @@ object TaxCodesRootApi {
 
 trait TaxCodesApi {}
 object TaxCodesApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       taxCodeId: Int
   )(implicit system: ActorSystem, materializer: Materializer): TaxCodesApi =
-    new ApiRoot(requester, security) with TaxCodesApi {}
+    new ApiRoot(requester, security, clientHeaders) with TaxCodesApi {}
 }

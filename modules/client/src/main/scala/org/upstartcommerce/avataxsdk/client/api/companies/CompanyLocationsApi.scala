@@ -28,10 +28,10 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/locations */
 trait CompanyLocationsRootApi {
@@ -42,11 +42,12 @@ trait CompanyLocationsRootApi {
 }
 
 object CompanyLocationsRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsRootApi =
-    new ApiRoot(requester, security) with CompanyLocationsRootApi {
-      def forLocationId(locationId: Int): CompanyLocationsApi = CompanyLocationsApi(requester, security)(companyId, locationId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyLocationsRootApi {
+      def forLocationId(locationId: Int): CompanyLocationsApi =
+        CompanyLocationsApi(requester, security, clientHeaders)(companyId, locationId)
 
       def create(model: List[LocationModel]): AvataxSimpleCall[List[LocationModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations")
@@ -77,11 +78,11 @@ trait CompanyLocationsApi {
   ): AvataxSimpleCall[String]
 }
 object CompanyLocationsApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, locationId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsApi =
-    new ApiRoot(requester, security) with CompanyLocationsApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      locationId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyLocationsApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

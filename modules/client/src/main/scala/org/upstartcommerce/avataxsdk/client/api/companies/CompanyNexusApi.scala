@@ -25,10 +25,10 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/nexus */
 trait CompanyNexusRootApi {
@@ -41,11 +41,11 @@ trait CompanyNexusRootApi {
 }
 
 object CompanyNexusRootApi {
-  def apply(requester: Requester, security: Option[Authorization])(
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
   )(implicit system: ActorSystem, materializer: Materializer): CompanyNexusRootApi =
-    new ApiRoot(requester, security) with CompanyNexusRootApi {
-      def forNexusId(nexusId: Int): CompanyNexusApi = CompanyNexusApi(requester, security)(companyId, nexusId)
+    new ApiRoot(requester, security, clientHeaders) with CompanyNexusRootApi {
+      def forNexusId(nexusId: Int): CompanyNexusApi = CompanyNexusApi(requester, security, clientHeaders)(companyId, nexusId)
 
       def create(model: List[NexusModel]): AvataxSimpleCall[List[NexusModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/nexus")
@@ -81,11 +81,11 @@ trait CompanyNexusApi {
   def update(model: NexusModel): AvataxSimpleCall[NexusModel]
 }
 object CompanyNexusApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(companyId: Int, nexusId: Int)(implicit system: ActorSystem, materializer: Materializer): CompanyNexusApi =
-    new ApiRoot(requester, security) with CompanyNexusApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      companyId: Int,
+      nexusId: Int
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyNexusApi =
+    new ApiRoot(requester, security, clientHeaders) with CompanyNexusApi {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/nexus/$nexusId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

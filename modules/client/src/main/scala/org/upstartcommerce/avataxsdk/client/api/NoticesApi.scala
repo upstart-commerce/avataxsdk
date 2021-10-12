@@ -24,21 +24,21 @@ import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import akka.http.scaladsl.model.headers.Authorization
-
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait NoticesRootApi {
   def query(include: Include, options: QueryOptions): AvataxCollectionCall[NoticeModel]
 }
 
 object NoticesRootApi {
-  def apply(
-      requester: Requester,
-      security: Option[Authorization]
-  )(implicit system: ActorSystem, materializer: Materializer): NoticesRootApi =
-    new ApiRoot(requester, security) with NoticesRootApi {
+  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
+      implicit system: ActorSystem,
+      materializer: Materializer
+  ): NoticesRootApi =
+    new ApiRoot(requester, security, clientHeaders) with NoticesRootApi {
       def query(include: Include, options: QueryOptions): AvataxCollectionCall[NoticeModel] = {
         val uri = Uri(s"/api/v2/notices").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)
