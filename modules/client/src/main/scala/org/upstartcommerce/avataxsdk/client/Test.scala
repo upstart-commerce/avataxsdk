@@ -34,9 +34,9 @@ object Test extends App {
   )
 
 //  println("ping:")
-//  val request = client.utilities.ping()
-//  val response = Await.result(request, Duration.Inf)
-//  //  println(response)
+  val request = client.utilities.ping()
+  val response = Await.result(request, Duration.Inf)
+  //  println(response)
 //  println(Json.toJson(response))
   //
 //  println("address validation:")
@@ -52,7 +52,7 @@ object Test extends App {
 
 //  println("get all companies again:")
 
-  val req3 = client.companies.query(Include(), FiltrableQueryOptions()).batch().map(println)
+//  val req3 = client.companies.query(Include(), FiltrableQueryOptions()).batch().map(println)
   //  val resp2f = req2.runForeach(println)
 //  val resp2 = Await.result(resp2f, Duration.Inf)
   //
@@ -156,7 +156,7 @@ object Test extends App {
 //                                | 	"description": "Yarn",
 //                                | 	"debugLevel": "Normal"
 //                                |}""".stripMargin
-  println("create transaction:")
+//  println("create transaction:")
 //  val transactionJsonVal: JsValue = Json.parse(transactionJsonString)
 //  //  println(transactionJsonVal)
 //  val transaction: CreateTransactionModel = transactionJsonVal.as[CreateTransactionModel]
@@ -170,7 +170,7 @@ object Test extends App {
     postalCode = Some("92614")
   )
   val model = CreateTransactionModel(
-    `type` = Some(DocumentType.SalesInvoice),
+    `type` = Some(DocumentType.SalesOrder),
     companyCode = Some("UPSTARTCOMMERCEINC"),
     customerCode = "Test",
     purchaseOrderNo = Some("1234"),
@@ -182,7 +182,7 @@ object Test extends App {
   val request5 = client.transactions.createTransaction(Include(), model).apply()
   val response5 = Await.result(request5, Duration.Inf)
 
-  println(Json.toJson(response5))
+//  println(Json.toJson(response5))
   //  val certificateJsonString = """[{
   //                                | 	"id": 0,
   //                                | 	"signedDate": "2021-02-04T22:14:03.1379624Z",
@@ -258,9 +258,10 @@ object Test extends App {
   //  println(Json.toJson(certificates))
   //  println("___________")
   //  certificates.foreach(println)
-  //  println("___________")
-  //  val request6 = client.companies.forCompanyId(852652).certificates.create(true, certificates).apply()
-  //  val response6 = Await.result(request6, Duration.Inf)
+//    println("___________")
+  val request6 = client.definitions.listEntityUseCodes(FiltrableQueryOptions()).apply()
+//  val request6 = client.companies.forCompanyId(852652).certificates.create(true, certificates).apply()
+  val response6 = Await.result(request6, Duration.Inf)
   //  println(response6)
 
   //  println("get company certificates:")

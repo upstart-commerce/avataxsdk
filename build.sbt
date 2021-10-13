@@ -25,6 +25,7 @@ lazy val playJsonExt = "ai.x" %% "play-json-extensions" % "0.40.2"
 lazy val akkaHttpJson = "de.heikoseeberger" %% "akka-http-play-json" % "1.31.0"
 lazy val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
 lazy val compatLibForScala = "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.6"
+lazy val logback = "ch.qos.logback" % "logback-classic" % "1.2.3"
 
 lazy val scalacSettings = Seq(
   scalacOptions ++= Seq(
@@ -111,7 +112,7 @@ lazy val client = project
   .settings(
     publishSettings,
     name := "avataxsdk-client",
-    libraryDependencies ++= Seq(compatLibForScala, akkaHttp, akkaStream, akkaHttpJson, scalatest % Test)
+    libraryDependencies ++= Seq(compatLibForScala, akkaHttp, akkaStream, akkaHttpJson, logback, scalatest % Test)
   )
   .dependsOn(core, jsonPlay)
 
