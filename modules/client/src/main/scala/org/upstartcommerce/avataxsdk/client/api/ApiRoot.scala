@@ -33,6 +33,8 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.core.data.models._
+import org.slf4j.LoggerFactory
+import java.util.UUID.randomUUID
 
 import scala.concurrent.Future
 
@@ -46,35 +48,45 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
   }
 
   import system.dispatcher
+  private val log = LoggerFactory.getLogger(this.getClass)
 
   /**
     * Fetches data based on request
     */
-  def fetch[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, A]): Future[A] = {
+  def fetch[A: Format](req: HttpRequest, transactionId: String)(implicit um: Unmarshaller[HttpResponse, A]): Future[A] = {
+
     val req2 = req.withHeaders(req.headers ++ security)
     val resp = requester.request(req2)
-    import scala.concurrent.duration._
+
     resp.flatMap {
       case x if x.status.isFailure =>
-        Unmarshal(x).to[ErrorResult].flatMap(x => Future.failed(AvataxException(x)))
-      case x => Unmarshal(x).to[A]
+        val failedResponse = Unmarshal(x).to[ErrorResult]
+        failedResponse.flatMap(x => Future.failed(AvataxException(x)))
+      case x =>
+        val successfulResponse = Unmarshal(x).to[A]
+        log.debug(s"UUId: $transactionId. Response: $x")
+        successfulResponse
     }
   }
 
   /**
     * Fetches one batch of data based on request
     */
-  def batchFetch[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, FetchResult[A]]): Future[FetchResult[A]] =
-    fetch[FetchResult[A]](req)
+  def batchFetch[A: Format](req: HttpRequest, transactionId: String)(
+      implicit um: Unmarshaller[HttpResponse, FetchResult[A]]
+  ): Future[FetchResult[A]] =
+    fetch[FetchResult[A]](req, transactionId)
 
   /**
     * Pulls the data continously from source, following next link in resultset each time.
     */
-  def continuousStream[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, FetchResult[A]]): Source[A, NotUsed] = {
+  def continuousStream[A: Format](req: HttpRequest, transactionId: String)(
+      implicit um: Unmarshaller[HttpResponse, FetchResult[A]]
+  ): Source[A, NotUsed] = {
     Source
       .unfoldAsync[Option[HttpRequest], List[A]](Some(req)) {
         case Some(url) =>
-          batchFetch[A](url).map {
+          batchFetch[A](url, transactionId).map {
             case FetchResult(_, values, Some(next)) => Some((Some(url.withUri(next)), values))
             case FetchResult(_, values, None) => Some((None, values))
           }
@@ -84,40 +96,77 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
   }
 
   def avataxSimpleCall[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, A]): AvataxSimpleCall[A] = {
+    val transactionId = randomUUID.toString
+    log.debug(s"UUId: $transactionId. Request: $req")
     new AvataxSimpleCall[A] {
       val newReq = updateRequestWithHeader(req, clientHeaders)
-      def apply(): Future[A] = fetch[A](newReq)
+      def apply(): Future[A] = {
+        val response = fetch[A](newReq, transactionId)
+        response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
+        response
+      }
     }
   }
 
-  def avataxBodyCall[A: Writes, R: Format](req: HttpRequest, body: A)(implicit um: Unmarshaller[HttpResponse, R]): AvataxSimpleCall[R] =
+  def avataxBodyCall[A: Writes, R: Format](req: HttpRequest, body: A)(implicit um: Unmarshaller[HttpResponse, R]): AvataxSimpleCall[R] = {
+    val transactionId = randomUUID.toString
+    log.debug(s"UUId: $transactionId. Request: $req")
+    log.debug(s"UUId: $transactionId. Request Body: ${Json.toJson(body)}")
     new AvataxSimpleCall[R] {
       val newReq = updateRequestWithHeader(req, clientHeaders)
-      println("request headers are: " + newReq.headers)
       def apply(): Future[R] = marshal(body).flatMap { ent =>
-        fetch[R](newReq.withEntity(ent))
+        val response = fetch[R](newReq.withEntity(ent), transactionId)
+        response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
+        response
       }
     }
+  }
 
-  def avataxCollectionCall[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, FetchResult[A]]): AvataxCollectionCall[A] =
+  def avataxCollectionCall[A: Format](
+      req: HttpRequest
+  )(implicit um: Unmarshaller[HttpResponse, FetchResult[A]]): AvataxCollectionCall[A] = {
+    val transactionId = randomUUID.toString
+    log.debug(s"UUId: $transactionId. Request: $req")
+
     new AvataxCollectionCall[A] {
       val newReq = updateRequestWithHeader(req, clientHeaders)
-      def batch(): Future[FetchResult[A]] = batchFetch[A](newReq)
-      def stream: Source[A, NotUsed] = continuousStream[A](newReq)
+
+      def batch(): Future[FetchResult[A]] = {
+        val response = batchFetch[A](newReq, transactionId)
+        response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
+        response
+      }
+
+      def stream: Source[A, NotUsed] = {
+        val response = continuousStream[A](newReq, transactionId)
+        response.map(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
+        response
+      }
     }
+  }
 
   def avataxCollectionBodyCall[A: Writes, R: Format](req: HttpRequest, body: A)(
       implicit um: Unmarshaller[HttpResponse, FetchResult[R]]
-  ): AvataxCollectionCall[R] =
+  ): AvataxCollectionCall[R] = {
+    val transactionId = randomUUID.toString
+    log.debug(s"UUId: $transactionId. Request: $req")
+
     new AvataxCollectionCall[R] {
       val newReq = updateRequestWithHeader(req, clientHeaders)
+
       def batch(): Future[FetchResult[R]] = marshal(body).flatMap { ent =>
-        batchFetch[R](newReq.withEntity(ent))
+        val response = batchFetch[R](newReq.withEntity(ent), transactionId)
+        response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
+        response
       }
+
       def stream: Source[R, NotUsed] = Source.future(marshal(body)).flatMapConcat { ent =>
-        continuousStream[R](newReq.withEntity(ent))
+        val response = continuousStream[R](newReq.withEntity(ent), transactionId)
+        response.map(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
+        response
       }
     }
+  }
 
   private def marshal[A: Writes](entity: A): Future[RequestEntity] = {
     Marshal(entity).to[RequestEntity]
