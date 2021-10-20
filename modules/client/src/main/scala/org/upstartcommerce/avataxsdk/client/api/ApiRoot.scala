@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
 import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.http.scaladsl.marshalling._
-import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.{HttpRequest, HttpResponse, RequestEntity}
 import akka.http.scaladsl.model.headers.{Authorization, GenericHttpCredentials, RawHeader}
 import akka.http.scaladsl.unmarshalling._
 import akka.stream.Materializer
@@ -34,8 +34,9 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.core.data.models._
 import org.slf4j.LoggerFactory
-import java.util.UUID.randomUUID
+import org.upstartcommerce.avataxsdk.core.data.enums.ErrorCodeId
 
+import java.util.UUID.randomUUID
 import scala.concurrent.Future
 
 abstract class ApiRoot(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
@@ -60,8 +61,9 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
 
     resp.flatMap {
       case x if x.status.isFailure =>
-        val failedResponse = Unmarshal(x).to[ErrorResult]
-        failedResponse.flatMap(x => Future.failed(AvataxException(x)))
+        val error = getErrorResult(x, transactionId)
+        log.debug(s"UUId: $transactionId. Response: $x")
+        error.flatMap(x => Future.failed(AvataxException(x)))
       case x =>
         val successfulResponse = Unmarshal(x).to[A]
         log.debug(s"UUId: $transactionId. Response: $x")
@@ -98,8 +100,10 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
   def avataxSimpleCall[A: Format](req: HttpRequest)(implicit um: Unmarshaller[HttpResponse, A]): AvataxSimpleCall[A] = {
     val transactionId = randomUUID.toString
     log.debug(s"UUId: $transactionId. Request: $req")
+
     new AvataxSimpleCall[A] {
       val newReq = updateRequestWithHeader(req, clientHeaders)
+
       def apply(): Future[A] = {
         val response = fetch[A](newReq, transactionId)
         response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
@@ -112,8 +116,10 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
     val transactionId = randomUUID.toString
     log.debug(s"UUId: $transactionId. Request: $req")
     log.debug(s"UUId: $transactionId. Request Body: ${Json.toJson(body)}")
+
     new AvataxSimpleCall[R] {
       val newReq = updateRequestWithHeader(req, clientHeaders)
+
       def apply(): Future[R] = marshal(body).flatMap { ent =>
         val response = fetch[R](newReq.withEntity(ent), transactionId)
         response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
@@ -150,6 +156,7 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
   ): AvataxCollectionCall[R] = {
     val transactionId = randomUUID.toString
     log.debug(s"UUId: $transactionId. Request: $req")
+    log.debug(s"UUId: $transactionId. Request Body: ${Json.toJson(body)}")
 
     new AvataxCollectionCall[R] {
       val newReq = updateRequestWithHeader(req, clientHeaders)
@@ -182,6 +189,21 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
           h.machineName.fold("")(_ + ";")
     )
     header.fold(req)(v => req.addHeader(RawHeader("X-Avalara-Client", v)))
+  }
+
+  private def getErrorResult(httpResponse: HttpResponse, transactionId: String): Future[ErrorResult] = {
+    val failedResponse = Unmarshal(httpResponse).to[ErrorResult]
+    failedResponse.foreach(a => log.debug(s"UUId: $transactionId. Failed Response: ${Json.toJson(a)}"))
+
+    if (httpResponse.status.intValue() >= 500 && httpResponse.status.intValue() <= 599) {
+      val errorInfo: ErrorInfo = ErrorInfo(
+        code = Some(ErrorCodeId.RemoteServerError),
+        message = Some("Sorry for inconvenience, Avalara server not available at the moment.")
+      )
+      Future(ErrorResult(Some(errorInfo)))
+    } else {
+      failedResponse
+    }
   }
 
 }

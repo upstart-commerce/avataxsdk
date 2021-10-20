@@ -34,8 +34,8 @@ object Test extends App {
   )
 
 //  println("ping:")
-  val request = client.utilities.ping()
-  val response = Await.result(request, Duration.Inf)
+//  val request = client.utilities.ping()
+//  val response = Await.result(request, Duration.Inf)
   //  println(response)
 //  println(Json.toJson(response))
   //
@@ -177,6 +177,7 @@ object Test extends App {
     lines = List(LineItemModel(amount = 500.0)),
     currencyCode = Some("USD"),
     date = Instant.now(),
+//    addresses = Some(AddressesModel(singleLocation = Some(address), shipFrom = Some(address), shipTo = Some(address)))
     addresses = Some(AddressesModel(singleLocation = Some(address)))
   )
   val request5 = client.transactions.createTransaction(Include(), model).apply()
@@ -259,9 +260,9 @@ object Test extends App {
   //  println("___________")
   //  certificates.foreach(println)
 //    println("___________")
-  val request6 = client.definitions.listEntityUseCodes(FiltrableQueryOptions()).apply()
 //  val request6 = client.companies.forCompanyId(852652).certificates.create(true, certificates).apply()
-  val response6 = Await.result(request6, Duration.Inf)
+//  val request6 = client.definitions.listEntityUseCodes(FiltrableQueryOptions()).apply()
+//  val response6 = Await.result(request6, Duration.Inf)
   //  println(response6)
 
   //  println("get company certificates:")
