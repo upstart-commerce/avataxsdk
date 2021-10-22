@@ -58,6 +58,7 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
 
     val req2 = req.withHeaders(req.headers ++ security)
     val resp = requester.request(req2)
+    log.debug(s"UUId: $transactionId. Request Headers: ${req2.headers}")
 
     resp.flatMap {
       case x if x.status.isFailure =>
