@@ -213,7 +213,7 @@ object DefinitionsRootApi {
       }
 
       def listEntityUseCodes(options: FiltrableQueryOptions): AvataxCollectionCall[EntityUseCodeModel] = {
-        val uri = Uri("/api/v2/definitions/entityusecodes")
+        val uri = Uri("/api/v2/definitions/entityusecodes").withQuery(options.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[EntityUseCodeModel](req)
       }
@@ -467,7 +467,7 @@ object DefinitionsRootApi {
         avataxCollectionCall[TaxAuthorityTypeModel](req)
       }
       def listTaxCodes(options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeModel] = {
-        val uri = Uri("/api/v2/definitions/taxcodes")
+        val uri = Uri("/api/v2/definitions/taxcodes").withQuery(options.asQuery)
         val req = HttpRequest(uri = uri).withMethod(GET)
         avataxCollectionCall[TaxCodeModel](req)
       }

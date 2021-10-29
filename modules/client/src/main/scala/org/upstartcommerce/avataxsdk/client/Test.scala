@@ -177,11 +177,11 @@ object Test extends App {
     lines = List(LineItemModel(amount = 500.0)),
     currencyCode = Some("USD"),
     date = Instant.now(),
-//    addresses = Some(AddressesModel(singleLocation = Some(address), shipFrom = Some(address), shipTo = Some(address)))
-    addresses = Some(AddressesModel(singleLocation = Some(address)))
+    addresses = Some(AddressesModel(singleLocation = Some(address), shipFrom = Some(address), shipTo = Some(address)))
+//    addresses = Some(AddressesModel(singleLocation = Some(address)))
   )
-  val request5 = client.transactions.createTransaction(Include(), model).apply()
-  val response5 = Await.result(request5, Duration.Inf)
+//  val request5 = client.transactions.createTransaction(Include(), model).apply()
+//  val response5 = Await.result(request5, Duration.Inf)
 
 //  println(Json.toJson(response5))
   //  val certificateJsonString = """[{
@@ -261,8 +261,11 @@ object Test extends App {
   //  certificates.foreach(println)
 //    println("___________")
 //  val request6 = client.companies.forCompanyId(852652).certificates.create(true, certificates).apply()
-//  val request6 = client.definitions.listEntityUseCodes(FiltrableQueryOptions()).apply()
-//  val response6 = Await.result(request6, Duration.Inf)
+  val request6 = client.definitions.listTaxCodes(FiltrableQueryOptions(top = Some(2))).apply()
+  val response6 = Await.result(request6, Duration.Inf)
+
+//  val request7 = client.definitions.listCurrencies(FiltrableQueryOptions()).apply()
+//  val respons7 = Await.result(request7, Duration.Inf)
   //  println(response6)
 
   //  println("get company certificates:")
