@@ -261,11 +261,11 @@ object Test extends App {
   //  certificates.foreach(println)
 //    println("___________")
 //  val request6 = client.companies.forCompanyId(852652).certificates.create(true, certificates).apply()
-  val request6 = client.definitions.listTaxCodes(FiltrableQueryOptions(top = Some(2))).apply()
+  val request6 = client.definitions.listTaxCodes(FiltrableQueryOptions(top = Some(1))).apply()
   val response6 = Await.result(request6, Duration.Inf)
 
-//  val request7 = client.definitions.listCurrencies(FiltrableQueryOptions()).apply()
-//  val respons7 = Await.result(request7, Duration.Inf)
+  val request7 = client.definitions.listCurrencies(FiltrableQueryOptions(top = Some(-1))).apply()
+  val respons7 = Await.result(request7, Duration.Inf)
   //  println(response6)
 
   //  println("get company certificates:")
