@@ -27,11 +27,11 @@ final case class TaxCodeModel(
     goodsServiceCode: Option[Long] = None,
     entityUseCode: Option[String] = None,
     isActive: Option[Boolean] = None,
-    isSSTCertified: Option[Boolean] = None,
-    createdDate: Option[LocalDateTime] = None,
-    createdUserId: Option[Int] = None,
-    modifiedDate: Option[LocalDateTime] = None,
-    modifiedUserId: Option[Int] = None
+    isSSTCertified: Option[Boolean] = None
+//    createdDate: Option[LocalDateTime] = None,
+//    createdUserId: Option[Int] = None,
+//    modifiedDate: Option[LocalDateTime] = None,
+//    modifiedUserId: Option[Int] = None
 ) {
 
   def withId(value: Int): TaxCodeModel = copy(id = Some(value))
@@ -45,8 +45,8 @@ final case class TaxCodeModel(
   def withEntityUseCode(value: String): TaxCodeModel = copy(entityUseCode = Some(value))
   def withIsActive(value: Boolean): TaxCodeModel = copy(isActive = Some(value))
   def withIsSSTCertified(value: Boolean): TaxCodeModel = copy(isSSTCertified = Some(value))
-  def withCreatedDate(value: LocalDateTime): TaxCodeModel = copy(createdDate = Some(value))
-  def withCreatedUserId(value: Int): TaxCodeModel = copy(createdUserId = Some(value))
-  def withModifiedDate(value: LocalDateTime): TaxCodeModel = copy(modifiedDate = Some(value))
-  def withModifiedUserId(value: Int): TaxCodeModel = copy(modifiedUserId = Some(value))
+//  def withCreatedDate(value: LocalDateTime): TaxCodeModel = copy(createdDate = Some(value))
+//  def withCreatedUserId(value: Int): TaxCodeModel = copy(createdUserId = Some(value))
+//  def withModifiedDate(value: LocalDateTime): TaxCodeModel = copy(modifiedDate = Some(value))
+//  def withModifiedUserId(value: Int): TaxCodeModel = copy(modifiedUserId = Some(value))
 }
