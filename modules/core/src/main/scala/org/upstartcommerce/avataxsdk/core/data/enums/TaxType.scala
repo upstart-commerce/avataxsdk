@@ -17,6 +17,7 @@ package org.upstartcommerce.avataxsdk.core.data.enums
 
 sealed trait TaxType
 object TaxType {
+  case object Mattress extends TaxType
   case object Sales extends TaxType
   case object Use extends TaxType
   case object ConsumerUse extends TaxType
