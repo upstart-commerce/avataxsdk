@@ -7,18 +7,33 @@ Project is split into following modules:
 - core - Zero-dependency project - Scala ADT of data transfer objects. Based on
   docs & [official sdk](https://github.com/avadev/AvaTax-REST-V2-JRE-SDK).
 - client - akka-http + play-json client for AvaTax
+- client-pekko - pekko-http + play-json client for AvaTax
 - play-json - formats and derivation for AvaTax data types
 
 ### Installation
 
 Add following to your build.sbt
+
+* akka
+
 ```scala
 Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 
-libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client" % "0.0.12" // or whatever latest version is
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-akka" % "0.0.19" // or whatever latest version is
 
 // or if you want ONLY data model
-// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.12"
+// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.19"
+```
+
+* pekko
+
+```scala
+Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
+
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-pekko" % "0.0.19" // or whatever latest version is
+
+// or if you want ONLY data model
+// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.19"
 ```
 
 ### Usage
