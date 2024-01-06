@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class AdvancedRuleTableModel(
     id: Long,
     accountId: Option[Int] = None,

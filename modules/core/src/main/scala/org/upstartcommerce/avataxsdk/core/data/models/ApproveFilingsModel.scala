@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class ApproveFilingsModel(approve: Boolean) {
 
   def withApprove(value: Boolean): ApproveFilingsModel = copy(approve = value)
