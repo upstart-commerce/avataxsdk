@@ -21,25 +21,25 @@ import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** api/v2/companies/$companyId/certificates */
-trait CompanyCertificatesRootApi {
-  def forId(certificateId: Int): CompanyCertificatesApi
-  def create(preValidatedExemptionReason: Boolean, model: List[CertificateModel]): AvataxSimpleCall[List[CertificateModel]]
-  def getSetup: AvataxSimpleCall[ProvisionStatusModel]
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertificateModel]
-  def requestSetup: AvataxSimpleCall[ProvisionStatusModel]
+trait CompanyCertificatesRootApi[F[_], S[_]] {
+  def forId(certificateId: Int): CompanyCertificatesApi[F, S]
+  def create(preValidatedExemptionReason: Boolean, model: List[CertificateModel]): AvataxSimpleCall[F, List[CertificateModel]]
+  def getSetup: AvataxSimpleCall[F, ProvisionStatusModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CertificateModel]
+  def requestSetup: AvataxSimpleCall[F, ProvisionStatusModel]
 }
 
 /** api/v2/companies/$companyId/certificates/$certificateId */
-trait CompanyCertificatesApi {
-  def delete: AvataxSimpleCall[CertificateModel]
-  def downloadImage(page: Int, `type`: CertificatePreviewType): AvataxSimpleCall[String]
-  def get(include: Include): AvataxSimpleCall[CertificateModel]
-  def linkAttributes(model: List[CertificateAttributeModel]): AvataxCollectionCall[CertificateAttributeModel]
-  def linkCustomers(model: LinkCustomersModel): AvataxCollectionCall[CustomerModel]
-  def listAttributes: AvataxCollectionCall[CertificateAttributeModel]
-  def listCustomers(include: Include): AvataxCollectionCall[CustomerModel]
-  def unlinkAttributes(model: List[CertificateAttributeModel]): AvataxCollectionCall[CertificateAttributeModel]
-  def unlinkCustomers(model: LinkCustomersModel): AvataxCollectionCall[CustomerModel]
-  def update(model: CertificateModel): AvataxSimpleCall[CertificateModel]
-  def uploadImage(file: String): AvataxSimpleCall[String]
+trait CompanyCertificatesApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, CertificateModel]
+  def downloadImage(page: Int, `type`: CertificatePreviewType): AvataxSimpleCall[F, String]
+  def get(include: Include): AvataxSimpleCall[F, CertificateModel]
+  def linkAttributes(model: List[CertificateAttributeModel]): AvataxCollectionCall[F, S, CertificateAttributeModel]
+  def linkCustomers(model: LinkCustomersModel): AvataxCollectionCall[F, S, CustomerModel]
+  def listAttributes: AvataxCollectionCall[F, S, CertificateAttributeModel]
+  def listCustomers(include: Include): AvataxCollectionCall[F, S, CustomerModel]
+  def unlinkAttributes(model: List[CertificateAttributeModel]): AvataxCollectionCall[F, S, CertificateAttributeModel]
+  def unlinkCustomers(model: LinkCustomersModel): AvataxCollectionCall[F, S, CustomerModel]
+  def update(model: CertificateModel): AvataxSimpleCall[F, CertificateModel]
+  def uploadImage(file: String): AvataxSimpleCall[F, String]
 }

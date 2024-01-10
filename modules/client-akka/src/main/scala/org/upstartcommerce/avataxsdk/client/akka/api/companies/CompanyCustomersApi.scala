@@ -30,14 +30,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyCustomerCertExpressInvitationRootApi, CompanyCustomerCertificatesRootApi, CompanyCustomersApi, CompanyCustomersRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyCustomersRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyCustomersRootApi {
-      def forCustomerCode(code: String): CompanyCustomersApi =
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomersRootApi[Future, Stream] {
+      def forCustomerCode(code: String): CompanyCustomersApi[Future, Stream] =
         CompanyCustomersApiImpl(requester, security, clientHeaders)(companyId, code)
 
       def create(model: List[CustomerModel]): AvataxSimpleCall[List[CustomerModel]] = {
@@ -58,11 +59,11 @@ object CompanyCustomersApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       customerCode: String
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyCustomersApi {
-      val certExpressInvites: CompanyCustomerCertExpressInvitationRootApi =
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomersApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomersApi[Future, Stream] {
+      val certExpressInvites: CompanyCustomerCertExpressInvitationRootApi[Future, Stream] =
         CompanyCustomerCertExpressInvitationRootApiImpl(requester, security, clientHeaders)(companyId, customerCode)
-      val certificates: CompanyCustomerCertificatesRootApi =
+      val certificates: CompanyCustomerCertificatesRootApi[Future, Stream] =
         CompanyCustomerCertificatesRootApiImpl(requester, security, clientHeaders)(companyId, customerCode)
 
       def deleteCustomer(companyId: Int, customerCode: String): AvataxSimpleCall[CustomerModel] = {

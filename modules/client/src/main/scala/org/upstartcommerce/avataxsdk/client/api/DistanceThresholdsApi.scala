@@ -19,6 +19,6 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait DistanceThresholdsRootApi {
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CompanyDistanceThresholdModel]
+trait DistanceThresholdsRootApi[F[_], S[_]] {
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CompanyDistanceThresholdModel]
 }

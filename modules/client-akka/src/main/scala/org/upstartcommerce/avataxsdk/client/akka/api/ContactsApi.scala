@@ -29,14 +29,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.ContactsRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object ContactsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): ContactsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with ContactsRootApi {
+  ): ContactsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with ContactsRootApi[Future, Stream] {
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel] = {
         val uri = Uri(s"/api/v2/contacts").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)

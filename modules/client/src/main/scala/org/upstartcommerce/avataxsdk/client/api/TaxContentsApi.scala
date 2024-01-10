@@ -18,6 +18,6 @@ package org.upstartcommerce.avataxsdk.client.api
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait TaxContentsRootApi {
-  def buildFile(model: PointOfSaleDataRequestModel): AvataxSimpleCall[String]
+trait TaxContentsRootApi[F[_], S[_]] {
+  def buildFile(model: PointOfSaleDataRequestModel): AvataxSimpleCall[F, String]
 }

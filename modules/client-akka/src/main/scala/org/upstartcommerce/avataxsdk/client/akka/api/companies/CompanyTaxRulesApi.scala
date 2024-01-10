@@ -30,14 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyTaxRulesApi, CompanyTaxRulesRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyTaxRulesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyTaxRulesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyTaxRulesRootApi {
-      def forId(taxRuleId: Int): CompanyTaxRulesApi = CompanyTaxRulesApiImpl(requester, security, clientHeaders)(companyId, taxRuleId)
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyTaxRulesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyTaxRulesRootApi[Future, Stream] {
+      def forId(taxRuleId: Int): CompanyTaxRulesApi[Future, Stream] =
+        CompanyTaxRulesApiImpl(requester, security, clientHeaders)(companyId, taxRuleId)
 
       def create(model: List[TaxRuleModel]): AvataxSimpleCall[List[TaxRuleModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/taxrules")
@@ -57,8 +59,8 @@ object CompanyTaxRulesApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       taxRuleId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyTaxRulesApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyTaxRulesApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyTaxRulesApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyTaxRulesApi[Future, Stream] {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/taxrules/$taxRuleId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

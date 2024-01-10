@@ -29,14 +29,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyReportsApi, CompanyReportsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyReportsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyReportsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyReportsRootApi {
-      def forId(reportId: Long): CompanyReportsApi = CompanyReportsApiImpl(requester, security, clientHeaders)(companyId, reportId)
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyReportsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyReportsRootApi[Future, Stream] {
+      def forId(reportId: Long): CompanyReportsApi[Future, Stream] =
+        CompanyReportsApiImpl(requester, security, clientHeaders)(companyId, reportId)
 
       def exportDocumentLine(model: ExportDocumentLineModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/companies/$companyId/reports/exportdocumentline")
@@ -56,6 +58,6 @@ object CompanyReportsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       reportId: Long
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyReportsApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyReportsApi {}
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyReportsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyReportsApi[Future, Stream] {}
 }

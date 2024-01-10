@@ -20,11 +20,11 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/datasources */
-trait DataSourcesRootApi {
-  def forDataSourceId(dataSourceId: Int): DataSourcesApi
+trait DataSourcesRootApi[F[_], S[_]] {
+  def forDataSourceId(dataSourceId: Int): DataSourcesApi[F, S]
 
-  def query(options: FiltrableQueryOptions): AvataxCollectionCall[DataSourceModel]
+  def query(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, DataSourceModel]
 }
 
 /** /api/v2/datasources/$dataSourceId */
-trait DataSourcesApi {}
+trait DataSourcesApi[F[_], S[_]] {}

@@ -19,19 +19,19 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait BatchesRootApi {
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[BatchModel]
+trait BatchesRootApi[F[_], S[_]] {
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, BatchModel]
 }
 
-trait CompanyBatchesRootApi {
-  def forBatchId(id: Int): CompanyBatchesApi
+trait CompanyBatchesRootApi[F[_], S[_]] {
+  def forBatchId(id: Int): CompanyBatchesApi[F, S]
 
-  def create(model: List[BatchModel]): AvataxSimpleCall[List[BatchModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[BatchModel]
+  def create(model: List[BatchModel]): AvataxSimpleCall[F, List[BatchModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, BatchModel]
 }
 
-trait CompanyBatchesApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def download(id: Int): AvataxSimpleCall[String]
-  def get: AvataxSimpleCall[BatchModel]
+trait CompanyBatchesApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def download(id: Int): AvataxSimpleCall[F, String]
+  def get: AvataxSimpleCall[F, BatchModel]
 }

@@ -20,16 +20,16 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/accounts/$accountId/subscriptions */
-trait AccountSubscriptionsRootApi {
-  def forId(subscriptionId: Int): AccountSubscriptionsApi
+trait AccountSubscriptionsRootApi[F[_], S[_]] {
+  def forId(subscriptionId: Int): AccountSubscriptionsApi[F, S]
 
-  def create(model: List[SubscriptionModel]): AvataxSimpleCall[List[SubscriptionModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[SubscriptionModel]
+  def create(model: List[SubscriptionModel]): AvataxSimpleCall[F, List[SubscriptionModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, SubscriptionModel]
 }
 
 /** /api/v2/accounts/$accountId/subscriptions/$id */
-trait AccountSubscriptionsApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def update(model: SubscriptionModel): AvataxSimpleCall[SubscriptionModel]
-  def get: AvataxSimpleCall[SubscriptionModel]
+trait AccountSubscriptionsApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def update(model: SubscriptionModel): AvataxSimpleCall[F, SubscriptionModel]
+  def get: AvataxSimpleCall[F, SubscriptionModel]
 }

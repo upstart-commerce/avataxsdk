@@ -21,16 +21,16 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/contacts */
-trait CompanyContactsRootApi {
-  def forContactId(id: Int): CompanyContactsApi
+trait CompanyContactsRootApi[F[_], S[_]] {
+  def forContactId(id: Int): CompanyContactsApi[F, S]
 
-  def create(model: List[ContactModel]): AvataxSimpleCall[List[ContactModel]]
+  def create(model: List[ContactModel]): AvataxSimpleCall[F, List[ContactModel]]
 
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ContactModel]
 }
 
 /** /api/v2/companies/$companyId/contacts/$contactId */
-trait CompanyContactsApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[ContactModel]
+trait CompanyContactsApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, ContactModel]
 }

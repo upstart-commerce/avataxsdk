@@ -21,29 +21,29 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/accounts */
-trait AccountsRootApi {
-  def forAccount(accountId: Int): AccountsApi
+trait AccountsRootApi[F[_], S[_]] {
+  def forAccount(accountId: Int): AccountsApi[F, S]
 
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[AccountModel]
-  def requestFreeTrial(model: FreeTrialRequestModel): AvataxSimpleCall[NewAccountModel]
-  def requestNewAccount(model: NewAccountRequestModel): AvataxSimpleCall[NewAccountModel]
-  def create(model: AccountModel): AvataxSimpleCall[List[AccountModel]]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, AccountModel]
+  def requestFreeTrial(model: FreeTrialRequestModel): AvataxSimpleCall[F, NewAccountModel]
+  def requestNewAccount(model: NewAccountRequestModel): AvataxSimpleCall[F, NewAccountModel]
+  def create(model: AccountModel): AvataxSimpleCall[F, List[AccountModel]]
 }
 
 /** /api/v2/accounts/$accountId */
-trait AccountsApi {
-  def advancedRuleScripts: AccountAdvancedRuleScriptRootApi
-  def advancedRuleTable: AccountAdvancedRuleTableRootApi
-  def accountJurisdictionOverrides: AccountsJurisdictionOverridesRootApi
-  def subscriptions: AccountSubscriptionsRootApi
-  def users: AccountUsersRootApi
+trait AccountsApi[F[_], S[_]] {
+  def advancedRuleScripts: AccountAdvancedRuleScriptRootApi[F, S]
+  def advancedRuleTable: AccountAdvancedRuleTableRootApi[F, S]
+  def accountJurisdictionOverrides: AccountsJurisdictionOverridesRootApi[F, S]
+  def subscriptions: AccountSubscriptionsRootApi[F, S]
+  def users: AccountUsersRootApi[F, S]
 
-  def resetLicenseKey(model: ResetLicenseKeyModel): AvataxSimpleCall[LicenseKeyModel]
-  def activate(model: ActivateAccountModel): AvataxSimpleCall[AccountModel]
-  def audit(start: java.util.Date, end: java.util.Date, options: BasicQueryOptions): AvataxCollectionCall[AuditModel]
-  def get(include: Include): AvataxSimpleCall[AccountModel]
-  def getConfiguration: AvataxSimpleCall[List[AccountConfigurationModel]]
-  def requestNewEntitlement(offer: String): AvataxSimpleCall[OfferModel]
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def update(model: AccountModel): AvataxSimpleCall[String]
+  def resetLicenseKey(model: ResetLicenseKeyModel): AvataxSimpleCall[F, LicenseKeyModel]
+  def activate(model: ActivateAccountModel): AvataxSimpleCall[F, AccountModel]
+  def audit(start: java.util.Date, end: java.util.Date, options: BasicQueryOptions): AvataxCollectionCall[F, S, AuditModel]
+  def get(include: Include): AvataxSimpleCall[F, AccountModel]
+  def getConfiguration: AvataxSimpleCall[F, List[AccountConfigurationModel]]
+  def requestNewEntitlement(offer: String): AvataxSimpleCall[F, OfferModel]
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def update(model: AccountModel): AvataxSimpleCall[F, String]
 }

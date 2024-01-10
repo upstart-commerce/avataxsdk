@@ -26,7 +26,7 @@ import akka.stream.Materializer
 import akka.stream.scaladsl.Source
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.akka.internal.Requester
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
@@ -43,8 +43,6 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
     implicit system: ActorSystem,
     materializer: Materializer
 ) { self =>
-  final type Result[R] = Future[R]
-  final type Stream[R] = Source[R, NotUsed]
 
   val dateFmt = {
     //new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -106,7 +104,7 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
     log.debug(s"UUId: $transactionId. Request: $req")
 
     new AvataxSimpleCall[A] {
-      override type Result[R] = self.Result[R]
+
       val newReq = updateRequestWithHeader(req, clientHeaders)
 
       def apply(): Future[A] = {
@@ -123,10 +121,10 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
     log.debug(s"UUId: $transactionId. Request Body: ${Json.toJson(body)}")
 
     new AvataxSimpleCall[R] {
-      override type Result[R] = self.Result[R]
+
       val newReq = updateRequestWithHeader(req, clientHeaders)
 
-      def apply(): Result[R] = marshal(body).flatMap { ent =>
+      def apply(): Future[R] = marshal(body).flatMap { ent =>
         val response = fetch[R](newReq.withEntity(ent), transactionId)
         response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
         response
@@ -141,17 +139,15 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
     log.debug(s"UUId: $transactionId. Request: $req")
 
     new AvataxCollectionCall[A] {
-      override type Result[R] = self.Result[R]
-      override type Stream[R] = self.Stream[R]
       val newReq = updateRequestWithHeader(req, clientHeaders)
 
-      def batch(): Result[FetchResult[A]] = {
+      def batch(): Future[FetchResult[A]] = {
         val response = batchFetch[A](newReq, transactionId)
         response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
         response
       }
 
-      def stream: Stream[A] = {
+      def stream: Source[A, NotUsed] = {
         val response = continuousStream[A](newReq, transactionId)
         response.map(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
         response
@@ -167,18 +163,16 @@ abstract class ApiRoot(requester: Requester, security: Option[Authorization], cl
     log.debug(s"UUId: $transactionId. Request Body: ${Json.toJson(body)}")
 
     new AvataxCollectionCall[R] {
-      override type Result[R] = self.Result[R]
-      override type Stream[R] = self.Stream[R]
 
       val newReq = updateRequestWithHeader(req, clientHeaders)
 
-      def batch(): Result[FetchResult[R]] = marshal(body).flatMap { ent =>
+      def batch(): Future[FetchResult[R]] = marshal(body).flatMap { ent =>
         val response = batchFetch[R](newReq.withEntity(ent), transactionId)
         response.foreach(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
         response
       }
 
-      def stream: Stream[R] = Source.future(marshal(body)).flatMapConcat { ent =>
+      def stream: Source[R, NotUsed] = Source.future(marshal(body)).flatMapConcat { ent =>
         val response = continuousStream[R](newReq.withEntity(ent), transactionId)
         response.map(a => log.debug(s"UUId: $transactionId. ResponseBody: ${Json.toJson(a)}"))
         response

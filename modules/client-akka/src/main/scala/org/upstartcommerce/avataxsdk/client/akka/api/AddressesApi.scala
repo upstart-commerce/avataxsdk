@@ -29,14 +29,15 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import akka.http.scaladsl.model.headers.Authorization
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.AddressesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object AddressesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): AddressesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with AddressesRootApi {
+  ): AddressesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AddressesRootApi[Future, Stream] {
       def resolve(
           line1: String,
           line2: String,

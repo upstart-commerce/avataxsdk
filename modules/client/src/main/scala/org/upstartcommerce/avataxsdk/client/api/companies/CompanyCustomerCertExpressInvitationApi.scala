@@ -20,13 +20,13 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** api/v2/companies/$companyId/customers/$customerCode/certexpressinvites */
-trait CompanyCustomerCertExpressInvitationRootApi {
-  def forId(certExpressId: Int): CompanyCustomerCertExpressInvitationApi
+trait CompanyCustomerCertExpressInvitationRootApi[F[_], S[_]] {
+  def forId(certExpressId: Int): CompanyCustomerCertExpressInvitationApi[F, S]
 
-  def create(model: List[CreateCertExpressInvitationModel]): AvataxSimpleCall[List[CertExpressInvitationStatusModel]]
+  def create(model: List[CreateCertExpressInvitationModel]): AvataxSimpleCall[F, List[CertExpressInvitationStatusModel]]
 }
 
 /** api/v2/companies/$companyId/customers/$customerCode/certexpressinvites/$id */
-trait CompanyCustomerCertExpressInvitationApi {
-  def get(include: Include): AvataxSimpleCall[CertExpressInvitationModel]
+trait CompanyCustomerCertExpressInvitationApi[F[_], S[_]] {
+  def get(include: Include): AvataxSimpleCall[F, CertExpressInvitationModel]
 }

@@ -31,14 +31,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyFilingCalendarApi, CompanyFilingCalendarRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyFilingCalendarRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyFilingCalendarRootApi {
-      def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi =
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyFilingCalendarRootApi[Future, Stream] {
+      def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi[Future, Stream] =
         CompanyFilingCalendarApiImpl(requester, security, clientHeaders)(companyId, filingCalendarId)
 
       def create(model: List[FilingCalendarModel]): AvataxSimpleCall[FilingCalendarModel] = {
@@ -77,8 +78,8 @@ object CompanyFilingCalendarApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       filingCalendarId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyFilingCalendarApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingCalendarApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyFilingCalendarApi[Future, Stream] {
       def cancelRequests(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingcalendars/$filingCalendarId/cancel/request")
         val req = HttpRequest(uri = uri).withMethod(POST)

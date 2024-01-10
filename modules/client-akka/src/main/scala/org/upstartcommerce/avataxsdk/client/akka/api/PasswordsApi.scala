@@ -28,15 +28,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.{PasswordsApi, PasswordsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object PasswordsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): PasswordsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with PasswordsRootApi {
-      def forId(userId: Int): PasswordsApi = PasswordsApiImpl(requester, security, clientHeaders)(userId)
+  ): PasswordsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with PasswordsRootApi[Future, Stream] {
+      def forId(userId: Int): PasswordsApi[Future, Stream] = PasswordsApiImpl(requester, security, clientHeaders)(userId)
 
       def change(model: PasswordChangeModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/passwords")
@@ -49,8 +50,8 @@ object PasswordsRootApiImpl {
 object PasswordsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       userId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): PasswordsApi =
-    new ApiRoot(requester, security, clientHeaders) with PasswordsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): PasswordsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with PasswordsApi[Future, Stream] {
       def reset(unmigrateFromAi: Boolean, model: SetPasswordModel): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/passwords/$userId/reset")
         val req = HttpRequest(uri = uri).withMethod(POST)

@@ -17,6 +17,6 @@ package org.upstartcommerce.avataxsdk.client.api
 
 import org.upstartcommerce.avataxsdk.client._
 
-trait TaxRatesByZipCodeRootApi {
-  def download(date: java.util.Date, region: String): AvataxSimpleCall[String]
+trait TaxRatesByZipCodeRootApi[F[_], S[_]] {
+  def download(date: java.util.Date, region: String): AvataxSimpleCall[F, String]
 }

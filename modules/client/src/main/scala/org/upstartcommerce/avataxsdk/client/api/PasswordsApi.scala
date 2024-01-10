@@ -19,12 +19,12 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/passwords */
-trait PasswordsRootApi {
-  def forId(userId: Int): PasswordsApi
+trait PasswordsRootApi[F[_], S[_]] {
+  def forId(userId: Int): PasswordsApi[F, S]
 
-  def change(model: PasswordChangeModel): AvataxSimpleCall[String]
+  def change(model: PasswordChangeModel): AvataxSimpleCall[F, String]
 }
 
-trait PasswordsApi {
-  def reset(unmigrateFromAi: Boolean, model: SetPasswordModel): AvataxSimpleCall[String]
+trait PasswordsApi[F[_], S[_]] {
+  def reset(unmigrateFromAi: Boolean, model: SetPasswordModel): AvataxSimpleCall[F, String]
 }

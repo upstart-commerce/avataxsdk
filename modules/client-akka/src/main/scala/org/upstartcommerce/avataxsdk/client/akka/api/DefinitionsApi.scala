@@ -30,14 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.DefinitionsRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+
+import scala.concurrent.Future
 
 object DefinitionsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): DefinitionsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with DefinitionsRootApi {
+  ): DefinitionsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with DefinitionsRootApi[Future, Stream] {
       def getCrossBorderCode(country: String, hsCode: String): AvataxCollectionCall[HsCodeModel] = {
         val uri = Uri(s"/api/v2/definitions/crossborder/$country/$hsCode/hierarchy")
         val req = HttpRequest(uri = uri).withMethod(GET)

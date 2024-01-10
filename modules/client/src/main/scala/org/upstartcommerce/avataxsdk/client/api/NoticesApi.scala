@@ -20,6 +20,6 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
-trait NoticesRootApi {
-  def query(include: Include, options: QueryOptions): AvataxCollectionCall[NoticeModel]
+trait NoticesRootApi[F[_], S[_]] {
+  def query(include: Include, options: QueryOptions): AvataxCollectionCall[F, S, NoticeModel]
 }

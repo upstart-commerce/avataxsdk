@@ -30,14 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyNexusApi, CompanyNexusRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyNexusRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyNexusRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyNexusRootApi {
-      def forNexusId(nexusId: Int): CompanyNexusApi = CompanyNexusApiImpl(requester, security, clientHeaders)(companyId, nexusId)
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyNexusRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyNexusRootApi[Future, Stream] {
+      def forNexusId(nexusId: Int): CompanyNexusApi[Future, Stream] =
+        CompanyNexusApiImpl(requester, security, clientHeaders)(companyId, nexusId)
 
       def create(model: List[NexusModel]): AvataxSimpleCall[List[NexusModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/nexus")
@@ -70,8 +72,8 @@ object CompanyNexusApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       nexusId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyNexusApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyNexusApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyNexusApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyNexusApi[Future, Stream] {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/nexus/$nexusId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

@@ -29,14 +29,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.UtilitiesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object UtilitiesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): UtilitiesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with UtilitiesRootApi {
+  ): UtilitiesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with UtilitiesRootApi[Future, Stream] {
       def getMySubscription(serviceTypeId: ServiceTypeId): AvataxSimpleCall[SubscriptionModel] = {
         val uri = Uri(s"/api/v2/utilities/subscriptions/$serviceTypeId")
         val req = HttpRequest(uri = uri).withMethod(GET)

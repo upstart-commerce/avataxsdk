@@ -21,8 +21,8 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/filingcalendars */
-trait FilingCalendarsRootApi {
-  def loginVerificationRequest(model: LoginVerificationInputModel): AvataxSimpleCall[LoginVerificationOutputModel]
-  def loginVerificationStatus(jobId: Int): AvataxSimpleCall[LoginVerificationOutputModel]
-  def query(returnCountry: String, returnRegion: String, options: FiltrableQueryOptions): AvataxCollectionCall[FilingCalendarModel]
+trait FilingCalendarsRootApi[F[_], S[_]] {
+  def loginVerificationRequest(model: LoginVerificationInputModel): AvataxSimpleCall[F, LoginVerificationOutputModel]
+  def loginVerificationStatus(jobId: Int): AvataxSimpleCall[F, LoginVerificationOutputModel]
+  def query(returnCountry: String, returnRegion: String, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, FilingCalendarModel]
 }

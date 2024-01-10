@@ -33,14 +33,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyLocationsApi, CompanyLocationsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyLocationsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyLocationsRootApi {
-      def forLocationId(locationId: Int): CompanyLocationsApi =
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyLocationsRootApi[Future, Stream] {
+      def forLocationId(locationId: Int): CompanyLocationsApi[Future, Stream] =
         CompanyLocationsApiImpl(requester, security, clientHeaders)(companyId, locationId)
 
       def create(model: List[LocationModel]): AvataxSimpleCall[List[LocationModel]] = {
@@ -62,8 +63,8 @@ object CompanyLocationsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       locationId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyLocationsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyLocationsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyLocationsApi[Future, Stream] {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/locations/$locationId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)
@@ -89,7 +90,7 @@ object CompanyLocationsApiImpl {
       }
 
       def buildTaxContentForLocation(
-          date: Date,
+          date: java.util.Date,
           format: PointOfSaleFileType,
           partner: PointOfSalePartnerId,
           includeJurisCodes: Boolean

@@ -19,24 +19,24 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait DefinitionsRootApi {
-  def getCrossBorderCode(country: String, hsCode: String): AvataxCollectionCall[HsCodeModel]
-  def getLoginVerifierByForm(form: String, options: FiltrableQueryOptions): AvataxCollectionCall[SkyscraperStatusModel]
-  def listAvaFileForms(options: FiltrableQueryOptions): AvataxCollectionCall[AvaFileFormModel]
-  def listCertificateAttributes(options: FiltrableQueryOptions): AvataxCollectionCall[CertificateAttributeModel]
-  def listCertificateExemptReasons(options: FiltrableQueryOptions): AvataxCollectionCall[ExemptionReasonModel]
-  def listCertificatesExposureZones(options: FiltrableQueryOptions): AvataxCollectionCall[ExposureZoneModel]
-  def listCommunicationsServiceTypes(id: Int, options: FiltrableQueryOptions): AvataxCollectionCall[CommunicationsTSPairModel]
-  def listCommunicationsTransactionTypes(options: FiltrableQueryOptions): AvataxCollectionCall[CommunicationsTransactionTypeModel]
-  def listCommunicationsTSPairs(options: FiltrableQueryOptions): AvataxCollectionCall[CommunicationsTSPairModel]
-  def listCountries(options: FiltrableQueryOptions): AvataxCollectionCall[IsoCountryModel]
-  def listCoverLetters(options: FiltrableQueryOptions): AvataxCollectionCall[CoverLetterModel]
-  def listCrossBorderCodes(country: String, hsCode: String, options: FiltrableQueryOptions): AvataxCollectionCall[HsCodeModel]
-  def listCrossBorderSections(): AvataxCollectionCall[HsCodeModel]
-  def listCurrencies(options: FiltrableQueryOptions): AvataxCollectionCall[CurrencyModel]
-  def listEntityUseCodes(options: FiltrableQueryOptions): AvataxCollectionCall[EntityUseCodeModel]
-  def listFilingFrequencies(options: FiltrableQueryOptions): AvataxCollectionCall[FilingFrequencyModel]
-  def listJurisdictions(options: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionModel]
+trait DefinitionsRootApi[F[_], S[_]] {
+  def getCrossBorderCode(country: String, hsCode: String): AvataxCollectionCall[F, S, HsCodeModel]
+  def getLoginVerifierByForm(form: String, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, SkyscraperStatusModel]
+  def listAvaFileForms(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, AvaFileFormModel]
+  def listCertificateAttributes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CertificateAttributeModel]
+  def listCertificateExemptReasons(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ExemptionReasonModel]
+  def listCertificatesExposureZones(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ExposureZoneModel]
+  def listCommunicationsServiceTypes(id: Int, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CommunicationsTSPairModel]
+  def listCommunicationsTransactionTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CommunicationsTransactionTypeModel]
+  def listCommunicationsTSPairs(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CommunicationsTSPairModel]
+  def listCountries(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, IsoCountryModel]
+  def listCoverLetters(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CoverLetterModel]
+  def listCrossBorderCodes(country: String, hsCode: String, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, HsCodeModel]
+  def listCrossBorderSections(): AvataxCollectionCall[F, S, HsCodeModel]
+  def listCurrencies(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CurrencyModel]
+  def listEntityUseCodes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, EntityUseCodeModel]
+  def listFilingFrequencies(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, FilingFrequencyModel]
+  def listJurisdictions(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, JurisdictionModel]
   def listJurisdictionsByAddress(
       line1: String,
       line2: String,
@@ -46,7 +46,7 @@ trait DefinitionsRootApi {
       postalCode: String,
       country: String,
       options: FiltrableQueryOptions
-  ): AvataxCollectionCall[JurisdictionOverrideModel]
+  ): AvataxCollectionCall[F, S, JurisdictionOverrideModel]
   def listLocationQuestionsByAddress(
       line1: String,
       line2: String,
@@ -58,9 +58,9 @@ trait DefinitionsRootApi {
       latitude: BigDecimal,
       longitude: BigDecimal,
       options: FiltrableQueryOptions
-  ): AvataxCollectionCall[LocationQuestionModel]
-  def listLoginVerifiers(options: FiltrableQueryOptions): AvataxCollectionCall[SkyscraperStatusModel]
-  def listNexus(options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
+  ): AvataxCollectionCall[F, S, LocationQuestionModel]
+  def listLoginVerifiers(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, SkyscraperStatusModel]
+  def listNexus(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NexusModel]
   def listNexusByAddress(
       line1: String,
       line2: String,
@@ -70,43 +70,47 @@ trait DefinitionsRootApi {
       postalCode: String,
       country: String,
       options: FiltrableQueryOptions
-  ): AvataxCollectionCall[NexusModel]
-  def listNexusByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
-  def listNexusByCountryAndRegion(country: String, region: String, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
-  def listNexusByFormCode(formCode: String, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
-  def listNexusTaxTypeGroups(options: FiltrableQueryOptions): AvataxCollectionCall[NexusTaxTypeGroupModel]
-  def listNoticeCustomerFundingOptions(options: FiltrableQueryOptions): AvataxCollectionCall[NoticeCustomerFundingOptionModel]
-  def listNoticeCustomerTypes(options: FiltrableQueryOptions): AvataxCollectionCall[NoticeCustomerTypeModel]
-  def listNoticeFilingTypes(options: FiltrableQueryOptions): AvataxCollectionCall[NoticeFilingTypeModel]
-  def listNoticePriorities(options: FiltrableQueryOptions): AvataxCollectionCall[NoticePriorityModel]
-  def listNoticeReasons(options: FiltrableQueryOptions): AvataxCollectionCall[NoticeReasonModel]
-  def listNoticeResponsibilities(options: FiltrableQueryOptions): AvataxCollectionCall[NoticeResponsibilityModel]
-  def listNoticeRootCauses(options: FiltrableQueryOptions): AvataxCollectionCall[NoticeRootCauseModel]
-  def listNoticeStatuses(options: FiltrableQueryOptions): AvataxCollectionCall[NoticeStatusModel]
-  def listNoticeTypes(options: FiltrableQueryOptions): AvataxCollectionCall[NoticeTypeModel]
-  def listParameters(options: FiltrableQueryOptions): AvataxCollectionCall[ParameterModel]
-  def listParametersByItem(companyCode: String, itemCode: String, options: FiltrableQueryOptions): AvataxCollectionCall[ParameterModel]
-  def listPermissions(options: BasicQueryOptions): AvataxCollectionCall[String]
-  def listPostalCodes(options: FiltrableQueryOptions): AvataxCollectionCall[PostalCodeModel]
-  def listPreferredPrograms(options: FiltrableQueryOptions): AvataxCollectionCall[PreferredProgramModel]
-  def listProductClassificationSystems(options: FiltrableQueryOptions): AvataxCollectionCall[ProductClassificationSystemModel]
+  ): AvataxCollectionCall[F, S, NexusModel]
+  def listNexusByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NexusModel]
+  def listNexusByCountryAndRegion(country: String, region: String, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NexusModel]
+  def listNexusByFormCode(formCode: String, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NexusModel]
+  def listNexusTaxTypeGroups(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NexusTaxTypeGroupModel]
+  def listNoticeCustomerFundingOptions(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticeCustomerFundingOptionModel]
+  def listNoticeCustomerTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticeCustomerTypeModel]
+  def listNoticeFilingTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticeFilingTypeModel]
+  def listNoticePriorities(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticePriorityModel]
+  def listNoticeReasons(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticeReasonModel]
+  def listNoticeResponsibilities(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticeResponsibilityModel]
+  def listNoticeRootCauses(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticeRootCauseModel]
+  def listNoticeStatuses(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticeStatusModel]
+  def listNoticeTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NoticeTypeModel]
+  def listParameters(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ParameterModel]
+  def listParametersByItem(
+      companyCode: String,
+      itemCode: String,
+      options: FiltrableQueryOptions
+  ): AvataxCollectionCall[F, S, ParameterModel]
+  def listPermissions(options: BasicQueryOptions): AvataxCollectionCall[F, S, String]
+  def listPostalCodes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, PostalCodeModel]
+  def listPreferredPrograms(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, PreferredProgramModel]
+  def listProductClassificationSystems(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ProductClassificationSystemModel]
   def listProductClassificationSystemsByCompany(
       companyCode: String,
       options: FiltrableQueryOptions
-  ): AvataxCollectionCall[ProductClassificationSystemModel]
-  def listRateTypesByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[RateTypeModel]
-  def listRegions(options: FiltrableQueryOptions): AvataxCollectionCall[IsoRegionModel]
-  def listRegionsByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[IsoRegionModel]
-  def listResourceFileTypes(options: FiltrableQueryOptions): AvataxCollectionCall[ResourceFileTypeModel]
-  def listSecurityRoles(options: FiltrableQueryOptions): AvataxCollectionCall[SecurityRoleModel]
-  def listSubscriptionTypes(options: FiltrableQueryOptions): AvataxCollectionCall[SubscriptionTypeModel]
-  def listTaxAuthorities(options: FiltrableQueryOptions): AvataxCollectionCall[TaxAuthorityModel]
-  def listTaxAuthorityForms(options: FiltrableQueryOptions): AvataxCollectionCall[TaxAuthorityFormModel]
-  def listTaxAuthorityTypes(options: FiltrableQueryOptions): AvataxCollectionCall[TaxAuthorityTypeModel]
-  def listTaxCodes(options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeModel]
-  def listTaxCodeTypes(options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeTypesModel]
-  def listTaxForms(options: FiltrableQueryOptions): AvataxCollectionCall[FormMasterModel]
-  def listTaxSubTypes(options: FiltrableQueryOptions): AvataxCollectionCall[TaxSubTypeModel]
-  def listTaxTypeGroups(options: FiltrableQueryOptions): AvataxCollectionCall[TaxTypeGroupModel]
-  def listUnitOfMeasurement(options: FiltrableQueryOptions): AvataxCollectionCall[UomModel]
+  ): AvataxCollectionCall[F, S, ProductClassificationSystemModel]
+  def listRateTypesByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, RateTypeModel]
+  def listRegions(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, IsoRegionModel]
+  def listRegionsByCountry(country: String, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, IsoRegionModel]
+  def listResourceFileTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ResourceFileTypeModel]
+  def listSecurityRoles(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, SecurityRoleModel]
+  def listSubscriptionTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, SubscriptionTypeModel]
+  def listTaxAuthorities(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxAuthorityModel]
+  def listTaxAuthorityForms(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxAuthorityFormModel]
+  def listTaxAuthorityTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxAuthorityTypeModel]
+  def listTaxCodes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxCodeModel]
+  def listTaxCodeTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxCodeTypesModel]
+  def listTaxForms(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, FormMasterModel]
+  def listTaxSubTypes(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxSubTypeModel]
+  def listTaxTypeGroups(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxTypeGroupModel]
+  def listUnitOfMeasurement(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, UomModel]
 }

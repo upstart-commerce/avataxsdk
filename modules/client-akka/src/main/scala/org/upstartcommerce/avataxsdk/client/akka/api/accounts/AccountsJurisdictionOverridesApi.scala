@@ -31,14 +31,15 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.accounts.AccountsJurisdictionOverridesApi
 import org.upstartcommerce.avataxsdk.client.api.accounts.AccountsJurisdictionOverridesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object AccountsJurisdictionOverridesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountsJurisdictionOverridesRootApi {
-      def forJurisOverrideId(jurisOverrideId: Int): AccountsJurisdictionOverridesApi =
+  )(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AccountsJurisdictionOverridesRootApi[Future, Stream] {
+      def forJurisOverrideId(jurisOverrideId: Int): AccountsJurisdictionOverridesApi[Future, Stream] =
         AccountsJurisdictionOverridesApiImpl(requester, security, clientHeaders)(accountId, jurisOverrideId)
 
       def create(model: List[JurisdictionOverrideModel]): AvataxSimpleCall[List[JurisdictionOverrideModel]] = {
@@ -59,8 +60,8 @@ object AccountsJurisdictionOverridesApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int,
       jurisOverrideId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountsJurisdictionOverridesApi {
+  )(implicit system: ActorSystem, materializer: Materializer): AccountsJurisdictionOverridesApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AccountsJurisdictionOverridesApi[Future, Stream] {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/jurisdictionoverrides/$jurisOverrideId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

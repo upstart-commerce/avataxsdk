@@ -29,15 +29,17 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.{AvaFileFormsApi, AvaFileFormsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+
+import scala.concurrent.Future
 
 object AvaFileFormsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): AvaFileFormsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with AvaFileFormsRootApi {
-      def forId(id: Int): AvaFileFormsApi = AvaFileFormsApiImpl(requester, security, clientHeaders)(id)
+  ): AvaFileFormsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AvaFileFormsRootApi[Future, Stream] {
+      def forId(id: Int): AvaFileFormsApi[Future, Stream] = AvaFileFormsApiImpl(requester, security, clientHeaders)(id)
 
       def create(model: List[AvaFileFormModel]): AvataxSimpleCall[List[AvaFileFormModel]] = {
         val uri = Uri(s"/api/v2/avafileforms")
@@ -57,8 +59,8 @@ object AvaFileFormsRootApiImpl {
 object AvaFileFormsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       formId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsApi =
-    new ApiRoot(requester, security, clientHeaders) with AvaFileFormsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): AvaFileFormsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AvaFileFormsApi[Future, Stream] {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/avafileforms/$formId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

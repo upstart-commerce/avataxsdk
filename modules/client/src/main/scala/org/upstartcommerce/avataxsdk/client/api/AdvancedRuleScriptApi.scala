@@ -19,18 +19,18 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait AccountAdvancedRuleScriptRootApi {
-  def forScriptType(scriptType: AdvancedRuleScriptType): AccountAdvancedRuleScriptApi
+trait AccountAdvancedRuleScriptRootApi[F[_], S[_]] {
+  def forScriptType(scriptType: AdvancedRuleScriptType): AccountAdvancedRuleScriptApi[F, S]
 }
 
-trait AccountAdvancedRuleScriptApi {
-  def approve: AvataxSimpleCall[AdvancedRuleScriptModel]
+trait AccountAdvancedRuleScriptApi[F[_], S[_]] {
+  def approve: AvataxSimpleCall[F, AdvancedRuleScriptModel]
 
   /* todo: `file` arg is unused in official sdk, see  https://github.com/avadev/AvaTax-REST-V2-JRE-SDK/issues/44 */
-  def create(crashBehavior: AdvancedRuleCrashBehavior, file: String): AvataxSimpleCall[String]
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def disable: AvataxSimpleCall[AdvancedRuleScriptModel]
-  def enable: AvataxSimpleCall[AdvancedRuleScriptModel]
-  def get: AvataxSimpleCall[AdvancedRuleScriptModel]
-  def unapprove: AvataxSimpleCall[AdvancedRuleScriptModel]
+  def create(crashBehavior: AdvancedRuleCrashBehavior, file: String): AvataxSimpleCall[F, String]
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def disable: AvataxSimpleCall[F, AdvancedRuleScriptModel]
+  def enable: AvataxSimpleCall[F, AdvancedRuleScriptModel]
+  def get: AvataxSimpleCall[F, AdvancedRuleScriptModel]
+  def unapprove: AvataxSimpleCall[F, AdvancedRuleScriptModel]
 }

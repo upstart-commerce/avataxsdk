@@ -31,14 +31,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyFilingRequestsApi, CompanyFilingRequestsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyFilingRequestsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingRequestsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyFilingRequestsRootApi {
-      def forId(filingReqId: Int): CompanyFilingRequestsApi =
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingRequestsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyFilingRequestsRootApi[Future, Stream] {
+      def forId(filingReqId: Int): CompanyFilingRequestsApi[Future, Stream] =
         CompanyFilingRequestsApiImpl(requester, security, clientHeaders)(companyId, filingReqId)
 
       def list(filingCalendarId: Int, options: FiltrableQueryOptions): AvataxCollectionCall[FilingRequestModel] = {
@@ -54,8 +55,8 @@ object CompanyFilingRequestsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       filingRequestId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingRequestsApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyFilingRequestsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyFilingRequestsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyFilingRequestsApi[Future, Stream] {
       def approve: AvataxSimpleCall[FilingRequestModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/filingrequests/$filingRequestId/approve")
         val req = HttpRequest(uri = uri).withMethod(POST)

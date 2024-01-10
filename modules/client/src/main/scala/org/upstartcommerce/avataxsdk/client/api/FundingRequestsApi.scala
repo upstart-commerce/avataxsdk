@@ -18,12 +18,12 @@ package org.upstartcommerce.avataxsdk.client.api
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait FundingRequestsRootApi {
-  def forId(fundingReqId: Long): FundingRequestsApi
+trait FundingRequestsRootApi[F[_], S[_]] {
+  def forId(fundingReqId: Long): FundingRequestsApi[F, S]
 
 }
 
-trait FundingRequestsApi {
-  def activate: AvataxSimpleCall[FundingStatusModel]
-  def status: AvataxSimpleCall[FundingStatusModel]
+trait FundingRequestsApi[F[_], S[_]] {
+  def activate: AvataxSimpleCall[F, FundingStatusModel]
+  def status: AvataxSimpleCall[F, FundingStatusModel]
 }

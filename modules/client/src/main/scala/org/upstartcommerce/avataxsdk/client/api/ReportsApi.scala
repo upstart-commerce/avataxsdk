@@ -20,13 +20,13 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/reports */
-trait ReportsRootApi {
-  def forId(reportId: Long): ReportsApi
-  def list: AvataxCollectionCall[ReportModel]
+trait ReportsRootApi[F[_], S[_]] {
+  def forId(reportId: Long): ReportsApi[F, S]
+  def list: AvataxCollectionCall[F, S, ReportModel]
 
 }
 
-trait ReportsApi {
-  def download: AvataxSimpleCall[String]
-  def get: AvataxSimpleCall[ReportModel]
+trait ReportsApi[F[_], S[_]] {
+  def download: AvataxSimpleCall[F, String]
+  def get: AvataxSimpleCall[F, ReportModel]
 }

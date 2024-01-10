@@ -20,26 +20,26 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/items */
-trait CompanyItemsRootApi {
-  def forItemId(itemId: Long): CompanyItemsApi
+trait CompanyItemsRootApi[F[_], S[_]] {
+  def forItemId(itemId: Long): CompanyItemsApi[F, S]
 
-  def createItems(model: List[ItemModel]): AvataxSimpleCall[List[ItemModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ItemModel]
+  def createItems(model: List[ItemModel]): AvataxSimpleCall[F, List[ItemModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ItemModel]
 }
 
 /** /api/v2/companies/$companyId/items/$itemId */
-trait CompanyItemsApi {
-  def createClassifications(model: List[ItemClassificationInputModel]): AvataxSimpleCall[List[ItemClassificationOutputModel]]
-  def createParameters(model: List[ItemParameterModel]): AvataxSimpleCall[List[ItemParameterModel]]
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def deleteClassification(classificationId: Long): AvataxSimpleCall[List[ErrorDetail]]
-  def deleteParameter(parameterId: Long): AvataxSimpleCall[List[ErrorDetail]]
-  def get(include: Include): AvataxSimpleCall[ItemModel]
-  def getClassification(classificationId: Long): AvataxSimpleCall[ItemClassificationOutputModel]
-  def getParameter(parameterId: Long): AvataxSimpleCall[ItemParameterModel]
-  def listClassifications(options: FiltrableQueryOptions): AvataxCollectionCall[ItemClassificationOutputModel]
-  def listParameters(options: FiltrableQueryOptions): AvataxCollectionCall[ItemParameterModel]
-  def update(model: ItemModel): AvataxSimpleCall[ItemModel]
-  def updateClassification(classificationsId: Long, model: ItemClassificationInputModel): AvataxSimpleCall[ItemClassificationOutputModel]
-  def updateParameter(parameterId: Long, model: ItemParameterModel): AvataxSimpleCall[ItemParameterModel]
+trait CompanyItemsApi[F[_], S[_]] {
+  def createClassifications(model: List[ItemClassificationInputModel]): AvataxSimpleCall[F, List[ItemClassificationOutputModel]]
+  def createParameters(model: List[ItemParameterModel]): AvataxSimpleCall[F, List[ItemParameterModel]]
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def deleteClassification(classificationId: Long): AvataxSimpleCall[F, List[ErrorDetail]]
+  def deleteParameter(parameterId: Long): AvataxSimpleCall[F, List[ErrorDetail]]
+  def get(include: Include): AvataxSimpleCall[F, ItemModel]
+  def getClassification(classificationId: Long): AvataxSimpleCall[F, ItemClassificationOutputModel]
+  def getParameter(parameterId: Long): AvataxSimpleCall[F, ItemParameterModel]
+  def listClassifications(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ItemClassificationOutputModel]
+  def listParameters(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ItemParameterModel]
+  def update(model: ItemModel): AvataxSimpleCall[F, ItemModel]
+  def updateClassification(classificationsId: Long, model: ItemClassificationInputModel): AvataxSimpleCall[F, ItemClassificationOutputModel]
+  def updateParameter(parameterId: Long, model: ItemParameterModel): AvataxSimpleCall[F, ItemParameterModel]
 }

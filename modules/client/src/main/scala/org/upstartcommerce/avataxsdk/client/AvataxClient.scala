@@ -23,37 +23,37 @@ import org.upstartcommerce.avataxsdk.client.api._
 // todo: non-generic include as Set()
 // todo: enums
 
-trait AvataxClient {
+trait AvataxClient[F[_], S[_]] {
 
-  def accounts: AccountsRootApi
-  def addresses: AddressesRootApi
-  def batches: BatchesRootApi
-  def companies: CompaniesRootApi
-  def definitions: DefinitionsRootApi
-  def contacts: ContactsRootApi
-  def dataSources: DataSourcesRootApi
-  def distanceThresholds: DistanceThresholdsRootApi
-  def filingCalendars: FilingCalendarsRootApi
-  def filingRequests: FilingRequestsRootApi
-  def taxRates: TaxRatesRootApi
-  def fundingRequests: FundingRequestsRootApi
-  def items: ItemsRootApi
-  def jurisdictionOverrides: JurisdictionOverridesRootApi
-  def locations: LocationsRootApi
-  def transactions: TransactionsRootApi
-  def nexuses: NexusRootApi
-  def notices: NoticesRootApi
-  def notifications: NotificationsRootApi
-  def passwords: PasswordsRootApi
-  def reports: ReportsRootApi
-  def settings: SettingsRootApi
-  def taxCodes: TaxCodesRootApi
-  def subscriptions: SubscriptionsRootApi
-  def taxContents: TaxContentsRootApi
-  def upcs: UPCRootApi
-  def users: UsersRootApi
-  def utilities: UtilitiesRootApi
-  def taxRatesByZipCode: TaxRatesByZipCodeRootApi
+  def accounts: AccountsRootApi[F, S]
+  def addresses: AddressesRootApi[F, S]
+  def batches: BatchesRootApi[F, S]
+  def companies: CompaniesRootApi[F, S]
+  def definitions: DefinitionsRootApi[F, S]
+  def contacts: ContactsRootApi[F, S]
+  def dataSources: DataSourcesRootApi[F, S]
+  def distanceThresholds: DistanceThresholdsRootApi[F, S]
+  def filingCalendars: FilingCalendarsRootApi[F, S]
+  def filingRequests: FilingRequestsRootApi[F, S]
+  def taxRates: TaxRatesRootApi[F, S]
+  def fundingRequests: FundingRequestsRootApi[F, S]
+  def items: ItemsRootApi[F, S]
+  def jurisdictionOverrides: JurisdictionOverridesRootApi[F, S]
+  def locations: LocationsRootApi[F, S]
+  def transactions: TransactionsRootApi[F, S]
+  def nexuses: NexusRootApi[F, S]
+  def notices: NoticesRootApi[F, S]
+  def notifications: NotificationsRootApi[F, S]
+  def passwords: PasswordsRootApi[F, S]
+  def reports: ReportsRootApi[F, S]
+  def settings: SettingsRootApi[F, S]
+  def taxCodes: TaxCodesRootApi[F, S]
+  def subscriptions: SubscriptionsRootApi[F, S]
+  def taxContents: TaxContentsRootApi[F, S]
+  def upcs: UPCRootApi[F, S]
+  def users: UsersRootApi[F, S]
+  def utilities: UtilitiesRootApi[F, S]
+  def taxRatesByZipCode: TaxRatesByZipCodeRootApi[F, S]
 }
 
 object AvataxClient {

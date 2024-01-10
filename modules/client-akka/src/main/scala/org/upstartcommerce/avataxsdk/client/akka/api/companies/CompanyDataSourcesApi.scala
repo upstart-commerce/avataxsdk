@@ -29,24 +29,18 @@ import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
-import org.upstartcommerce.avataxsdk.client.api.companies.CompanyDataSourcesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyDataSourcesApi, CompanyDataSourcesRootApi}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
 
-/** api/v2/companies/$companyId/datasources */
-trait CompanyDataSourcesRootApiImpl {
-  def forDataSourceId(dataSourceId: Int): CompanyDataSourcesApi
-
-  def create(model: List[DataSourceModel]): AvataxSimpleCall[List[DataSourceModel]]
-  def list(options: FiltrableQueryOptions): AvataxCollectionCall[DataSourceModel]
-}
+import scala.concurrent.Future
 
 object CompanyDataSourcesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyDataSourcesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyDataSourcesRootApiImpl {
-      def forDataSourceId(dataSourceId: Int): CompanyDataSourcesApi =
-        CompanyDataSourcesApi(requester, security, clientHeaders)(companyId, dataSourceId)
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyDataSourcesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyDataSourcesRootApi[Future, Stream] {
+      def forDataSourceId(dataSourceId: Int): CompanyDataSourcesApi[Future, Stream] =
+        CompanyDataSourcesApiImpl(requester, security, clientHeaders)(companyId, dataSourceId)
 
       def create(model: List[DataSourceModel]): AvataxSimpleCall[List[DataSourceModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/datasources")
@@ -62,18 +56,12 @@ object CompanyDataSourcesRootApiImpl {
     }
 }
 
-/** api/v2/companies/$companyId/datasources/$dataSourceId */
-trait CompanyDataSourcesApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[DataSourceModel]
-  def update(model: DataSourceModel): AvataxSimpleCall[DataSourceModel]
-}
-object CompanyDataSourcesApi {
+object CompanyDataSourcesApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       dataSourceId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyDataSourcesApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyDataSourcesApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyDataSourcesApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyDataSourcesApi[Future, Stream] {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/datasources/$dataSourceId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

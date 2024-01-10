@@ -31,15 +31,17 @@ import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.{AccountAdvancedRuleScriptRootApi, AccountAdvancedRuleTableRootApi, AccountsApi, AccountsRootApi}
 import org.upstartcommerce.avataxsdk.client.akka.api.accounts._
 import org.upstartcommerce.avataxsdk.client.api.accounts.{AccountSubscriptionsRootApi, AccountUsersRootApi, AccountsJurisdictionOverridesRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+
+import scala.concurrent.Future
 
 object AccountsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): AccountsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountsRootApi {
-      def forAccount(accountId: Int): AccountsApi = AccountsApiImpl(requester, security, clientHeaders)(accountId)
+  ): AccountsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AccountsRootApi[Future, Stream] {
+      def forAccount(accountId: Int): AccountsApi[Future, Stream] = AccountsApiImpl(requester, security, clientHeaders)(accountId)
 
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[AccountModel] = {
         val uri = Uri(s"/api/v2/accounts").withQuery(include.asQuery.merge(options.asQuery))
@@ -69,17 +71,18 @@ object AccountsRootApiImpl {
 object AccountsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): AccountsApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): AccountsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AccountsApi[Future, Stream] {
 
-      val advancedRuleScripts: AccountAdvancedRuleScriptRootApi =
+      val advancedRuleScripts: AccountAdvancedRuleScriptRootApi[Future, Stream] =
         AccountAdvancedRuleScriptRootApiImpl(requester, security, clientHeaders)(accountId)
-      val advancedRuleTable: AccountAdvancedRuleTableRootApi =
+      val advancedRuleTable: AccountAdvancedRuleTableRootApi[Future, Stream] =
         AccountAdvancedRuleTableRootApiImpl(requester, security, clientHeaders)(accountId)
-      val accountJurisdictionOverrides: AccountsJurisdictionOverridesRootApi =
+      val accountJurisdictionOverrides: AccountsJurisdictionOverridesRootApi[Future, Stream] =
         AccountsJurisdictionOverridesRootApiImpl(requester, security, clientHeaders)(accountId)
-      val subscriptions: AccountSubscriptionsRootApi = AccountSubscriptionsRootApiImpl(requester, security, clientHeaders)(accountId)
-      val users: AccountUsersRootApi = AccountUsersRootApiImpl(requester, security, clientHeaders)(accountId)
+      val subscriptions: AccountSubscriptionsRootApi[Future, Stream] =
+        AccountSubscriptionsRootApiImpl(requester, security, clientHeaders)(accountId)
+      val users: AccountUsersRootApi[Future, Stream] = AccountUsersRootApiImpl(requester, security, clientHeaders)(accountId)
 
       def resetLicenseKey(model: ResetLicenseKeyModel): AvataxSimpleCall[LicenseKeyModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/resetlicensekey")

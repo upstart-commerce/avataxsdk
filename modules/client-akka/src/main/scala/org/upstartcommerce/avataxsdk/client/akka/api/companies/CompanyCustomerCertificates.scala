@@ -31,15 +31,16 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.CompanyCustomerCertificatesApi
 import org.upstartcommerce.avataxsdk.client.api.companies.CompanyCustomerCertificatesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyCustomerCertificatesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       customerCode: String
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyCustomerCertificatesRootApi {
-      def forCertId(certificateId: Int): CompanyCustomerCertificatesApi =
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomerCertificatesRootApi[Future, Stream] {
+      def forCertId(certificateId: Int): CompanyCustomerCertificatesApi[Future, Stream] =
         CompanyCustomerCertificatesApiImpl(requester, security, clientHeaders)(companyId, customerCode, certificateId)
 
       def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertificateModel] = {
@@ -68,6 +69,6 @@ object CompanyCustomerCertificatesApiImpl {
       companyId: Int,
       customerCode: String,
       certificateId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyCustomerCertificatesApi {}
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCustomerCertificatesApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCustomerCertificatesApi[Future, Stream] {}
 }

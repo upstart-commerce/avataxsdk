@@ -22,31 +22,31 @@ import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/transactions */
-trait TransactionsRootApi {
-  def forTransactionId(transactionId: Long): TransactionsApi
-  def forMultiDocTransId(multiDocTransId: Long): TransactionsMultiDocApi
+trait TransactionsRootApi[F[_], S[_]] {
+  def forTransactionId(transactionId: Long): TransactionsApi[F, S]
+  def forMultiDocTransId(multiDocTransId: Long): TransactionsMultiDocApi[F, S]
 
-  def bulkLock(model: BulkLockTransactionModel): AvataxSimpleCall[BulkLockTransactionResult]
-  def createOrAdjustTransaction(include: Include, model: CreateOrAdjustTransactionModel): AvataxSimpleCall[TransactionModel]
-  def createTransaction(include: Include, model: CreateTransactionModel): AvataxSimpleCall[TransactionModel]
+  def bulkLock(model: BulkLockTransactionModel): AvataxSimpleCall[F, BulkLockTransactionResult]
+  def createOrAdjustTransaction(include: Include, model: CreateOrAdjustTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def createTransaction(include: Include, model: CreateTransactionModel): AvataxSimpleCall[F, TransactionModel]
 
-  def adjust(code: String, `type`: DocumentType, include: Include, model: AdjustMultiDocumentModel): AvataxSimpleCall[MultiDocumentModel]
-  def audit(code: String, `type`: DocumentType): AvataxSimpleCall[AuditMultiDocumentModel]
-  def commit(model: CommitMultiDocumentModel): AvataxSimpleCall[MultiDocumentModel]
-  def create(include: Include, model: CreateMultiDocumentModel): AvataxSimpleCall[MultiDocumentModel]
-  def getByCodeAndType(code: String, `type`: DocumentType, include: Include): AvataxSimpleCall[MultiDocumentModel]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[MultiDocumentModel]
-  def refund(code: String, `type`: DocumentType, include: Include, model: RefundTransactionModel): AvataxSimpleCall[MultiDocumentModel]
-  def verify(model: VerifyMultiDocumentModel): AvataxSimpleCall[MultiDocumentModel]
-  def void(code: String, `type`: DocumentType, model: VoidTransactionModel): AvataxSimpleCall[MultiDocumentModel]
+  def adjust(code: String, `type`: DocumentType, include: Include, model: AdjustMultiDocumentModel): AvataxSimpleCall[F, MultiDocumentModel]
+  def audit(code: String, `type`: DocumentType): AvataxSimpleCall[F, AuditMultiDocumentModel]
+  def commit(model: CommitMultiDocumentModel): AvataxSimpleCall[F, MultiDocumentModel]
+  def create(include: Include, model: CreateMultiDocumentModel): AvataxSimpleCall[F, MultiDocumentModel]
+  def getByCodeAndType(code: String, `type`: DocumentType, include: Include): AvataxSimpleCall[F, MultiDocumentModel]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, MultiDocumentModel]
+  def refund(code: String, `type`: DocumentType, include: Include, model: RefundTransactionModel): AvataxSimpleCall[F, MultiDocumentModel]
+  def verify(model: VerifyMultiDocumentModel): AvataxSimpleCall[F, MultiDocumentModel]
+  def void(code: String, `type`: DocumentType, model: VoidTransactionModel): AvataxSimpleCall[F, MultiDocumentModel]
 }
 
 /** /api/v2/transactions/multidocument/$multiDocTransId */
-trait TransactionsMultiDocApi {
-  def get(include: Include): AvataxSimpleCall[MultiDocumentModel]
+trait TransactionsMultiDocApi[F[_], S[_]] {
+  def get(include: Include): AvataxSimpleCall[F, MultiDocumentModel]
 }
 
 /** /api/v2/transactions/$transId */
-trait TransactionsApi {
-  def get(include: Include): AvataxSimpleCall[TransactionModel]
+trait TransactionsApi[F[_], S[_]] {
+  def get(include: Include): AvataxSimpleCall[F, TransactionModel]
 }

@@ -20,6 +20,6 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/contacts/ */
-trait ContactsRootApi {
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel]
+trait ContactsRootApi[F[_], S[_]] {
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ContactModel]
 }

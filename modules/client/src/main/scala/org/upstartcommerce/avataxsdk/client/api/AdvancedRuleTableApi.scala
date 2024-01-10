@@ -18,17 +18,17 @@ package org.upstartcommerce.avataxsdk.client.api
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait AccountAdvancedRuleTableRootApi {
-  def forTableName(csvTableName: String): AccountAdvancedRuleTableApi
+trait AccountAdvancedRuleTableRootApi[F[_], S[_]] {
+  def forTableName(csvTableName: String): AccountAdvancedRuleTableApi[F, S]
 
-  def get: AvataxSimpleCall[AdvancedRuleTableModel]
+  def get: AvataxSimpleCall[F, AdvancedRuleTableModel]
 }
 
-trait AccountAdvancedRuleTableApi {
+trait AccountAdvancedRuleTableApi[F[_], S[_]] {
   /* todo: `file` arg is unused in official sdk, see  https://github.com/avadev/AvaTax-REST-V2-JRE-SDK/issues/44 */
-  def create(file: String): AvataxSimpleCall[String]
+  def create(file: String): AvataxSimpleCall[F, String]
 
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
 
-  def get: AvataxSimpleCall[AdvancedRuleTableModel]
+  def get: AvataxSimpleCall[F, AdvancedRuleTableModel]
 }

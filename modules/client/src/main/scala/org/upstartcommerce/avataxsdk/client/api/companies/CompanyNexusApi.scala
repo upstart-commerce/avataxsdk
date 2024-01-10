@@ -20,18 +20,18 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/nexus */
-trait CompanyNexusRootApi {
-  def forNexusId(nexusId: Int): CompanyNexusApi
+trait CompanyNexusRootApi[F[_], S[_]] {
+  def forNexusId(nexusId: Int): CompanyNexusApi[F, S]
 
-  def create(model: List[NexusModel]): AvataxSimpleCall[List[NexusModel]]
-  def declareByAddress(model: List[DeclareNexusByAddressModel]): AvataxSimpleCall[List[NexusByAddressModel]]
-  def getByFormCode(formCode: String): AvataxSimpleCall[NexusByTaxFormModel]
-  def listByCompany(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
+  def create(model: List[NexusModel]): AvataxSimpleCall[F, List[NexusModel]]
+  def declareByAddress(model: List[DeclareNexusByAddressModel]): AvataxSimpleCall[F, List[NexusByAddressModel]]
+  def getByFormCode(formCode: String): AvataxSimpleCall[F, NexusByTaxFormModel]
+  def listByCompany(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NexusModel]
 }
 
 /** /api/v2/companies/$companyId/nexus/$nexusId */
-trait CompanyNexusApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[NexusModel]
-  def update(model: NexusModel): AvataxSimpleCall[NexusModel]
+trait CompanyNexusApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, NexusModel]
+  def update(model: NexusModel): AvataxSimpleCall[F, NexusModel]
 }

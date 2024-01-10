@@ -20,16 +20,16 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/settings */
-trait CompanySettingsRootApi {
-  def forId(settingsId: Int): CompanySettingsApi
+trait CompanySettingsRootApi[F[_], S[_]] {
+  def forId(settingsId: Int): CompanySettingsApi[F, S]
 
-  def create(model: List[SettingModel]): AvataxSimpleCall[List[SettingModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[SettingModel]
+  def create(model: List[SettingModel]): AvataxSimpleCall[F, List[SettingModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, SettingModel]
 }
 
 /** /api/v2/companies/$companyId/settings/$settingsId */
-trait CompanySettingsApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[SettingModel]
-  def update(model: SettingModel): AvataxSimpleCall[SettingModel]
+trait CompanySettingsApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, SettingModel]
+  def update(model: SettingModel): AvataxSimpleCall[F, SettingModel]
 }

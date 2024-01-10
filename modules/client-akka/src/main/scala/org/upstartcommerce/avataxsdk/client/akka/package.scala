@@ -17,12 +17,18 @@ package org.upstartcommerce.avataxsdk.client
 
 import _root_.akka.http.scaladsl.Http.HostConnectionPool
 import _root_.akka.http.scaladsl.model.{HttpRequest, HttpResponse}
-import _root_.akka.stream.scaladsl.Flow
+import _root_.akka.stream.scaladsl.{Flow, Source}
+import _root_.akka.NotUsed
 
-import scala.concurrent.Promise
+import scala.concurrent.{Future, Promise}
 import scala.util.Try
 
 package object akka {
   type HostPool = Flow[(HttpRequest, Promise[HttpResponse]), (Try[HttpResponse], Promise[HttpResponse]), HostConnectionPool]
+
+  type Stream[A] = Source[A, NotUsed]
+
+  type AvataxCollectionCall[A] = org.upstartcommerce.avataxsdk.client.AvataxCollectionCall[Future, Stream, A]
+  type AvataxSimpleCall[A] = org.upstartcommerce.avataxsdk.client.AvataxSimpleCall[Future, A]
 
 }

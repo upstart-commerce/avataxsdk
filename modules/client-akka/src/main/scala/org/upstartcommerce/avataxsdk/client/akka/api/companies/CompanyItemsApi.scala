@@ -30,14 +30,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyItemsApi, CompanyItemsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyItemsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyItemsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyItemsRootApi {
-      def forItemId(itemId: Long): CompanyItemsApi = CompanyItemsApiImpl(requester, security, clientHeaders)(companyId, itemId)
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyItemsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyItemsRootApi[Future, Stream] {
+      def forItemId(itemId: Long): CompanyItemsApi[Future, Stream] =
+        CompanyItemsApiImpl(requester, security, clientHeaders)(companyId, itemId)
 
       def createItems(model: List[ItemModel]): AvataxSimpleCall[List[ItemModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items")
@@ -57,8 +59,8 @@ object CompanyItemsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       itemId: Long
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyItemsApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyItemsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyItemsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyItemsApi[Future, Stream] {
       def createClassifications(model: List[ItemClassificationInputModel]): AvataxSimpleCall[List[ItemClassificationOutputModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/items/$itemId/classifications")
         val req = HttpRequest(uri = uri).withMethod(POST)

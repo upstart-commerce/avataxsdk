@@ -33,14 +33,15 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.CompanyCertificatesApi
 import org.upstartcommerce.avataxsdk.client.api.companies.CompanyCertificatesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyCertificatesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyCertificatesRootApi {
-      def forId(certificateId: Int): CompanyCertificatesApi =
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCertificatesRootApi[Future, Stream] {
+      def forId(certificateId: Int): CompanyCertificatesApi[Future, Stream] =
         CompanyCertificatesApiImpl(requester, security, clientHeaders)(companyId, certificateId)
 
       def create(preValidatedExemptionReason: Boolean, model: List[CertificateModel]): AvataxSimpleCall[List[CertificateModel]] = {
@@ -74,8 +75,8 @@ object CompanyCertificatesApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       certificateId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyCertificatesApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyCertificatesApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyCertificatesApi[Future, Stream] {
       def delete: AvataxSimpleCall[CertificateModel] = {
         val uri = Uri(s"/api/v2/companies/$companyId/certificates/$certificateId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

@@ -20,6 +20,6 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/nexus */
-trait NexusRootApi {
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[NexusModel]
+trait NexusRootApi[F[_], S[_]] {
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NexusModel]
 }

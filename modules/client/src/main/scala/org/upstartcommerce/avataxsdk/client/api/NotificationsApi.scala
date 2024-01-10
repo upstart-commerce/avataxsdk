@@ -20,17 +20,17 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/notifications */
-trait NotificationsRootApi {
-  def forId(notificationId: Long): NotificationsApi
+trait NotificationsRootApi[F[_], S[_]] {
+  def forId(notificationId: Long): NotificationsApi[F, S]
 
-  def list(options: FiltrableQueryOptions): AvataxCollectionCall[NotificationModel]
-  def create(model: List[NotificationModel]): AvataxSimpleCall[List[NotificationModel]]
+  def list(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, NotificationModel]
+  def create(model: List[NotificationModel]): AvataxSimpleCall[F, List[NotificationModel]]
 }
 
 /** /api/v2/notifications/$id/ */
-trait NotificationsApi {
-  def dismiss: AvataxSimpleCall[NotificationModel]
-  def get: AvataxSimpleCall[NotificationModel]
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def update(model: NotificationModel): AvataxSimpleCall[NotificationModel]
+trait NotificationsApi[F[_], S[_]] {
+  def dismiss: AvataxSimpleCall[F, NotificationModel]
+  def get: AvataxSimpleCall[F, NotificationModel]
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def update(model: NotificationModel): AvataxSimpleCall[F, NotificationModel]
 }

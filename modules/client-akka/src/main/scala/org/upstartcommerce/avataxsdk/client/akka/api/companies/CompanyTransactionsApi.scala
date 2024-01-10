@@ -32,14 +32,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyTransactionsApi, CompanyTransactionsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyTransactionsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyCode: String
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyTransactionsRootApi {
-      def forId(transactionCode: String): CompanyTransactionsApi =
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyTransactionsRootApi[Future, Stream] {
+      def forId(transactionCode: String): CompanyTransactionsApi[Future, Stream] =
         CompanyTransactionsApiImpl(requester, security, clientHeaders)(companyCode, transactionCode)
 
       def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TransactionModel] = {
@@ -53,8 +54,8 @@ object CompanyTransactionsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyCode: String,
       transactionCode: String
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyTransactionsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyTransactionsApi[Future, Stream] {
 
       def adjust(documentType: DocumentType, model: AdjustTransactionModel): AvataxSimpleCall[TransactionModel] = {
         val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/adjust").withQuery(Query("companyCode" -> companyCode))

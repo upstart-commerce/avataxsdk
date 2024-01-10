@@ -20,9 +20,9 @@ import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/utilities/ */
-trait UtilitiesRootApi {
-  def getMySubscription(serviceTypeId: ServiceTypeId): AvataxSimpleCall[SubscriptionModel]
-  def listMySubscriptions(): AvataxCollectionCall[SubscriptionModel]
-  def ping: AvataxSimpleCall[PingResultModel]
+trait UtilitiesRootApi[F[_], S[_]] {
+  def getMySubscription(serviceTypeId: ServiceTypeId): AvataxSimpleCall[F, SubscriptionModel]
+  def listMySubscriptions(): AvataxCollectionCall[F, S, SubscriptionModel]
+  def ping: AvataxSimpleCall[F, PingResultModel]
 
 }

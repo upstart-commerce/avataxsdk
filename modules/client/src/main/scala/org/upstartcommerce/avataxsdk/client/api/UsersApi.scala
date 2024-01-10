@@ -19,6 +19,6 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait UsersRootApi {
-  def queryUsers(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UserModel]
+trait UsersRootApi[F[_], S[_]] {
+  def queryUsers(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, UserModel]
 }

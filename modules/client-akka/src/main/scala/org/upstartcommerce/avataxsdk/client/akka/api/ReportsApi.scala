@@ -28,15 +28,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.{ReportsApi, ReportsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object ReportsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): ReportsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with ReportsRootApi {
-      def forId(reportId: Long): ReportsApi = ReportsApiImpl(requester, security, clientHeaders)(reportId)
+  ): ReportsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with ReportsRootApi[Future, Stream] {
+      def forId(reportId: Long): ReportsApi[Future, Stream] = ReportsApiImpl(requester, security, clientHeaders)(reportId)
 
       def list: AvataxCollectionCall[ReportModel] = {
         val uri =
@@ -50,8 +51,8 @@ object ReportsRootApiImpl {
 object ReportsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       reportId: Long
-  )(implicit system: ActorSystem, materializer: Materializer): ReportsApi =
-    new ApiRoot(requester, security, clientHeaders) with ReportsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): ReportsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with ReportsApi[Future, Stream] {
       def download: AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/reports/$reportId/attachment")
         val req = HttpRequest(uri = uri).withMethod(GET)

@@ -29,15 +29,17 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.{NotificationsApi, NotificationsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object NotificationsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): NotificationsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with NotificationsRootApi {
-      def forId(notificationId: Long): NotificationsApi = NotificationsApiImpl(requester, security, clientHeaders)(notificationId)
+  ): NotificationsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with NotificationsRootApi[Future, Stream] {
+      def forId(notificationId: Long): NotificationsApi[Future, Stream] =
+        NotificationsApiImpl(requester, security, clientHeaders)(notificationId)
 
       def list(options: FiltrableQueryOptions): AvataxCollectionCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications").withQuery(options.asQuery)
@@ -56,8 +58,8 @@ object NotificationsRootApiImpl {
 object NotificationsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       notificationId: Long
-  )(implicit system: ActorSystem, materializer: Materializer): NotificationsApi =
-    new ApiRoot(requester, security, clientHeaders) with NotificationsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): NotificationsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with NotificationsApi[Future, Stream] {
       def dismiss: AvataxSimpleCall[NotificationModel] = {
         val uri = Uri(s"/api/v2/notifications/$notificationId/dismiss")
         val req = HttpRequest(uri = uri).withMethod(PUT)

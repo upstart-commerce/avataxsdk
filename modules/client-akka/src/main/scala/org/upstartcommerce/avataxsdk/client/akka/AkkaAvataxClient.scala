@@ -26,6 +26,8 @@ import org.upstartcommerce.avataxsdk.client.akka.api._
 import org.upstartcommerce.avataxsdk.client.akka.internal._
 import org.upstartcommerce.avataxsdk.core.data.Environment
 
+import scala.concurrent.Future
+
 // todo: remove date for more usable one
 // todo: swap strings for enums
 // todo: remove .toStrings (from enums etc.)
@@ -45,7 +47,7 @@ object AkkaAvataxClient {
       poolQueueSize: Int = 128,
       security: Option[SecuritySettings] = None,
       clientHeaders: Option[ClientHeaders] = None
-  )(implicit system: ActorSystem, materializer: Materializer): AvataxClient = {
+  )(implicit system: ActorSystem, materializer: Materializer): AvataxClient[Future, Stream] = {
     val poolFlow = HostPool.forUrl(environment.url)
     val requester = Requester.pooled(poolFlow, poolQueueSize)
     val credentials = security.map(x => headers.Authorization(BasicHttpCredentials(x.username, x.password)))
@@ -55,38 +57,39 @@ object AkkaAvataxClient {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): AvataxClient = {
+  ): AvataxClient[Future, Stream] = {
 
-    new ApiRoot(requester, security, clientHeaders) with AvataxClient {
-      val accounts: AccountsRootApi = AccountsRootApiImpl(requester, security, clientHeaders)
-      val addresses: AddressesRootApi = AddressesRootApiImpl(requester, security, clientHeaders)
-      val batches: BatchesRootApi = BatchesRootApiImpl(requester, security, clientHeaders)
-      val companies: CompaniesRootApi = CompaniesRootApiImpl(requester, security, clientHeaders)
-      val definitions: DefinitionsRootApi = DefinitionsRootApiImpl(requester, security, clientHeaders)
-      val contacts: ContactsRootApi = ContactsRootApiImpl(requester, security, clientHeaders)
-      val dataSources: DataSourcesRootApi = DataSourcesRootApiImpl(requester, security, clientHeaders)
-      val distanceThresholds: DistanceThresholdsRootApi = DistanceThresholdsRootApiImpl(requester, security, clientHeaders)
-      val filingCalendars: FilingCalendarsRootApi = FilingCalendarsRootApiImpl(requester, security, clientHeaders)
-      val filingRequests: FilingRequestsRootApi = FilingRequestsRootApiImpl(requester, security, clientHeaders)
-      val taxRates: TaxRatesRootApi = TaxRatesRootApiImpl(requester, security, clientHeaders)
-      val fundingRequests: FundingRequestsRootApi = FundingRequestsRootApiImpl(requester, security, clientHeaders)
-      val items: ItemsRootApi = ItemsRootApiImpl(requester, security, clientHeaders)
-      val jurisdictionOverrides: JurisdictionOverridesRootApi = JurisdictionOverridesRootApiImpl(requester, security, clientHeaders)
-      val locations: LocationsRootApi = LocationsRootApiImpl(requester, security, clientHeaders)
-      val transactions: TransactionsRootApi = TransactionsRootApiImpl(requester, security, clientHeaders)
-      val nexuses: NexusRootApi = NexusRootApiImpl(requester, security, clientHeaders)
-      val notices: NoticesRootApi = NoticesRootApiImpl(requester, security, clientHeaders)
-      val notifications: NotificationsRootApi = NotificationsRootApiImpl(requester, security, clientHeaders)
-      val passwords: PasswordsRootApi = PasswordsRootApiImpl(requester, security, clientHeaders)
-      val reports: ReportsRootApi = ReportsRootApiImpl(requester, security, clientHeaders)
-      val settings: SettingsRootApi = SettingsRootApiImpl(requester, security, clientHeaders)
-      val taxCodes: TaxCodesRootApi = TaxCodesRootApiImpl(requester, security, clientHeaders)
-      val subscriptions: SubscriptionsRootApi = SubscriptionsRootApiImpl(requester, security, clientHeaders)
-      val taxContents: TaxContentsRootApi = TaxContentsRootApiImpl(requester, security, clientHeaders)
-      val upcs: UPCRootApi = UPCRootApiImpl(requester, security, clientHeaders)
-      val users: UsersRootApi = UsersRootApiImpl(requester, security, clientHeaders)
-      val utilities: UtilitiesRootApi = UtilitiesRootApiImpl(requester, security, clientHeaders)
-      val taxRatesByZipCode: TaxRatesByZipCodeRootApi = TaxRatesByZipCodeRootApiImpl(requester, security, clientHeaders)
+    new ApiRoot(requester, security, clientHeaders) with AvataxClient[Future, Stream] {
+      val accounts: AccountsRootApi[Future, Stream] = AccountsRootApiImpl(requester, security, clientHeaders)
+      val addresses: AddressesRootApi[Future, Stream] = AddressesRootApiImpl(requester, security, clientHeaders)
+      val batches: BatchesRootApi[Future, Stream] = BatchesRootApiImpl(requester, security, clientHeaders)
+      val companies: CompaniesRootApi[Future, Stream] = CompaniesRootApiImpl(requester, security, clientHeaders)
+      val definitions: DefinitionsRootApi[Future, Stream] = DefinitionsRootApiImpl(requester, security, clientHeaders)
+      val contacts: ContactsRootApi[Future, Stream] = ContactsRootApiImpl(requester, security, clientHeaders)
+      val dataSources: DataSourcesRootApi[Future, Stream] = DataSourcesRootApiImpl(requester, security, clientHeaders)
+      val distanceThresholds: DistanceThresholdsRootApi[Future, Stream] = DistanceThresholdsRootApiImpl(requester, security, clientHeaders)
+      val filingCalendars: FilingCalendarsRootApi[Future, Stream] = FilingCalendarsRootApiImpl(requester, security, clientHeaders)
+      val filingRequests: FilingRequestsRootApi[Future, Stream] = FilingRequestsRootApiImpl(requester, security, clientHeaders)
+      val taxRates: TaxRatesRootApi[Future, Stream] = TaxRatesRootApiImpl(requester, security, clientHeaders)
+      val fundingRequests: FundingRequestsRootApi[Future, Stream] = FundingRequestsRootApiImpl(requester, security, clientHeaders)
+      val items: ItemsRootApi[Future, Stream] = ItemsRootApiImpl(requester, security, clientHeaders)
+      val jurisdictionOverrides: JurisdictionOverridesRootApi[Future, Stream] =
+        JurisdictionOverridesRootApiImpl(requester, security, clientHeaders)
+      val locations: LocationsRootApi[Future, Stream] = LocationsRootApiImpl(requester, security, clientHeaders)
+      val transactions: TransactionsRootApi[Future, Stream] = TransactionsRootApiImpl(requester, security, clientHeaders)
+      val nexuses: NexusRootApi[Future, Stream] = NexusRootApiImpl(requester, security, clientHeaders)
+      val notices: NoticesRootApi[Future, Stream] = NoticesRootApiImpl(requester, security, clientHeaders)
+      val notifications: NotificationsRootApi[Future, Stream] = NotificationsRootApiImpl(requester, security, clientHeaders)
+      val passwords: PasswordsRootApi[Future, Stream] = PasswordsRootApiImpl(requester, security, clientHeaders)
+      val reports: ReportsRootApi[Future, Stream] = ReportsRootApiImpl(requester, security, clientHeaders)
+      val settings: SettingsRootApi[Future, Stream] = SettingsRootApiImpl(requester, security, clientHeaders)
+      val taxCodes: TaxCodesRootApi[Future, Stream] = TaxCodesRootApiImpl(requester, security, clientHeaders)
+      val subscriptions: SubscriptionsRootApi[Future, Stream] = SubscriptionsRootApiImpl(requester, security, clientHeaders)
+      val taxContents: TaxContentsRootApi[Future, Stream] = TaxContentsRootApiImpl(requester, security, clientHeaders)
+      val upcs: UPCRootApi[Future, Stream] = UPCRootApiImpl(requester, security, clientHeaders)
+      val users: UsersRootApi[Future, Stream] = UsersRootApiImpl(requester, security, clientHeaders)
+      val utilities: UtilitiesRootApi[Future, Stream] = UtilitiesRootApiImpl(requester, security, clientHeaders)
+      val taxRatesByZipCode: TaxRatesByZipCodeRootApi[Future, Stream] = TaxRatesByZipCodeRootApiImpl(requester, security, clientHeaders)
     }
   }
 }

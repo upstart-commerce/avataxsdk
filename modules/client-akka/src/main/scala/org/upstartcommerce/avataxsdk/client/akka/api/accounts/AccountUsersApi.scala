@@ -29,16 +29,17 @@ import org.upstartcommerce.avataxsdk.json._
 import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
 import org.upstartcommerce.avataxsdk.client.api.accounts.AccountUsersRootApi
 import org.upstartcommerce.avataxsdk.client.api.accounts.AccountUsersApi
+import scala.concurrent.Future
 
 object AccountUsersRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): AccountUsersRootApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountUsersRootApi {
-      def forId(userId: Int): AccountUsersApi = AccountUsersApiImpl(requester, security, clientHeaders)(accountId, userId)
+  )(implicit system: ActorSystem, materializer: Materializer): AccountUsersRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AccountUsersRootApi[Future, Stream] {
+      def forId(userId: Int): AccountUsersApi[Future, Stream] = AccountUsersApiImpl(requester, security, clientHeaders)(accountId, userId)
 
       def create(model: List[UserModel]): AvataxSimpleCall[List[UserModel]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users")
@@ -58,8 +59,8 @@ object AccountUsersApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int,
       userId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): AccountUsersApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountUsersApi {
+  )(implicit system: ActorSystem, materializer: Materializer): AccountUsersApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AccountUsersApi[Future, Stream] {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/users/$userId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

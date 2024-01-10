@@ -29,15 +29,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.{TaxCodesApi, TaxCodesRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object TaxCodesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): TaxCodesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with TaxCodesRootApi {
-      def forId(taxCodeId: Int): TaxCodesApi = TaxCodesApiImpl(requester, security, clientHeaders)(taxCodeId)
+  ): TaxCodesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with TaxCodesRootApi[Future, Stream] {
+      def forId(taxCodeId: Int): TaxCodesApi[Future, Stream] = TaxCodesApiImpl(requester, security, clientHeaders)(taxCodeId)
 
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeModel] = {
         val uri = Uri(s"/api/v2/taxcodes").withQuery(include.asQuery.merge(options.asQuery))
@@ -50,6 +51,6 @@ object TaxCodesRootApiImpl {
 object TaxCodesApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       taxCodeId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): TaxCodesApi =
-    new ApiRoot(requester, security, clientHeaders) with TaxCodesApi {}
+  )(implicit system: ActorSystem, materializer: Materializer): TaxCodesApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with TaxCodesApi[Future, Stream] {}
 }

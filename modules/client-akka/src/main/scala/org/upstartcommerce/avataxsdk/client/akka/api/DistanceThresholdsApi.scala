@@ -29,14 +29,16 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.DistanceThresholdsRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+
+import scala.concurrent.Future
 
 object DistanceThresholdsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): DistanceThresholdsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with DistanceThresholdsRootApi {
+  ): DistanceThresholdsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with DistanceThresholdsRootApi[Future, Stream] {
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CompanyDistanceThresholdModel] = {
         val uri = Uri(s"/api/v2/distancethresholds").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)

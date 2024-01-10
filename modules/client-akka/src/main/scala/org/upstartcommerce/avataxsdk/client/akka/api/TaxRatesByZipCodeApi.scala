@@ -29,14 +29,15 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import akka.http.scaladsl.model.headers.Authorization
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.TaxRatesByZipCodeRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object TaxRatesByZipCodeRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): TaxRatesByZipCodeRootApi =
-    new ApiRoot(requester, security, clientHeaders) with TaxRatesByZipCodeRootApi {
+  ): TaxRatesByZipCodeRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with TaxRatesByZipCodeRootApi[Future, Stream] {
       def download(date: java.util.Date, region: String): AvataxSimpleCall[String] = {
         val uri = Uri(s"/api/v2/taxratesbyzipcode/download/$date").withQuery(Query("region" -> region))
         val req = HttpRequest(uri = uri).withMethod(GET)

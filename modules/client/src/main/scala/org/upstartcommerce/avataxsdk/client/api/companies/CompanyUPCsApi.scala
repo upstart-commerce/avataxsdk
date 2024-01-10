@@ -20,15 +20,15 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/upcs */
-trait CompanyUPCsRootApi {
-  def forId(upcId: Int): CompanyUPCsApi
+trait CompanyUPCsRootApi[F[_], S[_]] {
+  def forId(upcId: Int): CompanyUPCsApi[F, S]
 
-  def create(model: List[UPCModel]): AvataxSimpleCall[List[UPCModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UPCModel]
+  def create(model: List[UPCModel]): AvataxSimpleCall[F, List[UPCModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, UPCModel]
 }
 
-trait CompanyUPCsApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[UPCModel]
-  def update(model: UPCModel): AvataxSimpleCall[UPCModel]
+trait CompanyUPCsApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, UPCModel]
+  def update(model: UPCModel): AvataxSimpleCall[F, UPCModel]
 }

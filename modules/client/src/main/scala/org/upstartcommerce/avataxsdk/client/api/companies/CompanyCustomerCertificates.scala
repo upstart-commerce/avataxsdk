@@ -20,13 +20,13 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/customers/$customerCode/certificates */
-trait CompanyCustomerCertificatesRootApi {
-  def forCertId(certificateId: Int): CompanyCustomerCertificatesApi
+trait CompanyCustomerCertificatesRootApi[F[_], S[_]] {
+  def forCertId(certificateId: Int): CompanyCustomerCertificatesApi[F, S]
 
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CertificateModel]
-  def listValid(country: String, region: String): AvataxSimpleCall[ExemptionStatusModel]
-  def unlink(model: LinkCertificatesModel): AvataxCollectionCall[CertificateModel]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CertificateModel]
+  def listValid(country: String, region: String): AvataxSimpleCall[F, ExemptionStatusModel]
+  def unlink(model: LinkCertificatesModel): AvataxCollectionCall[F, S, CertificateModel]
 }
 
 /** /api/v2/companies/$companyId/customers/$customerCode/certificates/$certificateId */
-trait CompanyCustomerCertificatesApi {}
+trait CompanyCustomerCertificatesApi[F[_], S[_]] {}

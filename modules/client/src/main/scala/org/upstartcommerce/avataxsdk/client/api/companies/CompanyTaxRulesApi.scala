@@ -21,15 +21,15 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/taxrules */
-trait CompanyTaxRulesRootApi {
-  def forId(taxRuleId: Int): CompanyTaxRulesApi
+trait CompanyTaxRulesRootApi[F[_], S[_]] {
+  def forId(taxRuleId: Int): CompanyTaxRulesApi[F, S]
 
-  def create(model: List[TaxRuleModel]): AvataxSimpleCall[List[TaxRuleModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxRuleModel]
+  def create(model: List[TaxRuleModel]): AvataxSimpleCall[F, List[TaxRuleModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxRuleModel]
 }
 
-trait CompanyTaxRulesApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[TaxRuleModel]
-  def update(model: TaxRuleModel): AvataxSimpleCall[TaxRuleModel]
+trait CompanyTaxRulesApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, TaxRuleModel]
+  def update(model: TaxRuleModel): AvataxSimpleCall[F, TaxRuleModel]
 }

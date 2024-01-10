@@ -28,23 +28,26 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.{FundingRequestsApi, FundingRequestsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+
+import scala.concurrent.Future
 
 object FundingRequestsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): FundingRequestsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with FundingRequestsRootApi {
-      def forId(fundingReqId: Long): FundingRequestsApi = FundingRequestsApiImpl(requester, security, clientHeaders)(fundingReqId)
+  ): FundingRequestsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with FundingRequestsRootApi[Future, Stream] {
+      def forId(fundingReqId: Long): FundingRequestsApi[Future, Stream] =
+        FundingRequestsApiImpl(requester, security, clientHeaders)(fundingReqId)
     }
 }
 
 object FundingRequestsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       fundingReqId: Long
-  )(implicit system: ActorSystem, materializer: Materializer): FundingRequestsApi =
-    new ApiRoot(requester, security, clientHeaders) with FundingRequestsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): FundingRequestsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with FundingRequestsApi[Future, Stream] {
       def activate: AvataxSimpleCall[FundingStatusModel] = {
         val uri = Uri(s"/api/v2/fundingrequests/$fundingReqId/widget")
         val req = HttpRequest(uri = uri).withMethod(GET)

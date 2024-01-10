@@ -30,14 +30,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.companies.{CompanyUPCsApi, CompanyUPCsRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object CompanyUPCsRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyUPCsRootApi {
-      def forId(upcId: Int): CompanyUPCsApi = CompanyUPCsApiImpl(requester, security, clientHeaders)(companyId, upcId)
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyUPCsRootApi[Future, Stream] {
+      def forId(upcId: Int): CompanyUPCsApi[Future, Stream] = CompanyUPCsApiImpl(requester, security, clientHeaders)(companyId, upcId)
 
       def create(model: List[UPCModel]): AvataxSimpleCall[List[UPCModel]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs")
@@ -57,8 +58,8 @@ object CompanyUPCsApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       companyId: Int,
       upcId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyUPCsApi {
+  )(implicit system: ActorSystem, materializer: Materializer): CompanyUPCsApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with CompanyUPCsApi[Future, Stream] {
       def delete: AvataxSimpleCall[List[ErrorDetail]] = {
         val uri = Uri(s"/api/v2/companies/$companyId/upcs/$upcId")
         val req = HttpRequest(uri = uri).withMethod(DELETE)

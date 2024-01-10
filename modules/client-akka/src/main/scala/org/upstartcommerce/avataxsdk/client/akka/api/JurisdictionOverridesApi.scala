@@ -29,14 +29,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.JurisdictionOverridesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object JurisdictionOverridesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): JurisdictionOverridesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with JurisdictionOverridesRootApi {
+  ): JurisdictionOverridesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with JurisdictionOverridesRootApi[Future, Stream] {
       def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionOverrideModel] = {
         val uri = Uri(s"/api/v2/jurisdictionoverrides").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)

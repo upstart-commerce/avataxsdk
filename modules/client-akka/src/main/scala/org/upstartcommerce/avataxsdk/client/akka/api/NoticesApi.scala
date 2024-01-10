@@ -29,14 +29,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.NoticesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object NoticesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): NoticesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with NoticesRootApi {
+  ): NoticesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with NoticesRootApi[Future, Stream] {
       def query(include: Include, options: QueryOptions): AvataxCollectionCall[NoticeModel] = {
         val uri = Uri(s"/api/v2/notices").withQuery(include.asQuery.merge(options.asQuery))
         val req = HttpRequest(uri = uri).withMethod(GET)

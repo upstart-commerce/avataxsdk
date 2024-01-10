@@ -19,15 +19,15 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait AvaFileFormsRootApi {
-  def forId(formId: Int): AvaFileFormsApi
+trait AvaFileFormsRootApi[F[_], S[_]] {
+  def forId(formId: Int): AvaFileFormsApi[F, S]
 
-  def create(model: List[AvaFileFormModel]): AvataxSimpleCall[List[AvaFileFormModel]]
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[AvaFileFormModel]
+  def create(model: List[AvaFileFormModel]): AvataxSimpleCall[F, List[AvaFileFormModel]]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, AvaFileFormModel]
 }
 
-trait AvaFileFormsApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[AvaFileFormModel]
-  def update(model: AvaFileFormModel): AvataxSimpleCall[AvaFileFormModel]
+trait AvaFileFormsApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, AvaFileFormModel]
+  def update(model: AvaFileFormModel): AvataxSimpleCall[F, AvaFileFormModel]
 }

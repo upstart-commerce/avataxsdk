@@ -20,15 +20,15 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/accounts/$accountId/jurisdictionoverrides */
-trait AccountsJurisdictionOverridesRootApi {
-  def forJurisOverrideId(jurisOverrideId: Int): AccountsJurisdictionOverridesApi
-  def create(model: List[JurisdictionOverrideModel]): AvataxSimpleCall[List[JurisdictionOverrideModel]]
-  def list(include: Include, filter: FiltrableQueryOptions): AvataxCollectionCall[JurisdictionOverrideModel]
+trait AccountsJurisdictionOverridesRootApi[F[_], S[_]] {
+  def forJurisOverrideId(jurisOverrideId: Int): AccountsJurisdictionOverridesApi[F, S]
+  def create(model: List[JurisdictionOverrideModel]): AvataxSimpleCall[F, List[JurisdictionOverrideModel]]
+  def list(include: Include, filter: FiltrableQueryOptions): AvataxCollectionCall[F, S, JurisdictionOverrideModel]
 }
 
 /** /api/v2/accounts/$accountId/jurisdictionoverrides/$jurisId */
-trait AccountsJurisdictionOverridesApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get(include: Include, options: FiltrableQueryOptions): AvataxSimpleCall[JurisdictionOverrideModel]
-  def update(model: JurisdictionOverrideModel): AvataxSimpleCall[JurisdictionOverrideModel]
+trait AccountsJurisdictionOverridesApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get(include: Include, options: FiltrableQueryOptions): AvataxSimpleCall[F, JurisdictionOverrideModel]
+  def update(model: JurisdictionOverrideModel): AvataxSimpleCall[F, JurisdictionOverrideModel]
 }

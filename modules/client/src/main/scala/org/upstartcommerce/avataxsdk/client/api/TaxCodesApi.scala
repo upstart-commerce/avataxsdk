@@ -19,10 +19,10 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait TaxCodesRootApi {
-  def forId(taxCodeId: Int): TaxCodesApi
+trait TaxCodesRootApi[F[_], S[_]] {
+  def forId(taxCodeId: Int): TaxCodesApi[F, S]
 
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeModel]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxCodeModel]
 }
 
-trait TaxCodesApi {}
+trait TaxCodesApi[F[_], S[_]] {}

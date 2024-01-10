@@ -18,7 +18,7 @@ package org.upstartcommerce.avataxsdk.client.api
 import org.upstartcommerce.avataxsdk.client.AvataxSimpleCall
 import org.upstartcommerce.avataxsdk.core.data.models._
 
-trait AddressesRootApi {
+trait AddressesRootApi[F[_], S[_]] {
   def resolve(
       line1: String,
       line2: String,
@@ -28,6 +28,6 @@ trait AddressesRootApi {
       postalCode: String,
       country: String,
       textCase: String
-  ): AvataxSimpleCall[AddressResolutionModel]
-  def resolvePost(model: AddressValidationInfo): AvataxSimpleCall[AddressResolutionModel]
+  ): AvataxSimpleCall[F, AddressResolutionModel]
+  def resolvePost(model: AddressValidationInfo): AvataxSimpleCall[F, AddressResolutionModel]
 }

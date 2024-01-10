@@ -20,27 +20,27 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/filingcalendars/ */
-trait CompanyFilingCalendarRootApi {
-  def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi
+trait CompanyFilingCalendarRootApi[F[_], S[_]] {
+  def forFilingCalendarId(filingCalendarId: Int): CompanyFilingCalendarApi[F, S]
 
-  def create(model: List[FilingCalendarModel]): AvataxSimpleCall[FilingCalendarModel]
-  def createRequest(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel]
-  def cycleSafeAdd(formCode: String): AvataxSimpleCall[List[CycleAddOptionModel]]
+  def create(model: List[FilingCalendarModel]): AvataxSimpleCall[F, FilingCalendarModel]
+  def createRequest(model: List[FilingRequestModel]): AvataxSimpleCall[F, FilingRequestModel]
+  def cycleSafeAdd(formCode: String): AvataxSimpleCall[F, List[CycleAddOptionModel]]
   def list(
       returnCountry: String,
       returnRegion: String,
       include: Include,
       options: FiltrableQueryOptions
-  ): AvataxCollectionCall[FilingCalendarModel]
+  ): AvataxCollectionCall[F, S, FilingCalendarModel]
 }
 
 /** /api/v2/companies/$companyId/filingcalendars/$filingCalendarId */
-trait CompanyFilingCalendarApi {
-  def cancelRequests(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel]
-  def cycleSafeEdit(model: List[FilingCalendarEditModel]): AvataxSimpleCall[CycleEditOptionModel]
-  def cycleSafeExpiration: AvataxSimpleCall[CycleExpireModel]
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[FilingCalendarModel]
-  def requestUpdate(model: List[FilingRequestModel]): AvataxSimpleCall[FilingRequestModel]
-  def update(model: FilingCalendarModel): AvataxSimpleCall[FilingCalendarModel]
+trait CompanyFilingCalendarApi[F[_], S[_]] {
+  def cancelRequests(model: List[FilingRequestModel]): AvataxSimpleCall[F, FilingRequestModel]
+  def cycleSafeEdit(model: List[FilingCalendarEditModel]): AvataxSimpleCall[F, CycleEditOptionModel]
+  def cycleSafeExpiration: AvataxSimpleCall[F, CycleExpireModel]
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, FilingCalendarModel]
+  def requestUpdate(model: List[FilingRequestModel]): AvataxSimpleCall[F, FilingRequestModel]
+  def update(model: FilingCalendarModel): AvataxSimpleCall[F, FilingCalendarModel]
 }

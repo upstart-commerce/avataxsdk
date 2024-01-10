@@ -20,16 +20,16 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/distancethresholds */
-trait CompanyDistanceThresholdRootApi {
-  def forId(distThreshId: Long): CompanyDistanceThresholdApi
+trait CompanyDistanceThresholdRootApi[F[_], S[_]] {
+  def forId(distThreshId: Long): CompanyDistanceThresholdApi[F, S]
 
-  def create(model: List[CompanyDistanceThresholdModel]): AvataxSimpleCall[List[CompanyDistanceThresholdModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CompanyDistanceThresholdModel]
+  def create(model: List[CompanyDistanceThresholdModel]): AvataxSimpleCall[F, List[CompanyDistanceThresholdModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CompanyDistanceThresholdModel]
 }
 
 /** /api/v2/companies/$companyId/distancethresholds/$distanceThresholdId */
-trait CompanyDistanceThresholdApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[CompanyDistanceThresholdModel]
-  def update(model: CompanyDistanceThresholdModel): AvataxSimpleCall[CompanyDistanceThresholdModel]
+trait CompanyDistanceThresholdApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, CompanyDistanceThresholdModel]
+  def update(model: CompanyDistanceThresholdModel): AvataxSimpleCall[F, CompanyDistanceThresholdModel]
 }

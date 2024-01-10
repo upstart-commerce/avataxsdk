@@ -22,23 +22,23 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/locations */
-trait CompanyLocationsRootApi {
-  def forLocationId(locationId: Int): CompanyLocationsApi
+trait CompanyLocationsRootApi[F[_], S[_]] {
+  def forLocationId(locationId: Int): CompanyLocationsApi[F, S]
 
-  def create(model: List[LocationModel]): AvataxSimpleCall[List[LocationModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[LocationModel]
+  def create(model: List[LocationModel]): AvataxSimpleCall[F, List[LocationModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, LocationModel]
 }
 
 /** /api/v2/companies/$companyId/locations/$locationId */
-trait CompanyLocationsApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get(include: Include): AvataxSimpleCall[LocationModel]
-  def update(model: LocationModel): AvataxSimpleCall[LocationModel]
-  def validate: AvataxSimpleCall[LocationValidationModel]
+trait CompanyLocationsApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get(include: Include): AvataxSimpleCall[F, LocationModel]
+  def update(model: LocationModel): AvataxSimpleCall[F, LocationModel]
+  def validate: AvataxSimpleCall[F, LocationValidationModel]
   def buildTaxContentForLocation(
       date: java.util.Date,
       format: PointOfSaleFileType,
       partner: PointOfSalePartnerId,
       includeJurisCodes: Boolean
-  ): AvataxSimpleCall[String]
+  ): AvataxSimpleCall[F, String]
 }

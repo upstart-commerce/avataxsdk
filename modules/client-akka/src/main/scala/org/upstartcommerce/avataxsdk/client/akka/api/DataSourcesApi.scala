@@ -29,15 +29,17 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.{DataSourcesApi, DataSourcesRootApi}
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object DataSourcesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): DataSourcesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with DataSourcesRootApi {
-      def forDataSourceId(dataSourceId: Int): DataSourcesApi = DataSourcesApiImpl(requester, security, clientHeaders)(dataSourceId)
+  ): DataSourcesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with DataSourcesRootApi[Future, Stream] {
+      def forDataSourceId(dataSourceId: Int): DataSourcesApi[Future, Stream] =
+        DataSourcesApiImpl(requester, security, clientHeaders)(dataSourceId)
 
       def query(options: FiltrableQueryOptions): AvataxCollectionCall[DataSourceModel] = {
         val uri = Uri(s"/api/v2/datasources").withQuery(options.asQuery)
@@ -50,6 +52,6 @@ object DataSourcesRootApiImpl {
 object DataSourcesApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       dataSourceId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): DataSourcesApi =
-    new ApiRoot(requester, security, clientHeaders) with DataSourcesApi {}
+  )(implicit system: ActorSystem, materializer: Materializer): DataSourcesApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with DataSourcesApi[Future, Stream] {}
 }

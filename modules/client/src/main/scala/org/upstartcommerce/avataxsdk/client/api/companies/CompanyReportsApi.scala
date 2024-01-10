@@ -19,12 +19,12 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/reports */
-trait CompanyReportsRootApi {
-  def forId(reportId: Long): CompanyReportsApi
+trait CompanyReportsRootApi[F[_], S[_]] {
+  def forId(reportId: Long): CompanyReportsApi[F, S]
 
-  def exportDocumentLine(model: ExportDocumentLineModel): AvataxSimpleCall[String]
-  def initiateExportDocumentLineReport(model: ExportDocumentLineModel): AvataxSimpleCall[List[ReportModel]]
+  def exportDocumentLine(model: ExportDocumentLineModel): AvataxSimpleCall[F, String]
+  def initiateExportDocumentLineReport(model: ExportDocumentLineModel): AvataxSimpleCall[F, List[ReportModel]]
 }
 
 /** /api/v2/companies/$companyId/reports/$reportId */
-trait CompanyReportsApi {}
+trait CompanyReportsApi[F[_], S[_]] {}

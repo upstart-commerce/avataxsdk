@@ -20,16 +20,16 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/companies/$companyId/filingrequests */
-trait CompanyFilingRequestsRootApi {
-  def forId(filingRequestId: Int): CompanyFilingRequestsApi
+trait CompanyFilingRequestsRootApi[F[_], S[_]] {
+  def forId(filingRequestId: Int): CompanyFilingRequestsApi[F, S]
 
-  def list(filingCalendarId: Int, options: FiltrableQueryOptions): AvataxCollectionCall[FilingRequestModel]
+  def list(filingCalendarId: Int, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, FilingRequestModel]
 }
 
 /** /api/v2/companies/$companyId/filingrequests/$filingRequestId */
-trait CompanyFilingRequestsApi {
-  def approve: AvataxSimpleCall[FilingRequestModel]
-  def cancel: AvataxSimpleCall[FilingRequestModel]
-  def get: AvataxSimpleCall[FilingRequestModel]
-  def update(model: FilingRequestModel): AvataxSimpleCall[FilingRequestModel]
+trait CompanyFilingRequestsApi[F[_], S[_]] {
+  def approve: AvataxSimpleCall[F, FilingRequestModel]
+  def cancel: AvataxSimpleCall[F, FilingRequestModel]
+  def get: AvataxSimpleCall[F, FilingRequestModel]
+  def update(model: FilingRequestModel): AvataxSimpleCall[F, FilingRequestModel]
 }

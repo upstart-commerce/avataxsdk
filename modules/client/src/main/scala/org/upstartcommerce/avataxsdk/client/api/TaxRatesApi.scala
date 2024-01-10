@@ -19,7 +19,7 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
-trait TaxRatesRootApi {
+trait TaxRatesRootApi[F[_], S[_]] {
   def byAddress(
       line1: String,
       line2: String,
@@ -28,6 +28,6 @@ trait TaxRatesRootApi {
       region: String,
       postalCode: String,
       country: String
-  ): AvataxSimpleCall[TaxRateModel]
-  def byPostalCode(country: String, postalCode: String): AvataxSimpleCall[TaxRateModel]
+  ): AvataxSimpleCall[F, TaxRateModel]
+  def byPostalCode(country: String, postalCode: String): AvataxSimpleCall[F, TaxRateModel]
 }

@@ -20,17 +20,17 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/accounts/$accountId/users */
-trait AccountUsersRootApi {
-  def forId(userId: Int): AccountUsersApi
+trait AccountUsersRootApi[F[_], S[_]] {
+  def forId(userId: Int): AccountUsersApi[F, S]
 
-  def create(model: List[UserModel]): AvataxSimpleCall[List[UserModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[UserModel]
+  def create(model: List[UserModel]): AvataxSimpleCall[F, List[UserModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, UserModel]
 }
 
 /** /api/v2/accounts/$accountId/users/$userId */
-trait AccountUsersApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get(include: Include): AvataxSimpleCall[UserModel]
-  def getEntitlements: AvataxSimpleCall[UserEntitlementModel]
-  def update(model: UserModel): AvataxSimpleCall[UserModel]
+trait AccountUsersApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get(include: Include): AvataxSimpleCall[F, UserModel]
+  def getEntitlements: AvataxSimpleCall[F, UserEntitlementModel]
+  def update(model: UserModel): AvataxSimpleCall[F, UserModel]
 }

@@ -20,16 +20,16 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** api/v2/companies/$companyId/datasources */
-trait CompanyDataSourcesRootApi {
-  def forDataSourceId(dataSourceId: Int): CompanyDataSourcesApi
+trait CompanyDataSourcesRootApi[F[_], S[_]] {
+  def forDataSourceId(dataSourceId: Int): CompanyDataSourcesApi[F, S]
 
-  def create(model: List[DataSourceModel]): AvataxSimpleCall[List[DataSourceModel]]
-  def list(options: FiltrableQueryOptions): AvataxCollectionCall[DataSourceModel]
+  def create(model: List[DataSourceModel]): AvataxSimpleCall[F, List[DataSourceModel]]
+  def list(options: FiltrableQueryOptions): AvataxCollectionCall[F, S, DataSourceModel]
 }
 
 /** api/v2/companies/$companyId/datasources/$dataSourceId */
-trait CompanyDataSourcesApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[DataSourceModel]
-  def update(model: DataSourceModel): AvataxSimpleCall[DataSourceModel]
+trait CompanyDataSourcesApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, DataSourceModel]
+  def update(model: DataSourceModel): AvataxSimpleCall[F, DataSourceModel]
 }

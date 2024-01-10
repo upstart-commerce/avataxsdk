@@ -21,16 +21,16 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/taxcodes */
-trait CompanyTaxCodesRootApi {
-  def forId(taxCodeId: Int): CompanyTaxCodesApi
+trait CompanyTaxCodesRootApi[F[_], S[_]] {
+  def forId(taxCodeId: Int): CompanyTaxCodesApi[F, S]
 
-  def create(model: List[TaxCodeModel]): AvataxSimpleCall[List[TaxCodeModel]]
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TaxCodeModel]
+  def create(model: List[TaxCodeModel]): AvataxSimpleCall[F, List[TaxCodeModel]]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TaxCodeModel]
 }
 
 /** /api/v2/companies/$companyId/taxcodes/$taxCodeId */
-trait CompanyTaxCodesApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[TaxCodeModel]
-  def update(model: TaxCodeModel): AvataxSimpleCall[TaxCodeModel]
+trait CompanyTaxCodesApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, TaxCodeModel]
+  def update(model: TaxCodeModel): AvataxSimpleCall[F, TaxCodeModel]
 }

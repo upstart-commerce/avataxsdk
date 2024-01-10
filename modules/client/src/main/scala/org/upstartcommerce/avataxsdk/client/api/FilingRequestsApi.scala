@@ -20,6 +20,6 @@ import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
 
 /** /api/v2/filingrequests */
-trait FilingRequestsRootApi {
-  def query(filingCalendarId: Int, options: FiltrableQueryOptions): AvataxCollectionCall[FilingRequestModel]
+trait FilingRequestsRootApi[F[_], S[_]] {
+  def query(filingCalendarId: Int, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, FilingRequestModel]
 }

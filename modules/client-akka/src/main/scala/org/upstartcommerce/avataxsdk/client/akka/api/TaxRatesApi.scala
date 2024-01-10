@@ -29,14 +29,15 @@ import play.api.libs.json._
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.TaxRatesRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+import scala.concurrent.Future
 
 object TaxRatesRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       implicit system: ActorSystem,
       materializer: Materializer
-  ): TaxRatesRootApi =
-    new ApiRoot(requester, security, clientHeaders) with TaxRatesRootApi {
+  ): TaxRatesRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with TaxRatesRootApi[Future, Stream] {
       def byAddress(
           line1: String,
           line2: String,

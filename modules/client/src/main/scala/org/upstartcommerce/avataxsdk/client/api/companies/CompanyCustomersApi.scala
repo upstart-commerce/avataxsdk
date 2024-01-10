@@ -21,21 +21,21 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** api/v2/companies/$companyId/customers */
-trait CompanyCustomersRootApi {
-  def forCustomerCode(code: String): CompanyCustomersApi
+trait CompanyCustomersRootApi[F[_], S[_]] {
+  def forCustomerCode(code: String): CompanyCustomersApi[F, S]
 
-  def create(model: List[CustomerModel]): AvataxSimpleCall[List[CustomerModel]]
-  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[CustomerModel]
+  def create(model: List[CustomerModel]): AvataxSimpleCall[F, List[CustomerModel]]
+  def query(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, CustomerModel]
 }
 
 /** api/v2/companies/$companyId/customers/$customerCode */
-trait CompanyCustomersApi {
-  def certExpressInvites: CompanyCustomerCertExpressInvitationRootApi
-  def certificates: CompanyCustomerCertificatesRootApi
+trait CompanyCustomersApi[F[_], S[_]] {
+  def certExpressInvites: CompanyCustomerCertExpressInvitationRootApi[F, S]
+  def certificates: CompanyCustomerCertificatesRootApi[F, S]
 
-  def deleteCustomer(companyId: Int, customerCode: String): AvataxSimpleCall[CustomerModel]
-  def get(include: Include): AvataxSimpleCall[CustomerModel]
-  def linkCertificates(model: LinkCertificatesModel): AvataxCollectionCall[CertificateModel]
-  def linkShipToToBillCustomer(model: LinkCustomersModel): AvataxSimpleCall[CustomerModel]
-  def update(model: CustomerModel): AvataxSimpleCall[CustomerModel]
+  def deleteCustomer(companyId: Int, customerCode: String): AvataxSimpleCall[F, CustomerModel]
+  def get(include: Include): AvataxSimpleCall[F, CustomerModel]
+  def linkCertificates(model: LinkCertificatesModel): AvataxCollectionCall[F, S, CertificateModel]
+  def linkShipToToBillCustomer(model: LinkCustomersModel): AvataxSimpleCall[F, CustomerModel]
+  def update(model: CustomerModel): AvataxSimpleCall[F, CustomerModel]
 }

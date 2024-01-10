@@ -22,32 +22,32 @@ import org.upstartcommerce.avataxsdk.core.data.models._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyCode/transactions */
-trait CompanyTransactionsRootApi {
-  def forId(transactionCode: String): CompanyTransactionsApi
+trait CompanyTransactionsRootApi[F[_], S[_]] {
+  def forId(transactionCode: String): CompanyTransactionsApi[F, S]
 
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TransactionModel]
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TransactionModel]
 }
 
 /** /api/v2/companies/$companyCode/transactions/$transactionCode */
-trait CompanyTransactionsApi {
+trait CompanyTransactionsApi[F[_], S[_]] {
 
-  def adjust(documentType: DocumentType, model: AdjustTransactionModel): AvataxSimpleCall[TransactionModel]
-  def audit: AvataxSimpleCall[AuditTransactionModel]
-  def auditWithType(documentType: DocumentType): AvataxSimpleCall[AuditTransactionModel]
-  def changeCode(documentType: DocumentType, model: ChangeTransactionCodeModel): AvataxSimpleCall[TransactionModel]
-  def commit(documentType: DocumentType, model: CommitTransactionModel): AvataxSimpleCall[TransactionModel]
-  def get(documentType: DocumentType, include: Include): AvataxSimpleCall[TransactionModel]
-  def getByType(documentType: DocumentType, include: Include): AvataxSimpleCall[TransactionModel]
+  def adjust(documentType: DocumentType, model: AdjustTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def audit: AvataxSimpleCall[F, AuditTransactionModel]
+  def auditWithType(documentType: DocumentType): AvataxSimpleCall[F, AuditTransactionModel]
+  def changeCode(documentType: DocumentType, model: ChangeTransactionCodeModel): AvataxSimpleCall[F, TransactionModel]
+  def commit(documentType: DocumentType, model: CommitTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def get(documentType: DocumentType, include: Include): AvataxSimpleCall[F, TransactionModel]
+  def getByType(documentType: DocumentType, include: Include): AvataxSimpleCall[F, TransactionModel]
 
-  def lock(documentType: DocumentType, model: LockTransactionModel): AvataxSimpleCall[TransactionModel]
+  def lock(documentType: DocumentType, model: LockTransactionModel): AvataxSimpleCall[F, TransactionModel]
   def refund(
       documentType: DocumentType,
       include: Include,
       useTaxDateOverride: Boolean,
       model: RefundTransactionModel
-  ): AvataxSimpleCall[TransactionModel]
-  def settle(documentType: DocumentType, model: SettleTransactionModel): AvataxSimpleCall[TransactionModel]
-  def uncommit(documentType: DocumentType): AvataxSimpleCall[TransactionModel]
-  def verify(documentType: DocumentType, model: VerifyTransactionModel): AvataxSimpleCall[TransactionModel]
-  def void(documentType: DocumentType, model: VoidTransactionModel): AvataxSimpleCall[TransactionModel]
+  ): AvataxSimpleCall[F, TransactionModel]
+  def settle(documentType: DocumentType, model: SettleTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def uncommit(documentType: DocumentType): AvataxSimpleCall[F, TransactionModel]
+  def verify(documentType: DocumentType, model: VerifyTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def void(documentType: DocumentType, model: VoidTransactionModel): AvataxSimpleCall[F, TransactionModel]
 }

@@ -31,14 +31,16 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
 import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 import org.upstartcommerce.avataxsdk.client.api.AccountAdvancedRuleScriptApi
 import org.upstartcommerce.avataxsdk.client.api.AccountAdvancedRuleScriptRootApi
-import org.upstartcommerce.avataxsdk.client.{AvataxCollectionCall, AvataxSimpleCall}
+import org.upstartcommerce.avataxsdk.client.akka.{AvataxCollectionCall, AvataxSimpleCall, Stream}
+
+import scala.concurrent.Future
 
 object AccountAdvancedRuleScriptRootApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleScriptRootApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleScriptRootApi {
-      def forScriptType(scriptType: AdvancedRuleScriptType): AccountAdvancedRuleScriptApi =
+  )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleScriptRootApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleScriptRootApi[Future, Stream] {
+      def forScriptType(scriptType: AdvancedRuleScriptType): AccountAdvancedRuleScriptApi[Future, Stream] =
         AccountAdvancedRuleScriptApiImpl(requester, security, clientHeaders)(accountId, scriptType)
     }
 }
@@ -47,8 +49,8 @@ object AccountAdvancedRuleScriptApiImpl {
   def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
       accountId: Int,
       scriptType: AdvancedRuleScriptType
-  )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleScriptApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleScriptApi {
+  )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleScriptApi[Future, Stream] =
+    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleScriptApi[Future, Stream] {
       def approve: AvataxSimpleCall[AdvancedRuleScriptModel] = {
         val uri = Uri(s"/api/v2/accounts/$accountId/advancedrulescripts/$scriptType/approve")
         val req = HttpRequest(uri = uri).withMethod(POST)
