@@ -87,7 +87,7 @@ lazy val scalacSettings = Seq(
   Compile / doc / scalacOptions --= Seq("-Xfatal-warnings", "-Ywarn-unused:imports", "-Yno-imports")
 )
 
-val avataxsdk = (project in file(".")).settings(notPublishSettings).aggregate(core, jsonPlay, clientAkka, clientPekko, example)
+val avataxsdk = (project in file(".")).settings(notPublishSettings).aggregate(core, jsonPlay, client, clientAkka, example)
 
 lazy val commonSettings = scalacSettings ++ Seq(
   scalaVersion := scala_2_13V,
@@ -110,15 +110,21 @@ lazy val jsonPlay = project
   )
   .dependsOn(core)
 
-lazy val clientAkka = project
+lazy val client = project
   .in(file("modules/client"))
+  .settings(commonSettings)
+  .settings(publishSettings, name := "avataxsdk-client", libraryDependencies ++= Seq(compatLibForScala, scalatest % Test))
+  .dependsOn(core)
+
+lazy val clientAkka = project
+  .in(file("modules/client-akka"))
   .settings(commonSettings)
   .settings(
     publishSettings,
     name := "avataxsdk-client-akka",
     libraryDependencies ++= Seq(compatLibForScala, akkaHttp, akkaStream, akkaHttpJson, logback, scalatest % Test)
   )
-  .dependsOn(core, jsonPlay)
+  .dependsOn(core, client, jsonPlay)
 
 lazy val clientPekko = project
   .in(file("modules/client-pekko"))
@@ -128,7 +134,7 @@ lazy val clientPekko = project
     name := "avataxsdk-client-pekko",
     libraryDependencies ++= Seq(compatLibForScala, pekkoHttp, pekkoStream, logback, scalatest % Test)
   )
-  .dependsOn(core, jsonPlay)
+  .dependsOn(core, client, jsonPlay)
 
 lazy val example =
   project

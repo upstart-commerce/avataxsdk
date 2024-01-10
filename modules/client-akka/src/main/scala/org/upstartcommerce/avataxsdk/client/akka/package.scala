@@ -13,19 +13,16 @@
  * limitations under the License.
  */
 
-package org.upstartcommerce.avataxsdk.client.internal
+package org.upstartcommerce.avataxsdk.client
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.HttpResponse
-import com.typesafe.sslconfig.akka.AkkaSSLConfig
-import org.upstartcommerce.avataxsdk.client.HostPool
+import _root_.akka.http.scaladsl.Http.HostConnectionPool
+import _root_.akka.http.scaladsl.model.{HttpRequest, HttpResponse}
+import _root_.akka.stream.scaladsl.Flow
 
 import scala.concurrent.Promise
+import scala.util.Try
 
-object HostPool {
+package object akka {
+  type HostPool = Flow[(HttpRequest, Promise[HttpResponse]), (Try[HttpResponse], Promise[HttpResponse]), HostConnectionPool]
 
-  def forUrl(url: String)(implicit sys: ActorSystem): HostPool = {
-    Http().cachedHostConnectionPoolHttps[Promise[HttpResponse]](url)
-  }
 }

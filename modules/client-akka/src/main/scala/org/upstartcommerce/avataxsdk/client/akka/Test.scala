@@ -1,4 +1,4 @@
-package org.upstartcommerce.avataxsdk.client
+package org.upstartcommerce.avataxsdk.client.akka
 
 import akka.actor.ActorSystem
 import akka.stream.Materializer
@@ -26,7 +26,7 @@ object Test extends App {
   val password: String = ""
   val clientHeaders = ClientHeaders("MyApplication", "1.0", "CustomAvalaraSDK-Scala", "0.0.13", Some("IP"))
 
-  val client = AvataxClient(
+  val client = AkkaAvataxClient(
     Environment.Sandbox,
     poolQueueSize = 64,
     security = Some(SecuritySettings(user, password)),

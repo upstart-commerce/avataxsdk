@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 
-package org.upstartcommerce.avataxsdk.client
+package org.upstartcommerce.avataxsdk.client.akka
+
 import akka.http.scaladsl.model.Uri.Query
 import org.upstartcommerce.avataxsdk.core.data._
 

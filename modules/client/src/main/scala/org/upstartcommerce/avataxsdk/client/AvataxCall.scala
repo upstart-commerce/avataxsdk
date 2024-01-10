@@ -1,4 +1,4 @@
-/* Copyright 2019 UpStart Commerce, Inc.
+/* Copyright 2024 UpStart Commerce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,11 @@
 
 package org.upstartcommerce.avataxsdk.client
 
-import akka.NotUsed
-import akka.stream.scaladsl.Source
-import org.upstartcommerce.avataxsdk.core.data.{AvataxException, FetchResult}
-
-import scala.concurrent.Future
+import org.upstartcommerce.avataxsdk.core.data.FetchResult
 
 // todo: provide some combinators
 trait AvataxCall[+A] {
+  type Result[T]
   //def attempt:AvataxCall[Either[AvataxException, A]]
 }
 
@@ -31,7 +28,8 @@ trait AvataxCall[+A] {
   * and thus streaming makes little sense
   */
 trait AvataxSimpleCall[A] extends AvataxCall[A] {
-  def apply(): Future[A]
+
+  def apply(): Result[A]
 }
 
 /**
@@ -43,7 +41,12 @@ trait AvataxSimpleCall[A] extends AvataxCall[A] {
   * on query options, same as with `Future` methods).
   */
 trait AvataxCollectionCall[A] extends AvataxCall[A] {
-  def batch(): Future[FetchResult[A]]
-  final def apply(): Future[FetchResult[A]] = batch()
-  def stream: Source[A, NotUsed]
+
+  type Stream[T]
+
+  def batch(): Result[FetchResult[A]]
+
+  final def apply(): Result[FetchResult[A]] = batch()
+
+  def stream: Stream[A]
 }

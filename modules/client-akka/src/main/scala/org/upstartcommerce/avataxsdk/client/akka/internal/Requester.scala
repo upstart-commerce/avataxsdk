@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
-package org.upstartcommerce.avataxsdk.client.internal
+package org.upstartcommerce.avataxsdk.client.akka.internal
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
 import akka.stream.{Materializer, OverflowStrategy, QueueOfferResult}
 import akka.stream.scaladsl.{Keep, Sink, Source}
-import org.upstartcommerce.avataxsdk.client.HostPool
+import org.upstartcommerce.avataxsdk.client.akka.HostPool
 
 import scala.concurrent.{Future, Promise}
 import scala.util.{Failure, Success}
