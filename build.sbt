@@ -87,7 +87,7 @@ lazy val scalacSettings = Seq(
   Compile / doc / scalacOptions --= Seq("-Xfatal-warnings", "-Ywarn-unused:imports", "-Yno-imports")
 )
 
-val avataxsdk = (project in file(".")).settings(notPublishSettings).aggregate(core, jsonPlay, client, clientAkka, example)
+val avataxsdk = (project in file(".")).settings(notPublishSettings).aggregate(core, jsonPlay, client, clientAkka, clientPekko, example)
 
 lazy val commonSettings = scalacSettings ++ Seq(
   scalaVersion := scala_2_13V,

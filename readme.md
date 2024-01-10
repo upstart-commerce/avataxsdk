@@ -42,7 +42,7 @@ Basic usage is:
 ```scala
   implicit val sys: ActorSystem       = ActorSystem()
   implicit val mat: Materializer      = Materializer(sys)
-  val client = AvataxClient(...)
+  val client = AkkaAvataxClient(...) // or PekkoAvataxClient
 
   /** request a result  */
   val valid = client.taxRates.byPostalCode("US", "35802")
