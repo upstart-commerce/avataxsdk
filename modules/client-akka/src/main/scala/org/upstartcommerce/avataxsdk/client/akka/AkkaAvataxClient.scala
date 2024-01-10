@@ -28,12 +28,6 @@ import org.upstartcommerce.avataxsdk.core.data.Environment
 
 import scala.concurrent.Future
 
-// todo: remove date for more usable one
-// todo: swap strings for enums
-// todo: remove .toStrings (from enums etc.)
-// todo: non-generic include as Set()
-// todo: enums
-
 object AkkaAvataxClient {
 
   /**
