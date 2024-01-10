@@ -22,8 +22,6 @@ Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommer
 
 libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-akka" % "0.0.19" // or whatever latest version is
 
-// or if you want ONLY data model
-// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.19"
 ```
 
 * pekko
@@ -32,9 +30,13 @@ libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-akka" % "0.0.1
 Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 
 libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-pekko" % "0.0.19" // or whatever latest version is
+```
+* core/data model only
 
-// or if you want ONLY data model
-// libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.19"
+```scala
+Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
+
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.19"
 ```
 
 ### Usage
@@ -65,14 +67,8 @@ There is a good reference for data model
 Please avoid blocking (awaiting) on futures from this api.
 
 
-
 ### Compilation
 
 First full compilation will take a long time (+-10minutes) due to huge amount of
 api surface area - data types available, for which json has to be derived.
 Followup incremental compilations should be fast.
-
-### Look ahead
-
-Currently, client is hardcoded to both akka-http and play-json. Especially with
-json we may swap it down the line (it's a separate module already).

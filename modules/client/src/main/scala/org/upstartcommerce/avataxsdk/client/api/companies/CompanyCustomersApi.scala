@@ -18,7 +18,6 @@ package org.upstartcommerce.avataxsdk.client.api.companies
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
-import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** api/v2/companies/$companyId/customers */
 trait CompanyCustomersRootApi[F[_], S[_]] {

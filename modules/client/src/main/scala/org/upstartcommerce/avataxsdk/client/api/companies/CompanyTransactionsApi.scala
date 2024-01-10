@@ -19,7 +19,6 @@ import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
-import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyCode/transactions */
 trait CompanyTransactionsRootApi[F[_], S[_]] {

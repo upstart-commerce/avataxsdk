@@ -17,7 +17,6 @@ package org.upstartcommerce.avataxsdk.client.api
 
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data.models._
-import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 trait TaxRatesRootApi[F[_], S[_]] {
   def byAddress(

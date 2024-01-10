@@ -18,7 +18,6 @@ package org.upstartcommerce.avataxsdk.client.api
 import org.upstartcommerce.avataxsdk.client._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
-import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/filingcalendars */
 trait FilingCalendarsRootApi[F[_], S[_]] {
