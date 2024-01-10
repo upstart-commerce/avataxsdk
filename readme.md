@@ -6,7 +6,8 @@ Project is split into following modules:
 
 - core - Zero-dependency project - Scala ADT of data transfer objects. Based on
   docs & [official sdk](https://github.com/avadev/AvaTax-REST-V2-JRE-SDK).
-- client - akka-http + play-json client for AvaTax
+- client - client interface
+- client-akka - akka-http + play-json client for AvaTax
 - client-pekko - pekko-http + play-json client for AvaTax
 - play-json - formats and derivation for AvaTax data types
 
