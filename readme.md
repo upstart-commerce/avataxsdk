@@ -20,7 +20,7 @@ Add following to your build.sbt
 ```scala
 Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 
-libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-akka" % "0.0.19" // or whatever latest version is
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-akka" % "0.1.0" // or whatever latest version is
 
 ```
 
@@ -29,14 +29,14 @@ libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-akka" % "0.0.1
 ```scala
 Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 
-libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-pekko" % "0.0.19" // or whatever latest version is
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-client-pekko" % "0.1.0" // or whatever latest version is
 ```
 * core/data model only
 
 ```scala
 Global / resolvers += Resolver.url("upstartcommerce", url("https://upstartcommerce.jfrog.io/artifactory/nochannel"))(Resolver.ivyStylePatterns)
 
-libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.0.19"
+libraryDependencies += "org.upstartcommerce" %% "avataxsdk-core" % "0.1.0"
 ```
 
 ### Usage
