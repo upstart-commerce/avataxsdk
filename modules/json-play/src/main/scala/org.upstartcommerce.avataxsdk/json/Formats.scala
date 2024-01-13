@@ -19,7 +19,28 @@ import org.upstartcommerce.avataxsdk.core.data.FetchResult
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
+import java.time.format.DateTimeFormatter
+import java.time.{Instant, LocalDate, LocalDateTime, ZoneOffset}
+import scala.util.Try
+
 private[json] trait Formats {
+
+  implicit val instantReads = Reads[Instant] {
+    _.validate[String].flatMap[Instant] { tsString =>
+      // https://developer.avalara.com/avatax/errors/DateFormatError/
+      Try {
+        LocalDateTime.parse(tsString, DateTimeFormatter.ISO_LOCAL_DATE_TIME).toInstant(ZoneOffset.UTC)
+      }.orElse {
+        Try {
+          LocalDate.parse(tsString, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneOffset.UTC).toInstant
+        }
+      } match {
+        case scala.util.Success(value) => JsSuccess(value)
+        case scala.util.Failure(value) => JsError(s"Wrong format for: ${tsString}, error: ${value.getMessage}")
+      }
+    }
+  }
+
   implicit def recordSetOFormat[A](implicit f: Format[List[A]]): OFormat[FetchResult[A]] = new FetchResultFormat[A]
 }
 

@@ -1,4 +1,4 @@
-/* Copyright 2019 UpStart Commerce, Inc.
+/* Copyright 2024 UpStart Commerce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,73 +15,20 @@
 
 package org.upstartcommerce.avataxsdk.client.api
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.model.HttpMethods._
-import akka.http.scaladsl.model._
-import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
-import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
-import akka.http.scaladsl.model.headers.Authorization
-import org.upstartcommerce.avataxsdk.json._
-import play.api.libs.json._
-import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
-import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
-trait AccountAdvancedRuleTableRootApi {
-  def forTableName(csvTableName: String): AccountAdvancedRuleTableApi
+trait AccountAdvancedRuleTableRootApi[F[_], S[_]] {
+  def forTableName(csvTableName: String): AccountAdvancedRuleTableApi[F, S]
 
-  def get: AvataxSimpleCall[AdvancedRuleTableModel]
+  def get: AvataxSimpleCall[F, AdvancedRuleTableModel]
 }
 
-object AccountAdvancedRuleTableRootApi {
-  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
-      accountId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleTableRootApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleTableRootApi {
-      def forTableName(csvTableName: String): AccountAdvancedRuleTableApi =
-        AccountAdvancedRuleTableApi(requester, security, clientHeaders)(accountId, csvTableName)
-
-      def get: AvataxSimpleCall[AdvancedRuleTableModel] = {
-        val uri = Uri(s"/api/v2/accounts/$accountId/advancedruletables")
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxSimpleCall[AdvancedRuleTableModel](req)
-      }
-    }
-}
-
-trait AccountAdvancedRuleTableApi {
+trait AccountAdvancedRuleTableApi[F[_], S[_]] {
   /* todo: `file` arg is unused in official sdk, see  https://github.com/avadev/AvaTax-REST-V2-JRE-SDK/issues/44 */
-  def create(file: String): AvataxSimpleCall[String]
+  def create(file: String): AvataxSimpleCall[F, String]
 
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
 
-  def get: AvataxSimpleCall[AdvancedRuleTableModel]
-}
-
-object AccountAdvancedRuleTableApi {
-  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
-      accountId: Int,
-      csvTableName: String
-  )(implicit system: ActorSystem, materializer: Materializer): AccountAdvancedRuleTableApi =
-    new ApiRoot(requester, security, clientHeaders) with AccountAdvancedRuleTableApi {
-
-      def create(file: String): AvataxSimpleCall[String] = {
-        val uri = Uri(s"/api/v2/accounts/$accountId/advancedruletables/$csvTableName")
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxSimpleCall[String](req)
-      }
-
-      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
-        val uri = Uri(s"/api/v2/accounts/$accountId/advancedruletables/$csvTableName")
-        val req = HttpRequest(uri = uri).withMethod(DELETE)
-        avataxSimpleCall[List[ErrorDetail]](req)
-      }
-
-      def get: AvataxSimpleCall[AdvancedRuleTableModel] = {
-        val uri = Uri(s"/api/v2/accounts/$accountId/advancedruletables/$csvTableName")
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxSimpleCall[AdvancedRuleTableModel](req)
-      }
-    }
+  def get: AvataxSimpleCall[F, AdvancedRuleTableModel]
 }

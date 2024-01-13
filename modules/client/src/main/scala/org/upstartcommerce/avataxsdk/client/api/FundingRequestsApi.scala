@@ -1,4 +1,4 @@
-/* Copyright 2019 UpStart Commerce, Inc.
+/* Copyright 2024 UpStart Commerce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,53 +15,15 @@
 
 package org.upstartcommerce.avataxsdk.client.api
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.model.HttpMethods._
-import akka.http.scaladsl.model._
-import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
-import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data.models._
-import akka.http.scaladsl.model.headers.Authorization
-import org.upstartcommerce.avataxsdk.json._
-import play.api.libs.json._
-import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
-import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
-trait FundingRequestsRootApi {
-  def forId(fundingReqId: Long): FundingRequestsApi
+trait FundingRequestsRootApi[F[_], S[_]] {
+  def forId(fundingReqId: Long): FundingRequestsApi[F, S]
 
 }
 
-object FundingRequestsRootApi {
-  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
-      implicit system: ActorSystem,
-      materializer: Materializer
-  ): FundingRequestsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with FundingRequestsRootApi {
-      def forId(fundingReqId: Long): FundingRequestsApi = FundingRequestsApi(requester, security, clientHeaders)(fundingReqId)
-    }
-}
-
-trait FundingRequestsApi {
-  def activate: AvataxSimpleCall[FundingStatusModel]
-  def status: AvataxSimpleCall[FundingStatusModel]
-}
-object FundingRequestsApi {
-  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
-      fundingReqId: Long
-  )(implicit system: ActorSystem, materializer: Materializer): FundingRequestsApi =
-    new ApiRoot(requester, security, clientHeaders) with FundingRequestsApi {
-      def activate: AvataxSimpleCall[FundingStatusModel] = {
-        val uri = Uri(s"/api/v2/fundingrequests/$fundingReqId/widget")
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxSimpleCall[FundingStatusModel](req)
-      }
-
-      def status: AvataxSimpleCall[FundingStatusModel] = {
-        val uri = Uri(s"/api/v2/fundingrequests/$fundingReqId")
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxSimpleCall[FundingStatusModel](req)
-      }
-    }
+trait FundingRequestsApi[F[_], S[_]] {
+  def activate: AvataxSimpleCall[F, FundingStatusModel]
+  def status: AvataxSimpleCall[F, FundingStatusModel]
 }

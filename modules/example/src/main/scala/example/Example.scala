@@ -17,7 +17,7 @@ package example
 
 import akka.actor.ActorSystem
 import akka.stream.Materializer
-import org.upstartcommerce.avataxsdk.client.AvataxClient
+import org.upstartcommerce.avataxsdk.client.akka.AkkaAvataxClient
 import org.upstartcommerce.avataxsdk.client.AvataxClient.SecuritySettings
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models.{ErrorInfo, ErrorResult, ResetLicenseKeyModel, TaxRateModel}
@@ -32,7 +32,7 @@ object Example extends App {
   implicit val mat: Materializer = Materializer(sys)
 
   val (un, pw) = (System.getenv("AVATAX_USERNAME"), System.getenv("AVATAX_PASSWORD"))
-  val client = AvataxClient(Environment.Sandbox, poolQueueSize = 128, security = Some(SecuritySettings(un, pw)))
+  val client = AkkaAvataxClient(Environment.Sandbox, poolQueueSize = 128, security = Some(SecuritySettings(un, pw)))
 
   val req1 = client.definitions.listCurrencies(FiltrableQueryOptions().withTop(1)).batch()
   val resp1 = Await.result(req1, 30.seconds)

@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class AddressLocationInfo(
     locationCode: Option[String] = None,
     line1: Option[String] = None,

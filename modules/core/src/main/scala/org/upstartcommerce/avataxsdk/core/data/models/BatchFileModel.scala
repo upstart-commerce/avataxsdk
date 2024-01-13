@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class BatchFileModel(
     id: Option[Int] = None,
     batchId: Option[Int] = None,

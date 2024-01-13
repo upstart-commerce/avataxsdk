@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class CertificateAttributeModel(
     id: Option[Int] = None,
     name: Option[String] = None,

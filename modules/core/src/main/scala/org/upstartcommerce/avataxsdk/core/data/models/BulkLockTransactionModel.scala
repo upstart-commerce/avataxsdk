@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class BulkLockTransactionModel(documentIds: List[Long], isLocked: Boolean) {
   def withDocumentIds(value: List[Long]): BulkLockTransactionModel = copy(documentIds = value)
   def withIsLocked(value: Boolean): BulkLockTransactionModel = copy(isLocked = value)
