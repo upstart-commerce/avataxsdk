@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class AddressInfo(
     line1: Option[String] = None,
     line2: Option[String] = None,

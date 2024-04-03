@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class AddressesModel(
     singleLocation: Option[AddressLocationInfo] = None,
     shipFrom: Option[AddressLocationInfo] = None,

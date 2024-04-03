@@ -1,4 +1,4 @@
-/* Copyright 2019 UpStart Commerce, Inc.
+/* Copyright 2024 UpStart Commerce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,79 +15,21 @@
 
 package org.upstartcommerce.avataxsdk.client.api.companies
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.model.HttpMethods._
-import akka.http.scaladsl.model._
-import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
-import org.upstartcommerce.avataxsdk.client.api.{ApiRoot, _}
-import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.models._
-import akka.http.scaladsl.model.headers.Authorization
-import org.upstartcommerce.avataxsdk.json._
-import play.api.libs.json._
-import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
-import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyId/contacts */
-trait CompanyContactsRootApi {
-  def forContactId(id: Int): CompanyContactsApi
+trait CompanyContactsRootApi[F[_], S[_]] {
+  def forContactId(id: Int): CompanyContactsApi[F, S]
 
-  def create(model: List[ContactModel]): AvataxSimpleCall[List[ContactModel]]
+  def create(model: List[ContactModel]): AvataxSimpleCall[F, List[ContactModel]]
 
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel]
-}
-
-object CompanyContactsRootApi {
-  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
-      companyId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyContactsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyContactsRootApi {
-      def forContactId(id: Int): CompanyContactsApi = CompanyContactsApi(requester, security, clientHeaders)(companyId, id)
-
-      def create(model: List[ContactModel]): AvataxSimpleCall[List[ContactModel]] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/contacts")
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[List[ContactModel], List[ContactModel]](req, model)
-      }
-
-      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[ContactModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/contacts").withQuery(include.asQuery.merge(options.asQuery))
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxCollectionCall[ContactModel](req)
-      }
-    }
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, ContactModel]
 }
 
 /** /api/v2/companies/$companyId/contacts/$contactId */
-trait CompanyContactsApi {
-  def delete: AvataxSimpleCall[List[ErrorDetail]]
-  def get: AvataxSimpleCall[ContactModel]
-}
-object CompanyContactsApi {
-  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
-      companyId: Int,
-      contactId: Int
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyContactsApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyContactsApi {
-      def delete: AvataxSimpleCall[List[ErrorDetail]] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/contacts/$contactId")
-        val req = HttpRequest(uri = uri).withMethod(DELETE)
-        avataxSimpleCall[List[ErrorDetail]](req)
-      }
-
-      def get: AvataxSimpleCall[ContactModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/contacts/$contactId")
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxSimpleCall[ContactModel](req)
-      }
-
-      def update(model: ContactModel): AvataxSimpleCall[ContactModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyId/contacts/$contactId")
-        val req = HttpRequest(uri = uri).withMethod(PUT)
-        avataxBodyCall[ContactModel, ContactModel](req, model)
-      }
-
-    }
+trait CompanyContactsApi[F[_], S[_]] {
+  def delete: AvataxSimpleCall[F, List[ErrorDetail]]
+  def get: AvataxSimpleCall[F, ContactModel]
 }

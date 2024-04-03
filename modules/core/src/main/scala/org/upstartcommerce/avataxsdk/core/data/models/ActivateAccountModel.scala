@@ -15,7 +15,6 @@
 
 package org.upstartcommerce.avataxsdk.core.data.models
 
-
 final case class ActivateAccountModel(
     acceptAvalaraTermsAndConditions: Option[Boolean] = None,
     haveReadAvalaraTermsAndConditions: Option[Boolean] = None

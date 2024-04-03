@@ -19,10 +19,14 @@ lazy val scalatest = "org.scalatest" %% "scalatest" % "3.2.0"
 
 lazy val akkaHttp = "com.typesafe.akka" %% "akka-http-core" % "10.1.11"
 lazy val akkaStream = "com.typesafe.akka" %% "akka-stream" % "2.6.3"
+lazy val akkaHttpJson = "de.heikoseeberger" %% "akka-http-play-json" % "1.31.0"
+
+lazy val pekkoHttp = "org.apache.pekko" %% "pekko-http" % "1.0.0"
+lazy val pekkoStream = "org.apache.pekko" %% "pekko-stream" % "1.0.2"
+
 lazy val playJson = "com.typesafe.play" %% "play-json" % "2.8.1"
 // for case classes > 22 fields
 lazy val playJsonExt = "ai.x" %% "play-json-extensions" % "0.40.2"
-lazy val akkaHttpJson = "de.heikoseeberger" %% "akka-http-play-json" % "1.31.0"
 lazy val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
 lazy val compatLibForScala = "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.6"
 lazy val logback = "ch.qos.logback" % "logback-classic" % "1.2.3"
@@ -83,7 +87,7 @@ lazy val scalacSettings = Seq(
   Compile / doc / scalacOptions --= Seq("-Xfatal-warnings", "-Ywarn-unused:imports", "-Yno-imports")
 )
 
-val avataxsdk = (project in file(".")).settings(notPublishSettings).aggregate(core, jsonPlay, client, example)
+val avataxsdk = (project in file(".")).settings(notPublishSettings).aggregate(core, jsonPlay, client, clientAkka, clientPekko, example)
 
 lazy val commonSettings = scalacSettings ++ Seq(
   scalaVersion := scala_2_13V,
@@ -109,15 +113,31 @@ lazy val jsonPlay = project
 lazy val client = project
   .in(file("modules/client"))
   .settings(commonSettings)
+  .settings(publishSettings, name := "avataxsdk-client", libraryDependencies ++= Seq(compatLibForScala, scalatest % Test))
+  .dependsOn(core)
+
+lazy val clientAkka = project
+  .in(file("modules/client-akka"))
+  .settings(commonSettings)
   .settings(
     publishSettings,
-    name := "avataxsdk-client",
+    name := "avataxsdk-client-akka",
     libraryDependencies ++= Seq(compatLibForScala, akkaHttp, akkaStream, akkaHttpJson, logback, scalatest % Test)
   )
-  .dependsOn(core, jsonPlay)
+  .dependsOn(core, client, jsonPlay)
+
+lazy val clientPekko = project
+  .in(file("modules/client-pekko"))
+  .settings(commonSettings)
+  .settings(
+    publishSettings,
+    name := "avataxsdk-client-pekko",
+    libraryDependencies ++= Seq(compatLibForScala, pekkoHttp, pekkoStream, logback, scalatest % Test)
+  )
+  .dependsOn(core, client, jsonPlay)
 
 lazy val example =
   project
     .in(file("modules/example"))
     .settings(commonSettings, notPublishSettings, libraryDependencies += compatLibForScala)
-    .dependsOn(client)
+    .dependsOn(clientAkka)

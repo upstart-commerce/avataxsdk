@@ -1,4 +1,4 @@
-/* Copyright 2019 UpStart Commerce, Inc.
+/* Copyright 2024 UpStart Commerce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,166 +15,38 @@
 
 package org.upstartcommerce.avataxsdk.client.api.companies
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.model.HttpMethods._
-import akka.http.scaladsl.model.Uri.Query
-import akka.http.scaladsl.model._
-import akka.stream.Materializer
 import org.upstartcommerce.avataxsdk.client._
-import org.upstartcommerce.avataxsdk.client.api._
-import org.upstartcommerce.avataxsdk.client.internal._
 import org.upstartcommerce.avataxsdk.core.data._
 import org.upstartcommerce.avataxsdk.core.data.enums._
 import org.upstartcommerce.avataxsdk.core.data.models._
-import akka.http.scaladsl.model.headers.Authorization
-import org.upstartcommerce.avataxsdk.json._
-import play.api.libs.json._
-import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
-import org.upstartcommerce.avataxsdk.client.AvataxClient.ClientHeaders
 
 /** /api/v2/companies/$companyCode/transactions */
-trait CompanyTransactionsRootApi {
-  def forId(transactionCode: String): CompanyTransactionsApi
+trait CompanyTransactionsRootApi[F[_], S[_]] {
+  def forId(transactionCode: String): CompanyTransactionsApi[F, S]
 
-  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TransactionModel]
-}
-
-object CompanyTransactionsRootApi {
-  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
-      companyCode: String
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsRootApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyTransactionsRootApi {
-      def forId(transactionCode: String): CompanyTransactionsApi =
-        CompanyTransactionsApi(requester, security, clientHeaders)(companyCode, transactionCode)
-
-      def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions").withQuery(include.asQuery.merge(options.asQuery))
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxCollectionCall[TransactionModel](req)
-      }
-    }
+  def list(include: Include, options: FiltrableQueryOptions): AvataxCollectionCall[F, S, TransactionModel]
 }
 
 /** /api/v2/companies/$companyCode/transactions/$transactionCode */
-trait CompanyTransactionsApi {
+trait CompanyTransactionsApi[F[_], S[_]] {
 
-  def adjust(documentType: DocumentType, model: AdjustTransactionModel): AvataxSimpleCall[TransactionModel]
-  def audit: AvataxSimpleCall[AuditTransactionModel]
-  def auditWithType(documentType: DocumentType): AvataxSimpleCall[AuditTransactionModel]
-  def changeCode(documentType: DocumentType, model: ChangeTransactionCodeModel): AvataxSimpleCall[TransactionModel]
-  def commit(documentType: DocumentType, model: CommitTransactionModel): AvataxSimpleCall[TransactionModel]
-  def get(documentType: DocumentType, include: Include): AvataxSimpleCall[TransactionModel]
-  def getByType(documentType: DocumentType, include: Include): AvataxSimpleCall[TransactionModel]
+  def adjust(documentType: DocumentType, model: AdjustTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def audit: AvataxSimpleCall[F, AuditTransactionModel]
+  def auditWithType(documentType: DocumentType): AvataxSimpleCall[F, AuditTransactionModel]
+  def changeCode(documentType: DocumentType, model: ChangeTransactionCodeModel): AvataxSimpleCall[F, TransactionModel]
+  def commit(documentType: DocumentType, model: CommitTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def get(documentType: DocumentType, include: Include): AvataxSimpleCall[F, TransactionModel]
+  def getByType(documentType: DocumentType, include: Include): AvataxSimpleCall[F, TransactionModel]
 
-  def lock(documentType: DocumentType, model: LockTransactionModel): AvataxSimpleCall[TransactionModel]
+  def lock(documentType: DocumentType, model: LockTransactionModel): AvataxSimpleCall[F, TransactionModel]
   def refund(
       documentType: DocumentType,
       include: Include,
       useTaxDateOverride: Boolean,
       model: RefundTransactionModel
-  ): AvataxSimpleCall[TransactionModel]
-  def settle(documentType: DocumentType, model: SettleTransactionModel): AvataxSimpleCall[TransactionModel]
-  def uncommit(documentType: DocumentType): AvataxSimpleCall[TransactionModel]
-  def verify(documentType: DocumentType, model: VerifyTransactionModel): AvataxSimpleCall[TransactionModel]
-  def void(documentType: DocumentType, model: VoidTransactionModel): AvataxSimpleCall[TransactionModel]
-}
-object CompanyTransactionsApi {
-  def apply(requester: Requester, security: Option[Authorization], clientHeaders: Option[ClientHeaders])(
-      companyCode: String,
-      transactionCode: String
-  )(implicit system: ActorSystem, materializer: Materializer): CompanyTransactionsApi =
-    new ApiRoot(requester, security, clientHeaders) with CompanyTransactionsApi {
-
-      def adjust(documentType: DocumentType, model: AdjustTransactionModel): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/adjust").withQuery(Query("companyCode" -> companyCode))
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[AdjustTransactionModel, TransactionModel](req, model)
-      }
-
-      def audit: AvataxSimpleCall[AuditTransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode")
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxSimpleCall[AuditTransactionModel](req)
-      }
-
-      def auditWithType(documentType: DocumentType): AvataxSimpleCall[AuditTransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/types/$documentType/audit")
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxSimpleCall[AuditTransactionModel](req)
-      }
-
-      def changeCode(documentType: DocumentType, model: ChangeTransactionCodeModel): AvataxSimpleCall[TransactionModel] = {
-        val uri =
-          Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/changecode").withQuery(Query("companyCode" -> companyCode))
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[ChangeTransactionCodeModel, TransactionModel](req, model)
-      }
-
-      def commit(documentType: DocumentType, model: CommitTransactionModel): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/commit").withQuery(Query("companyCode" -> companyCode))
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[CommitTransactionModel, TransactionModel](req, model)
-      }
-
-      def get(documentType: DocumentType, include: Include): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode")
-          .withQuery(Query("documentType" -> documentType.toString).merge(include.asQuery))
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxSimpleCall[TransactionModel](req)
-      }
-
-      def getByType(documentType: DocumentType, include: Include): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/types/$documentType").withQuery(include.asQuery)
-        val req = HttpRequest(uri = uri).withMethod(GET)
-        avataxSimpleCall[TransactionModel](req)
-      }
-
-      def lock(documentType: DocumentType, model: LockTransactionModel): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/lock")
-          .withQuery(Query("documentType" -> documentType.toString))
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[LockTransactionModel, TransactionModel](req, model)
-      }
-
-      def refund(
-          documentType: DocumentType,
-          include: Include,
-          useTaxDateOverride: Boolean,
-          model: RefundTransactionModel
-      ): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/refund").withQuery(
-          Query("documentType" -> documentType.toString, "useTaxDateOverride" -> useTaxDateOverride.toString).merge(include.asQuery)
-        )
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[RefundTransactionModel, TransactionModel](req, model)
-      }
-
-      def settle(documentType: DocumentType, model: SettleTransactionModel): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/settle")
-          .withQuery(Query("documentType" -> documentType.toString))
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[SettleTransactionModel, TransactionModel](req, model)
-      }
-
-      def uncommit(documentType: DocumentType): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/uncommit")
-          .withQuery(Query("documentType" -> documentType.toString))
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxSimpleCall[TransactionModel](req)
-      }
-
-      def verify(documentType: DocumentType, model: VerifyTransactionModel): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/verify")
-          .withQuery(Query("documentType" -> documentType.toString))
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[VerifyTransactionModel, TransactionModel](req, model)
-      }
-
-      def void(documentType: DocumentType, model: VoidTransactionModel): AvataxSimpleCall[TransactionModel] = {
-        val uri = Uri(s"/api/v2/companies/$companyCode/transactions/$transactionCode/void")
-          .withQuery(Query("documentType" -> documentType.toString))
-        val req = HttpRequest(uri = uri).withMethod(POST)
-        avataxBodyCall[VoidTransactionModel, TransactionModel](req, model)
-      }
-    }
+  ): AvataxSimpleCall[F, TransactionModel]
+  def settle(documentType: DocumentType, model: SettleTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def uncommit(documentType: DocumentType): AvataxSimpleCall[F, TransactionModel]
+  def verify(documentType: DocumentType, model: VerifyTransactionModel): AvataxSimpleCall[F, TransactionModel]
+  def void(documentType: DocumentType, model: VoidTransactionModel): AvataxSimpleCall[F, TransactionModel]
 }

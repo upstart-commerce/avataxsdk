@@ -1,4 +1,4 @@
-/* Copyright 2019 UpStart Commerce, Inc.
+/* Copyright 2024 UpStart Commerce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,11 @@
 
 package org.upstartcommerce.avataxsdk.client
 
-import akka.NotUsed
-import akka.stream.scaladsl.Source
-import org.upstartcommerce.avataxsdk.core.data.{AvataxException, FetchResult}
-
-import scala.concurrent.Future
+import org.upstartcommerce.avataxsdk.core.data.FetchResult
 
 // todo: provide some combinators
-trait AvataxCall[+A] {
+trait AvataxCall[F[_], +A] {
+
   //def attempt:AvataxCall[Either[AvataxException, A]]
 }
 
@@ -30,8 +27,9 @@ trait AvataxCall[+A] {
   * Simple calls are ones that return pure model, and have no possibility of pagination, offset...,
   * and thus streaming makes little sense
   */
-trait AvataxSimpleCall[A] extends AvataxCall[A] {
-  def apply(): Future[A]
+trait AvataxSimpleCall[F[_], A] extends AvataxCall[F, A] {
+
+  def apply(): F[A]
 }
 
 /**
@@ -42,8 +40,11 @@ trait AvataxSimpleCall[A] extends AvataxCall[A] {
   * For such cases one can use `stream` method, which does the pagination automatically (based
   * on query options, same as with `Future` methods).
   */
-trait AvataxCollectionCall[A] extends AvataxCall[A] {
-  def batch(): Future[FetchResult[A]]
-  final def apply(): Future[FetchResult[A]] = batch()
-  def stream: Source[A, NotUsed]
+trait AvataxCollectionCall[F[_], S[_], A] extends AvataxCall[F, A] {
+
+  def batch(): F[FetchResult[A]]
+
+  final def apply(): F[FetchResult[A]] = batch()
+
+  def stream: S[A]
 }
