@@ -71,7 +71,7 @@ final case class TransactionModel(
     locationTypes: Option[List[TransactionLocationTypeModel]] = None,
     summary: Option[List[TransactionSummary]] = None,
     taxDetailsByTaxType: Option[List[TaxDetailsByTaxType]] = None,
-    parameters: Option[Map[String, String]] = None,
+    parameters: Option[List[ItemParameterModel]] = None,
     messages: Option[List[AvaTaxMessage]] = None,
     invoiceMessages: Option[List[InvoiceMessageModel]] = None
 ) {
@@ -80,7 +80,7 @@ final case class TransactionModel(
   lazy val locationTypesRaw: List[TransactionLocationTypeModel] = locationTypes.getOrElse(List.empty)
   lazy val summaryRaw: List[TransactionSummary] = summary.getOrElse(List.empty)
   lazy val taxDetailsByTaxTypeRaw: List[TaxDetailsByTaxType] = taxDetailsByTaxType.getOrElse(List.empty)
-  lazy val parametersRaw: Map[String, String] = parameters.getOrElse(Map.empty)
+  lazy val parametersRaw: List[ItemParameterModel] = parameters.getOrElse(List.empty)
   lazy val messagesRaw: List[AvaTaxMessage] = messages.getOrElse(List.empty)
   lazy val invoiceMessagesRaw: List[InvoiceMessageModel] = invoiceMessages.getOrElse(List.empty)
   def withId(value: Long): TransactionModel = copy(id = Some(value))
@@ -135,7 +135,7 @@ final case class TransactionModel(
   def withLocationTypes(value: List[TransactionLocationTypeModel]): TransactionModel = copy(locationTypes = Some(value))
   def withSummary(value: List[TransactionSummary]): TransactionModel = copy(summary = Some(value))
   def withTaxDetailsByTaxType(value: List[TaxDetailsByTaxType]): TransactionModel = copy(taxDetailsByTaxType = Some(value))
-  def withParameters(value: Map[String, String]): TransactionModel = copy(parameters = Some(value))
+  def withParameters(value: List[ItemParameterModel]): TransactionModel = copy(parameters = Some(value))
   def withMessages(value: List[AvaTaxMessage]): TransactionModel = copy(messages = Some(value))
   def withInvoiceMessages(value: List[InvoiceMessageModel]): TransactionModel = copy(invoiceMessages = Some(value))
 }

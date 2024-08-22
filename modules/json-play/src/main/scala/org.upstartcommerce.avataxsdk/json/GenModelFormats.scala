@@ -299,6 +299,9 @@ private[json] trait GenModelFormats {
   implicit def itemSyncModelOFormat: OFormat[ItemSyncModel] = Json.format[ItemSyncModel]
   implicit def verifyMultiDocumentModelOFormat: OFormat[VerifyMultiDocumentModel] =
     Json.format[VerifyMultiDocumentModel]
+
+//  implicit def transactionLineParameterModelOFormat: OFormat[TransactionLineParameterModel] =
+//    Json.format[TransactionLineParameterModel]
   implicit def lineItemModelOFormat: OFormat[LineItemModel] = Json.format[LineItemModel]
   implicit def settingModelOFormat: OFormat[SettingModel] = Json.format[SettingModel]
   implicit def resourceFileTypeModelOFormat: OFormat[ResourceFileTypeModel] =

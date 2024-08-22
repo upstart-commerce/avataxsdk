@@ -34,9 +34,9 @@ final case class MultiCompanyLineItemModel(
     description: Option[String] = None,
     businessIdentificationNo: Option[String] = None,
     taxOverride: Option[TaxOverrideModel] = None,
-    parameters: Option[Map[String, String]] = None
+    parameters: Option[List[ItemParameterModel]] = None
 ) {
-  lazy val parametersRaw: Map[String, String] = parameters.getOrElse(Map.empty)
+  lazy val parametersRaw: List[ItemParameterModel] = parameters.getOrElse(List.empty)
   def withCompanyCode(value: String): MultiCompanyLineItemModel = copy(companyCode = Some(value))
   def withReportingLocationCode(value: String): MultiCompanyLineItemModel = copy(reportingLocationCode = Some(value))
   def withNumber(value: String): MultiCompanyLineItemModel = copy(number = Some(value))
@@ -55,5 +55,5 @@ final case class MultiCompanyLineItemModel(
   def withDescription(value: String): MultiCompanyLineItemModel = copy(description = Some(value))
   def withBusinessIdentificationNo(value: String): MultiCompanyLineItemModel = copy(businessIdentificationNo = Some(value))
   def withTaxOverride(value: TaxOverrideModel): MultiCompanyLineItemModel = copy(taxOverride = Some(value))
-  def withParameters(value: Map[String, String]): MultiCompanyLineItemModel = copy(parameters = Some(value))
+  def withParameters(value: List[ItemParameterModel]): MultiCompanyLineItemModel = copy(parameters = Some(value))
 }
