@@ -32,7 +32,7 @@ final case class CreateTransactionModel(
     purchaseOrderNo: Option[String] = None,
     exemptionNo: Option[String] = None,
     addresses: Option[AddressesModel] = None,
-    parameters: Option[Map[String, String]] = None,
+    parameters: Option[List[ItemParameterModel]] = None,
     referenceCode: Option[String] = None,
     reportingLocationCode: Option[String] = None,
     commit: Option[Boolean] = None,
@@ -49,7 +49,7 @@ final case class CreateTransactionModel(
     email: Option[String] = None,
     debugLevel: Option[TaxDebugLevel] = None
 ) {
-  lazy val parametersRaw: Map[String, String] = parameters.getOrElse(Map.empty)
+  lazy val parametersRaw: List[ItemParameterModel] = parameters.getOrElse(List.empty)
   def withCode(value: String): CreateTransactionModel = copy(code = Some(value))
   def withLines(value: List[LineItemModel]): CreateTransactionModel = copy(lines = value)
   def withType(value: DocumentType): CreateTransactionModel = copy(`type` = Some(value))
@@ -63,7 +63,7 @@ final case class CreateTransactionModel(
   def withPurchaseOrderNo(value: String): CreateTransactionModel = copy(purchaseOrderNo = Some(value))
   def withExemptionNo(value: String): CreateTransactionModel = copy(exemptionNo = Some(value))
   def withAddresses(value: AddressesModel): CreateTransactionModel = copy(addresses = Some(value))
-  def withParameters(value: Map[String, String]): CreateTransactionModel = copy(parameters = Some(value))
+  def withParameters(value: List[ItemParameterModel]): CreateTransactionModel = copy(parameters = Some(value))
   def withReferenceCode(value: String): CreateTransactionModel = copy(referenceCode = Some(value))
   def withReportingLocationCode(value: String): CreateTransactionModel = copy(reportingLocationCode = Some(value))
   def withCommit(value: Boolean): CreateTransactionModel = copy(commit = Some(value))

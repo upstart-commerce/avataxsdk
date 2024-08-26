@@ -60,7 +60,7 @@ final case class TransactionLineModel(
     details: Option[List[TransactionLineDetailModel]] = None,
     nonPassthroughDetails: Option[List[TransactionLineDetailModel]] = None,
     lineLocationTypes: Option[List[TransactionLineLocationTypeModel]] = None,
-    parameters: Option[Map[String, String]] = None,
+    parameters: Option[List[ItemParameterModel]] = None,
     hsCode: Option[String] = None,
     costInsuranceFreight: Option[BigDecimal] = None,
     vatCode: Option[String] = None,
@@ -69,7 +69,7 @@ final case class TransactionLineModel(
   lazy val detailsRaw: List[TransactionLineDetailModel] = details.getOrElse(List.empty)
   lazy val nonPassthroughDetailsRaw: List[TransactionLineDetailModel] = nonPassthroughDetails.getOrElse(List.empty)
   lazy val lineLocationTypesRaw: List[TransactionLineLocationTypeModel] = lineLocationTypes.getOrElse(List.empty)
-  lazy val parametersRaw: Map[String, String] = parameters.getOrElse(Map.empty)
+  lazy val parametersRaw: List[ItemParameterModel] = parameters.getOrElse(List.empty)
   def withId(value: Long): TransactionLineModel = copy(id = Some(value))
   def withTransactionId(value: Long): TransactionLineModel = copy(transactionId = Some(value))
   def withLineNumber(value: String): TransactionLineModel = copy(lineNumber = Some(value))
@@ -110,7 +110,7 @@ final case class TransactionLineModel(
   def withDetails(value: List[TransactionLineDetailModel]): TransactionLineModel = copy(details = Some(value))
   def withNonPassthroughDetails(value: List[TransactionLineDetailModel]): TransactionLineModel = copy(nonPassthroughDetails = Some(value))
   def withLineLocationTypes(value: List[TransactionLineLocationTypeModel]): TransactionLineModel = copy(lineLocationTypes = Some(value))
-  def withParameters(value: Map[String, String]): TransactionLineModel = copy(parameters = Some(value))
+  def withParameters(value: List[ItemParameterModel]): TransactionLineModel = copy(parameters = Some(value))
   def withHsCode(value: String): TransactionLineModel = copy(hsCode = Some(value))
   def withCostInsuranceFreight(value: BigDecimal): TransactionLineModel = copy(costInsuranceFreight = Some(value))
   def withVatCode(value: String): TransactionLineModel = copy(vatCode = Some(value))

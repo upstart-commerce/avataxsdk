@@ -30,7 +30,7 @@ final case class CreateMultiCompanyTransactionModel(
     purchaseOrderNo: Option[String] = None,
     exemptionNo: Option[String] = None,
     addresses: Option[AddressesModel] = None,
-    parameters: Option[Map[String, String]] = None,
+    parameters: Option[List[ItemParameterModel]] = None,
     referenceCode: Option[String] = None,
     reportingLocationCode: Option[String] = None,
     commit: Option[Boolean] = None,
@@ -48,7 +48,7 @@ final case class CreateMultiCompanyTransactionModel(
     debugLevel: Option[TaxDebugLevel] = None
 ) {
   lazy val linesRaw: List[MultiCompanyLineItemModel] = lines.getOrElse(List.empty)
-  lazy val parametersRaw: Map[String, String] = parameters.getOrElse(Map.empty)
+  lazy val parametersRaw: List[ItemParameterModel] = parameters.getOrElse(List.empty)
   def withCode(value: String): CreateMultiCompanyTransactionModel = copy(code = Some(value))
   def withLines(value: List[MultiCompanyLineItemModel]): CreateMultiCompanyTransactionModel = copy(lines = Some(value))
   def withType(value: DocumentType): CreateMultiCompanyTransactionModel = copy(`type` = Some(value))
@@ -61,7 +61,7 @@ final case class CreateMultiCompanyTransactionModel(
   def withPurchaseOrderNo(value: String): CreateMultiCompanyTransactionModel = copy(purchaseOrderNo = Some(value))
   def withExemptionNo(value: String): CreateMultiCompanyTransactionModel = copy(exemptionNo = Some(value))
   def withAddresses(value: AddressesModel): CreateMultiCompanyTransactionModel = copy(addresses = Some(value))
-  def withParameters(value: Map[String, String]): CreateMultiCompanyTransactionModel = copy(parameters = Some(value))
+  def withParameters(value: List[ItemParameterModel]): CreateMultiCompanyTransactionModel = copy(parameters = Some(value))
   def withReferenceCode(value: String): CreateMultiCompanyTransactionModel = copy(referenceCode = Some(value))
   def withReportingLocationCode(value: String): CreateMultiCompanyTransactionModel = copy(reportingLocationCode = Some(value))
   def withCommit(value: Boolean): CreateMultiCompanyTransactionModel = copy(commit = Some(value))

@@ -32,7 +32,7 @@ final case class CreateMultiDocumentModel(
     purchaseOrderNo: Option[String] = None,
     exemptionNo: Option[String] = None,
     addresses: Option[AddressesModel] = None,
-    parameters: Option[Map[String, String]] = None,
+    parameters: Option[List[ItemParameterModel]] = None,
     referenceCode: Option[String] = None,
     reportingLocationCode: Option[String] = None,
     commit: Option[Boolean] = None,
@@ -49,7 +49,7 @@ final case class CreateMultiDocumentModel(
     email: Option[String] = None,
     debugLevel: Option[TaxDebugLevel] = None
 ) {
-  lazy val parametersRaw: Map[String, String] = parameters.getOrElse(Map.empty)
+  lazy val parametersRaw: List[ItemParameterModel] = parameters.getOrElse(List.empty)
   def withCode(value: String): CreateMultiDocumentModel = copy(code = Some(value))
   def withLines(value: List[MultiDocumentLineItemModel]): CreateMultiDocumentModel = copy(lines = value)
   def withAllowAdjust(value: Boolean): CreateMultiDocumentModel = copy(allowAdjust = Some(value))
@@ -64,7 +64,7 @@ final case class CreateMultiDocumentModel(
   def withPurchaseOrderNo(value: String): CreateMultiDocumentModel = copy(purchaseOrderNo = Some(value))
   def withExemptionNo(value: String): CreateMultiDocumentModel = copy(exemptionNo = Some(value))
   def withAddresses(value: AddressesModel): CreateMultiDocumentModel = copy(addresses = Some(value))
-  def withParameters(value: Map[String, String]): CreateMultiDocumentModel = copy(parameters = Some(value))
+  def withParameters(value: List[ItemParameterModel]): CreateMultiDocumentModel = copy(parameters = Some(value))
   def withReferenceCode(value: String): CreateMultiDocumentModel = copy(referenceCode = Some(value))
   def withReportingLocationCode(value: String): CreateMultiDocumentModel = copy(reportingLocationCode = Some(value))
   def withCommit(value: Boolean): CreateMultiDocumentModel = copy(commit = Some(value))

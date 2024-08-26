@@ -33,10 +33,10 @@ final case class LineItemModel(
     description: Option[String] = None,
     businessIdentificationNo: Option[String] = None,
     taxOverride: Option[TaxOverrideModel] = None,
-    parameters: Option[Map[String, String]] = None,
+    parameters: Option[List[ItemParameterModel]] = None,
     hsCode: Option[String] = None
 ) {
-  lazy val parametersRaw: Map[String, String] = parameters.getOrElse(Map.empty)
+  lazy val parametersRaw: List[ItemParameterModel] = parameters.getOrElse(List.empty)
   def withNumber(value: String): LineItemModel = copy(number = Some(value))
   def withQuantity(value: BigDecimal): LineItemModel = copy(quantity = Some(value))
   def withAmount(value: BigDecimal): LineItemModel = copy(amount = value)
@@ -54,6 +54,6 @@ final case class LineItemModel(
   def withDescription(value: String): LineItemModel = copy(description = Some(value))
   def withBusinessIdentificationNo(value: String): LineItemModel = copy(businessIdentificationNo = Some(value))
   def withTaxOverride(value: TaxOverrideModel): LineItemModel = copy(taxOverride = Some(value))
-  def withParameters(value: Map[String, String]): LineItemModel = copy(parameters = Some(value))
+  def withParameters(value: List[ItemParameterModel]): LineItemModel = copy(parameters = Some(value))
   def withHsCode(value: String): LineItemModel = copy(hsCode = Some(value))
 }

@@ -35,10 +35,10 @@ final case class MultiDocumentLineItemModel(
     description: Option[String] = None,
     businessIdentificationNo: Option[String] = None,
     taxOverride: Option[TaxOverrideModel] = None,
-    parameters: Option[Map[String, String]] = None,
+    parameters: Option[List[ItemParameterModel]] = None,
     hsCode: Option[String] = None
 ) {
-  lazy val parametersRaw: Map[String, String] = parameters.getOrElse(Map.empty)
+  lazy val parametersRaw: List[ItemParameterModel] = parameters.getOrElse(List.empty)
   def withCompanyCode(value: String): MultiDocumentLineItemModel = copy(companyCode = Some(value))
   def withReportingLocationCode(value: String): MultiDocumentLineItemModel = copy(reportingLocationCode = Some(value))
   def withNumber(value: String): MultiDocumentLineItemModel = copy(number = Some(value))
@@ -58,6 +58,6 @@ final case class MultiDocumentLineItemModel(
   def withDescription(value: String): MultiDocumentLineItemModel = copy(description = Some(value))
   def withBusinessIdentificationNo(value: String): MultiDocumentLineItemModel = copy(businessIdentificationNo = Some(value))
   def withTaxOverride(value: TaxOverrideModel): MultiDocumentLineItemModel = copy(taxOverride = Some(value))
-  def withParameters(value: Map[String, String]): MultiDocumentLineItemModel = copy(parameters = Some(value))
+  def withParameters(value: List[ItemParameterModel]): MultiDocumentLineItemModel = copy(parameters = Some(value))
   def withHsCode(value: String): MultiDocumentLineItemModel = copy(hsCode = Some(value))
 }
